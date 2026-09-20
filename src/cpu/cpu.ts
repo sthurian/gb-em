@@ -1,5 +1,5 @@
 import { MMU } from '../mmu.js';
-import { createInstructions } from './instructions.js';
+import { Instruction } from './instructions.js';
 
 type CPU = {
   step(): number;
@@ -8,7 +8,8 @@ type CPU = {
 
 type CPUDependencies = {
   mmu: MMU;
-  registers?: Registers;
+  registers: Registers;
+  instructions: Array<Instruction | undefined>;
 };
 
 type Registers = {
@@ -29,13 +30,8 @@ type CPUState = {
 };
 
 const createCPU = (dependencies: CPUDependencies): CPU => {
-  const { mmu, registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0 } } =
+  const { mmu, registers, instructions } =
     dependencies;
-
-  const instructions = createInstructions({
-    mmu,
-    registers,
-  });
 
   return {
     step: () => {

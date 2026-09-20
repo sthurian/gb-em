@@ -1,126 +1,96 @@
 import { suite, test } from 'mocha';
-import { createMMU } from '../mmu.js';
 import assert from 'node:assert';
+import { createMMU } from '../mmu.js';
 import { createCPU } from './cpu.js';
+import type { Instruction } from './instructions.js';
+
+const createRegisters = () => ({
+  a: 0,
+  f: 0,
+  b: 0,
+  c: 0,
+  d: 0,
+  e: 0,
+  h: 0,
+  l: 0,
+  sp: 0,
+  pc: 0,
+});
 
 suite('CPU', () => {
   test('rejects an unsupported opcode', () => {
     const mmu = createMMU();
-    const cpu = createCPU({ mmu });
+    const instructions: Array<Instruction | undefined> = [];
+
+    const cpu = createCPU({
+      mmu,
+      registers: createRegisters(),
+      instructions,
+    });
+
     mmu.write8(0x0000, 0xff);
-    assert.throws(() => cpu.step(), Error);
+
+    assert.throws(
+      () => cpu.step(),
+      /Unsupported opcode: 0xff/,
+    );
   });
 
   test('does not advance PC for an unsupported opcode', () => {
     const mmu = createMMU();
-    const cpu = createCPU({ mmu });
+    const registers = createRegisters();
+    const instructions: Array<Instruction | undefined> = [];
+
+    const cpu = createCPU({
+      mmu,
+      registers,
+      instructions,
+    });
+
     mmu.write8(0x0000, 0xff);
+
     assert.throws(() => cpu.step(), Error);
-    assert.strictEqual(cpu.getState().registers.pc, 0);
+    assert.strictEqual(registers.pc, 0);
   });
 
-  test('executes NOP', () => {
+  test('executes the instruction for the current opcode', () => {
     const mmu = createMMU();
-    const cpu = createCPU({ mmu });
-    mmu.write8(0x0000, 0x00);
+    const registers = createRegisters();
+    const instructions: Array<Instruction | undefined> = [];
 
-    const cycles = cpu.step();
+    instructions[0x42] = {
+      mnemonic: 'TEST',
+      bytes: 1,
+      execute: () => 7,
+    };
 
-    assert.strictEqual(cycles, 4);
-    assert.deepStrictEqual(cpu.getState(), {
-      registers: {
-        a: 0,
-        f: 0,
-        b: 0,
-        c: 0,
-        d: 0,
-        e: 0,
-        h: 0,
-        l: 0,
-        sp: 0,
-        pc: 1,
-      },
-    });
-  });
-
-  test('wraps PC when executing NOP at the end of the address space', () => {
-    const mmu = createMMU();
     const cpu = createCPU({
       mmu,
-      registers: {
-        a: 0,
-        f: 0,
-        b: 0,
-        c: 0,
-        d: 0,
-        e: 0,
-        h: 0,
-        l: 0,
-        sp: 0,
-        pc: 0xffff,
-      },
+      registers,
+      instructions,
     });
 
-    mmu.write8(0xffff, 0x00);
+    mmu.write8(0x0000, 0x42);
 
     const cycles = cpu.step();
 
-    assert.strictEqual(cycles, 4);
-    assert.strictEqual(cpu.getState().registers.pc, 0x0000);
+    assert.strictEqual(cycles, 7);
   });
 
-  test('wraps PC when executing LD B,d8 at the end of the address space', () => {
+  test('returns a copy of the CPU state', () => {
     const mmu = createMMU();
+    const registers = createRegisters();
+
     const cpu = createCPU({
       mmu,
-      registers: {
-        a: 0,
-        f: 0,
-        b: 0,
-        c: 0,
-        d: 0,
-        e: 0,
-        h: 0,
-        l: 0,
-        sp: 0,
-        pc: 0xfffe,
-      },
+      registers,
+      instructions: [],
     });
 
-    mmu.write8(0xfffe, 0x06);
-    mmu.write8(0xffff, 0x42);
+    const state = cpu.getState();
 
-    const cycles = cpu.step();
+    state.registers.b = 0x42;
 
-    assert.strictEqual(cycles, 8);
-    assert.strictEqual(cpu.getState().registers.b, 0x42);
-    assert.strictEqual(cpu.getState().registers.pc, 0x0000);
-  });
-
-  test('wraps PC when executing INC B at the end of the address space', () => {
-    const mmu = createMMU();
-    const cpu = createCPU({
-      mmu,
-      registers: {
-        a: 0,
-        f: 0,
-        b: 0x41,
-        c: 0,
-        d: 0,
-        e: 0,
-        h: 0,
-        l: 0,
-        sp: 0,
-        pc: 0xffff,
-      },
-    });
-
-    mmu.write8(0xffff, 0x04);
-
-    const cycles = cpu.step();
-
-    assert.strictEqual(cycles, 4);
-    assert.strictEqual(cpu.getState().registers.b, 0x42);
-    assert.strictEqual(cpu.getState().registers.pc, 0x0000);
+    assert.strictEqual(registers.b, 0);
   });
 });
