@@ -20,6 +20,7 @@ import { createDecA } from './instructions/arithmetic/dec-a.js';
 import { createDecHL } from './instructions/arithmetic/dec-hl.js';
 import { createLdCD8 } from './instructions/load/ld-c-d8.js';
 import { createLdDD8 } from './instructions/load/ld-d-d8.js';
+import { createLdHLD8 } from './instructions/load/ld-hl-d8.js';
 
 type Opcode = {
   mnemonic: string;
@@ -59,6 +60,7 @@ const createOpcodeTable = ({
   opcodes[0x25] = createDecH({registers});
   opcodes[0x2d] = createDecL({registers});
   opcodes[0x35] = createDecHL({mmu, registers})
+  opcodes[0x36] = createLdHLD8({ mmu, registers });
   opcodes[0x3d] = createDecA({registers});
 
   return opcodes;
