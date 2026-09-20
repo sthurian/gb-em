@@ -2,7 +2,7 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createMMU } from '../mmu.js';
 import { createCPU } from './cpu.js';
-import type { Instruction } from './instructions.js';
+import type { Opcode } from './opcode-table.js';
 
 const createRegisters = () => ({
   a: 0,
@@ -20,12 +20,12 @@ const createRegisters = () => ({
 suite('CPU', () => {
   test('rejects an unsupported opcode', () => {
     const mmu = createMMU();
-    const instructions: Array<Instruction | undefined> = [];
+    const opcodeTable: Array<Opcode | undefined> = [];
 
     const cpu = createCPU({
       mmu,
       registers: createRegisters(),
-      instructions,
+      opcodeTable,
     });
 
     mmu.write8(0x0000, 0xff);
@@ -39,12 +39,12 @@ suite('CPU', () => {
   test('does not advance PC for an unsupported opcode', () => {
     const mmu = createMMU();
     const registers = createRegisters();
-    const instructions: Array<Instruction | undefined> = [];
+    const opcodeTable: Array<Opcode | undefined> = [];
 
     const cpu = createCPU({
       mmu,
       registers,
-      instructions,
+      opcodeTable,
     });
 
     mmu.write8(0x0000, 0xff);
@@ -56,9 +56,9 @@ suite('CPU', () => {
   test('executes the instruction for the current opcode', () => {
     const mmu = createMMU();
     const registers = createRegisters();
-    const instructions: Array<Instruction | undefined> = [];
+    const opcodeTable: Array<Opcode | undefined> = [];
 
-    instructions[0x42] = {
+    opcodeTable[0x42] = {
       mnemonic: 'TEST',
       bytes: 1,
       execute: () => 7,
@@ -67,7 +67,7 @@ suite('CPU', () => {
     const cpu = createCPU({
       mmu,
       registers,
-      instructions,
+      opcodeTable,
     });
 
     mmu.write8(0x0000, 0x42);
@@ -84,7 +84,7 @@ suite('CPU', () => {
     const cpu = createCPU({
       mmu,
       registers,
-      instructions: [],
+      opcodeTable: [],
     });
 
     const state = cpu.getState();

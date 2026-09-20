@@ -21,48 +21,48 @@ import { createDecHL } from './instructions/arithmetic/dec-hl.js';
 import { createLdCD8 } from './instructions/load/ld-c-d8.js';
 import { createLdDD8 } from './instructions/load/ld-d-d8.js';
 
-type Instruction = {
+type Opcode = {
   mnemonic: string;
   bytes: number;
   execute: () => number;
 };
 
-type InstructionDependencies = {
+type OpcodeTableDependencies = {
   mmu: MMU;
   registers: Registers;
 };
 
-const createInstructions = ({
+const createOpcodeTable = ({
   mmu,
   registers,
-}: InstructionDependencies): Array<Instruction | undefined> => {
+}: OpcodeTableDependencies): Array<Opcode | undefined> => {
 
-  const instructions: Array<Instruction | undefined> = [];
+  const opcodes: Array<Opcode | undefined> = [];
 
-  instructions[0x00] = createNop({ registers });
-  instructions[0x06] = createLdBD8({ mmu, registers });
-  instructions[0x0e] = createLdCD8({ mmu, registers });
-  instructions[0x16] = createLdDD8({ mmu, registers });
-  instructions[0x04] = createIncB({ registers });
-  instructions[0x0c] = createIncC({ registers });
-  instructions[0x14] = createIncD({ registers });
-  instructions[0x1c] = createIncE({ registers });
-  instructions[0x24] = createIncH({ registers });
-  instructions[0x2c] = createIncL({ registers });
-  instructions[0x34] = createIncHL({ mmu, registers });
-  instructions[0x3c] = createIncA({ registers });
+  opcodes[0x00] = createNop({ registers });
+  opcodes[0x06] = createLdBD8({ mmu, registers });
+  opcodes[0x0e] = createLdCD8({ mmu, registers });
+  opcodes[0x16] = createLdDD8({ mmu, registers });
+  opcodes[0x04] = createIncB({ registers });
+  opcodes[0x0c] = createIncC({ registers });
+  opcodes[0x14] = createIncD({ registers });
+  opcodes[0x1c] = createIncE({ registers });
+  opcodes[0x24] = createIncH({ registers });
+  opcodes[0x2c] = createIncL({ registers });
+  opcodes[0x34] = createIncHL({ mmu, registers });
+  opcodes[0x3c] = createIncA({ registers });
 
-  instructions[0x05] = createDecB({registers});
-  instructions[0x0d] = createDecC({registers});
-  instructions[0x15] = createDecD({registers});
-  instructions[0x1d] = createDecE({registers});
-  instructions[0x25] = createDecH({registers});
-  instructions[0x2d] = createDecL({registers});
-  instructions[0x35] = createDecHL({mmu, registers})
-  instructions[0x3d] = createDecA({registers});
+  opcodes[0x05] = createDecB({registers});
+  opcodes[0x0d] = createDecC({registers});
+  opcodes[0x15] = createDecD({registers});
+  opcodes[0x1d] = createDecE({registers});
+  opcodes[0x25] = createDecH({registers});
+  opcodes[0x2d] = createDecL({registers});
+  opcodes[0x35] = createDecHL({mmu, registers})
+  opcodes[0x3d] = createDecA({registers});
 
-  return instructions;
+  return opcodes;
 };
 
-export { createInstructions };
-export type { Instruction };
+export { createOpcodeTable };
+export type { Opcode };

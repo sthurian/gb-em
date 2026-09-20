@@ -1,5 +1,5 @@
 import { MMU } from '../mmu.js';
-import { Instruction } from './instructions.js';
+import { Opcode } from './opcode-table.js';
 
 type CPU = {
   step(): number;
@@ -9,7 +9,7 @@ type CPU = {
 type CPUDependencies = {
   mmu: MMU;
   registers: Registers;
-  instructions: Array<Instruction | undefined>;
+  opcodeTable: Array<Opcode | undefined>;
 };
 
 type Registers = {
@@ -30,13 +30,13 @@ type CPUState = {
 };
 
 const createCPU = (dependencies: CPUDependencies): CPU => {
-  const { mmu, registers, instructions } =
+  const { mmu, registers, opcodeTable } =
     dependencies;
 
   return {
     step: () => {
       const opcode = mmu.read8(registers.pc);
-      const instruction = instructions[opcode];
+      const instruction = opcodeTable[opcode];
       if (!instruction) {
         throw new Error(`Unsupported opcode: 0x${opcode.toString(16).padStart(2, '0')}`);
       }
