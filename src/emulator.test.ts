@@ -3,69 +3,123 @@ import assert from 'node:assert';
 import { createEmulator } from './emulator.js';
 
 suite('Emulator', () => {
-  test('passes CPU cycles to the PPU, APU, and Timer', () => {
-    const ppuCycles: number[] = [];
-    const apuCycles: number[] = [];
-    const timerCycles: number[] = [];
+    test('passes CPU cycles to the PPU, APU, and Timer', () => {
+        const ppuCycles: number[] = [];
+        const apuCycles: number[] = [];
+        const timerCycles: number[] = [];
 
-    const cpu = {
-      step: () => 4,
-      getState: () => ({
-        registers: {
-          a: 0,
-          f: 0,
-          b: 0,
-          c: 0,
-          d: 0,
-          e: 0,
-          h: 0,
-          l: 0,
-          sp: 0,
-          pc: 0,
-        },
-      }),
-    };
+        const cpu = {
+            step: () => 4,
+            getState: () => ({
+                registers: {
+                    a: 0,
+                    f: 0,
+                    b: 0,
+                    c: 0,
+                    d: 0,
+                    e: 0,
+                    h: 0,
+                    l: 0,
+                    sp: 0,
+                    pc: 0,
+                },
+            }),
+        };
 
-    const ppu = {
-      step: (cycles: number) => {
-        ppuCycles.push(cycles);
-      },
-    };
+        const ppu = {
+            step: (cycles: number) => {
+                ppuCycles.push(cycles);
+            },
+        };
 
-    const apu = {
-      step: (cycles: number) => {
-        apuCycles.push(cycles);
-      },
-    };
+        const apu = {
+            step: (cycles: number) => {
+                apuCycles.push(cycles);
+            },
+        };
 
-    const timer = {
-      step: (cycles: number) => {
-        timerCycles.push(cycles);
-      },
-    };
+        const timer = {
+            step: (cycles: number) => {
+                timerCycles.push(cycles);
+            },
+        };
 
-    const joypad = {
-      press: () => {},
-      release: () => {},
-    };
+        const joypad = {
+            press: () => { },
+            release: () => { },
+        };
 
-    const interruptController = {
-        request: () => {}
-    }
+        const interruptController = {
+            request: () => { }
+        }
 
-    const emulator = createEmulator({
-      cpu,
-      ppu,
-      apu,
-      timer,
-      joypad,
-      interruptController
+        const emulator = createEmulator({
+            cpu,
+            ppu,
+            apu,
+            timer,
+            joypad,
+            interruptController
+        });
+
+        emulator.step();
+
+        assert.deepStrictEqual(ppuCycles, [4]);
+        assert.deepStrictEqual(apuCycles, [4]);
+        assert.deepStrictEqual(timerCycles, [4]);
     });
 
-    emulator.step();
+    test('starts stepping the emulator', () => {
+        const cpu = {
+            step: () => {
+                throw new Error('stop');
+            },
+            getState: () => ({
+                registers: {
+                    a: 0,
+                    f: 0,
+                    b: 0,
+                    c: 0,
+                    d: 0,
+                    e: 0,
+                    h: 0,
+                    l: 0,
+                    sp: 0,
+                    pc: 0,
+                },
+            }),
+        };
 
-    assert.deepStrictEqual(ppuCycles, [4]);
-    assert.deepStrictEqual(apuCycles, [4]);
-    assert.deepStrictEqual(timerCycles, [4]);
-  });
+        const ppu = {
+            step: () => { },
+        };
+
+        const apu = {
+            step: () => { },
+        };
+
+        const timer = {
+            step: () => { },
+        };
+
+        const joypad = {
+            press: () => { },
+            release: () => { },
+        };
+
+        const interruptController = {
+            request: () => { },
+        };
+
+        const emulator = createEmulator({
+            cpu,
+            ppu,
+            apu,
+            timer,
+            joypad,
+            interruptController,
+        });
+
+        assert.throws(() => emulator.start(), /stop/);
+    });
 });
