@@ -1,3 +1,4 @@
+import type { APU } from './apu.js';
 import type { CPU } from './cpu/cpu.js';
 import type { PPU } from './ppu.js';
 
@@ -9,14 +10,16 @@ type Emulator = {
 type EmulatorDependencies = {
   cpu: CPU;
   ppu: PPU;
+  apu: APU;
 };
 
 const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
-  const { cpu, ppu } = dependencies;
+  const { cpu, ppu, apu } = dependencies;
 
   const step = (): void => {
   const cycles = cpu.step();
     ppu.step(cycles);
+    apu.step(cycles);
   };
 
   return {

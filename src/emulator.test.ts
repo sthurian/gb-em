@@ -3,8 +3,9 @@ import assert from 'node:assert';
 import { createEmulator } from './emulator.js';
 
 suite('Emulator', () => {
-  test('passes CPU cycles to the PPU', () => {
+  test('passes CPU cycles to the PPU and APU', () => {
     const ppuCycles: number[] = [];
+    const apuCycles: number[] = [];
 
     const cpu = {
       step: () => 4,
@@ -30,10 +31,17 @@ suite('Emulator', () => {
       },
     };
 
-    const emulator = createEmulator({ cpu, ppu });
+    const apu = {
+      step: (cycles: number) => {
+        apuCycles.push(cycles);
+      },
+    };
+
+    const emulator = createEmulator({ cpu, ppu, apu });
 
     emulator.step();
 
     assert.deepStrictEqual(ppuCycles, [4]);
+    assert.deepStrictEqual(apuCycles, [4]);
   });
 });
