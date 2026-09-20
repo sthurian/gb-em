@@ -19,6 +19,7 @@ import { createDecL } from './instructions/arithmetic/dec-l.js';
 import { createDecA } from './instructions/arithmetic/dec-a.js';
 import { createDecHL } from './instructions/arithmetic/dec-hl.js';
 import { createLdCD8 } from './instructions/load/ld-c-d8.js';
+import { createLdDD8 } from './instructions/load/ld-d-d8.js';
 
 type Instruction = {
   mnemonic: string;
@@ -41,6 +42,7 @@ const createInstructions = ({
   instructions[0x00] = createNop({ registers });
   instructions[0x06] = createLdBD8({ mmu, registers });
   instructions[0x0e] = createLdCD8({ mmu, registers });
+  instructions[0x16] = createLdDD8({ mmu, registers });
   instructions[0x04] = createIncB({ registers });
   instructions[0x0c] = createIncC({ registers });
   instructions[0x14] = createIncD({ registers });
