@@ -1,5 +1,6 @@
 import type { APU } from './apu.js';
 import type { CPU } from './cpu/cpu.js';
+import { Joypad } from './joypad.js';
 import type { PPU } from './ppu.js';
 import type { Timer } from './timer.js';
 
@@ -13,6 +14,7 @@ type EmulatorDependencies = {
   ppu: PPU;
   apu: APU;
   timer: Timer;
+  joypad: Joypad;
 };
 
 const createEmulator = (dependencies: EmulatorDependencies): Emulator => {

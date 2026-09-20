@@ -2,6 +2,7 @@ import { createAPU } from './apu.js';
 import { createCPU } from './cpu/cpu.js';
 import { createOpcodeTable } from './cpu/opcode-table.js';
 import { createEmulator } from './emulator.js';
+import { createJoypad } from './joypad.js';
 import { createMMU } from './mmu.js';
 import { createPPU } from './ppu.js';
 import { createTimer } from './timer.js';
@@ -13,11 +14,13 @@ const cpu = createCPU({ mmu, opcodeTable, registers });
 const ppu = createPPU();
 const apu = createAPU();
 const timer = createTimer();
+const joypad = createJoypad();
 const emulator = createEmulator({
   cpu,
   ppu,
   apu,
-  timer
+  timer,
+  joypad
 });
 
 emulator.start();

@@ -44,11 +44,17 @@ suite('Emulator', () => {
       },
     };
 
+    const joypad = {
+      press: () => {},
+      release: () => {},
+    };
+
     const emulator = createEmulator({
       cpu,
       ppu,
       apu,
       timer,
+      joypad,
     });
 
     emulator.step();
