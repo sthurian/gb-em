@@ -1,0 +1,53 @@
+{
+  "name": "gb-em",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "build": "node ./node_modules/typescript-7/bin/tsc -p tsconfig.build.json && chmod 755 build/index.js",
+    "build:dev": "node ./node_modules/typescript-7/bin/tsc && chmod 755 build/index.js",
+    "start": "npm run build && node build/index.js",
+    "test": "mocha",
+    "test:coverage": "c8 npm test",
+    "test:coverage:html": "c8 --reporter=html npm test",
+    "test:coverage:lcov": "c8 --reporter=lcov npm test",
+    "lint": "eslint",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sthurian/gb-em.git"
+  },
+  "author": "Steffen Thurian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sthurian/gb-em/issues"
+  },
+  "homepage": "https://github.com/sthurian/gb-em#readme",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^26.6.2",
+    "c8": "^12.0.0",
+    "eslint": "^10.11.0",
+    "jiti": "^2.7.0",
+    "mocha": "^11.5.0",
+    "prettier": "^3.9.8",
+    "sinon": "^22.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "typescript-7": "npm:typescript@^7.0.2",
+    "typescript-eslint": "^8.70.0"
+  }
+}
