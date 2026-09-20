@@ -49,12 +49,17 @@ suite('Emulator', () => {
       release: () => {},
     };
 
+    const interruptController = {
+        request: () => {}
+    }
+
     const emulator = createEmulator({
       cpu,
       ppu,
       apu,
       timer,
       joypad,
+      interruptController
     });
 
     emulator.step();
