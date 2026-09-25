@@ -2,10 +2,11 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createMMU } from '../../../mmu.js';
 import { createLdHLD8 } from './ld-hl-d8.js';
+import { mmuFactory } from '../../../test-factories/mmu.js';
 
 suite('LD (HL),d8', () => {
   test('writes the immediate value to the address in HL', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = {
       a: 0,
       f: 0,

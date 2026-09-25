@@ -1,6 +1,12 @@
+import type { Cartridge } from './cartridge.js';
+
 type MMU = {
   read8(address: number): number;
   write8(address: number, value: number): void;
+};
+
+type MMUDependencies = {
+  cartridge: Cartridge;
 };
 
 type Memory = Uint8Array;
@@ -17,13 +23,20 @@ const assertByte = (value: number): void => {
   }
 };
 
-const createMMU = (): MMU => {
+const createMMU = ({ cartridge }: MMUDependencies): MMU => {
   const memory: Memory = new Uint8Array(0x10000);
+
   return {
-    read8: (address: number) => {
+    read8: (address) => {
       assertAddress(address);
+
+      if (address <= 0x7fff) {
+        return cartridge.read8(address);
+      }
+
       return memory[address]!;
     },
+
     write8: (address, value) => {
       assertAddress(address);
       assertByte(value);

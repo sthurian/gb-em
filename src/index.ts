@@ -1,4 +1,5 @@
 import { createAPU } from './apu.js';
+import { createCartridge } from './cartridge.js';
 import { createCPU } from './cpu/cpu.js';
 import { createOpcodeTable } from './cpu/opcode-table.js';
 import { createEmulator } from './emulator.js';
@@ -8,7 +9,11 @@ import { createMMU } from './mmu.js';
 import { createPPU } from './ppu.js';
 import { createTimer } from './timer.js';
 
-const mmu = createMMU();
+const cartridge = createCartridge({
+  data: new Uint8Array(0x8000),
+});
+
+const mmu = createMMU({ cartridge });
 const registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0 };
 const opcodeTable = createOpcodeTable({mmu, registers});
 const cpu = createCPU({ mmu, opcodeTable, registers });

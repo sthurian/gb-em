@@ -2,10 +2,11 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createMMU } from '../../../mmu.js';
 import { createIncHL } from './inc-hl.js';
+import { mmuFactory } from '../../../test-factories/mmu.js';
 
 suite('INC (HL)', () => {
   test('increments the value at the address in HL', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,
@@ -31,7 +32,7 @@ suite('INC (HL)', () => {
     assert.strictEqual(registers.pc, 0x101);
   });
     test('wraps the value from 0xff to 0x00 and sets the zero flag', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,
@@ -57,7 +58,7 @@ suite('INC (HL)', () => {
   });
 
   test('sets the half-carry flag when the lower nibble overflows', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,
@@ -83,7 +84,7 @@ suite('INC (HL)', () => {
   });
 
   test('clears the subtract flag', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,
@@ -108,7 +109,7 @@ suite('INC (HL)', () => {
   });
 
   test('preserves the carry flag', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,
@@ -133,7 +134,7 @@ suite('INC (HL)', () => {
   });
 
   test('clears the zero flag when the result is not zero', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,

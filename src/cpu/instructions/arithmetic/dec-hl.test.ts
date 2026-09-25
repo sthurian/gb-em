@@ -3,6 +3,7 @@ import { describe, it } from 'mocha';
 import { createMMU } from '../../../mmu.js';
 import type { Registers } from '../../cpu.js';
 import { createDecHL } from './dec-hl.js';
+import { mmuFactory } from '../../../test-factories/mmu.js';
 
 const createRegisters = (): Registers => ({
   a: 0,
@@ -19,7 +20,7 @@ const createRegisters = (): Registers => ({
 
 describe('DEC (HL)', () => {
   it('decrements the value at the address in HL', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     mmu.write8(0x1234, 0x42);
@@ -33,7 +34,7 @@ describe('DEC (HL)', () => {
   });
 
   it('wraps from 0x00 to 0xff', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     mmu.write8(0x1234, 0x00);
@@ -46,7 +47,7 @@ describe('DEC (HL)', () => {
   });
 
   it('sets Z when the result is zero', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     mmu.write8(0x1234, 0x01);
@@ -59,7 +60,7 @@ describe('DEC (HL)', () => {
   });
 
   it('clears Z when the result is nonzero', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
     registers.f = 0x80;
 
@@ -73,7 +74,7 @@ describe('DEC (HL)', () => {
   });
 
   it('sets N', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     mmu.write8(0x1234, 0x42);
@@ -86,7 +87,7 @@ describe('DEC (HL)', () => {
   });
 
   it('sets H when there is a half-borrow', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     mmu.write8(0x1234, 0x10);
@@ -99,7 +100,7 @@ describe('DEC (HL)', () => {
   });
 
   it('clears H when there is no half-borrow', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
     registers.f = 0x20;
 
@@ -113,7 +114,7 @@ describe('DEC (HL)', () => {
   });
 
   it('preserves C', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
     registers.f = 0x10;
 
@@ -127,7 +128,7 @@ describe('DEC (HL)', () => {
   });
 
   it('advances PC', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     mmu.write8(0x1234, 0x42);
@@ -140,7 +141,7 @@ describe('DEC (HL)', () => {
   });
 
   it('wraps PC from 0xffff to 0', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
     registers.pc = 0xffff;
 

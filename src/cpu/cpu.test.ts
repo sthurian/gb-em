@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { createMMU } from '../mmu.js';
 import { createCPU } from './cpu.js';
 import type { Opcode } from './opcode-table.js';
+import { mmuFactory } from '../test-factories/mmu.js';
 
 const createRegisters = () => ({
   a: 0,
@@ -19,7 +20,7 @@ const createRegisters = () => ({
 
 suite('CPU', () => {
   test('rejects an unsupported opcode', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const opcodeTable: Array<Opcode | undefined> = [];
 
     const cpu = createCPU({
@@ -37,7 +38,7 @@ suite('CPU', () => {
   });
 
   test('does not advance PC for an unsupported opcode', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
     const opcodeTable: Array<Opcode | undefined> = [];
 
@@ -54,7 +55,7 @@ suite('CPU', () => {
   });
 
   test('executes the instruction for the current opcode', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
     const opcodeTable: Array<Opcode | undefined> = [];
 
@@ -78,7 +79,7 @@ suite('CPU', () => {
   });
 
   test('returns a copy of the CPU state', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = createRegisters();
 
     const cpu = createCPU({

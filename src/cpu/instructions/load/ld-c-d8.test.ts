@@ -2,10 +2,11 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createMMU } from '../../../mmu.js';
 import { createLdCD8 } from './ld-c-d8.js';
+import { mmuFactory } from '../../../test-factories/mmu.js';
 
 suite('LD C,d8', () => {
   test('loads the immediate value into C', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,
@@ -32,7 +33,7 @@ suite('LD C,d8', () => {
   });
 
   test('wraps the immediate operand address', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
 
     const registers = {
       a: 0,

@@ -2,10 +2,11 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createMMU } from '../../../mmu.js';
 import { createLdED8 } from './ld-e-d8.js';
+import { mmuFactory } from '../../../test-factories/mmu.js';
 
 suite('LD E,d8', () => {
   test('loads the immediate value into E', () => {
-    const mmu = createMMU();
+    const mmu = mmuFactory.build();
     const registers = {
       a: 0,
       f: 0,
