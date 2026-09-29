@@ -1,7 +1,7 @@
 import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createMMU } from '../../../mmu.js';
-import { createIncHL } from './inc-hl.js';
+import { createIncHL } from './inc-hl-indirect.js';
 import { mmuFactory } from '../../../test-factories/mmu.js';
 
 suite('INC (HL)', () => {

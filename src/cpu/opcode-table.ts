@@ -7,7 +7,7 @@ import { createIncE } from './instructions/arithmetic/inc-e.js';
 import { createIncH } from './instructions/arithmetic/inc-h.js';
 import { createIncL } from './instructions/arithmetic/inc-l.js';
 import { createIncA } from './instructions/arithmetic/inc-a.js';
-import { createIncHL } from './instructions/arithmetic/inc-hl.js';
+import { createIncHL } from './instructions/arithmetic/inc-hl-indirect.js';
 import { createNop } from './instructions/control/nop.js';
 import { createLdBD8 } from './instructions/load/ld-b-d8.js';
 import { createDecB } from './instructions/arithmetic/dec-b.js';
