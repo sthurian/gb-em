@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { createCartridge } from './cartridge.js';
 import { createMMU } from './mmu.js';
 import type { MMU } from './mmu.js';
+import { createSerial } from './serial.js';
 
 suite('MMU', () => {
   const createTestMMU = (): MMU => {
@@ -10,7 +11,9 @@ suite('MMU', () => {
       data: new Uint8Array(0x8000),
     });
 
-    return createMMU({ cartridge });
+    const serial = createSerial({ onByte: () => {}});
+
+    return createMMU({ cartridge, serial });
   };
 
   test('returns zero for uninitialized memory', () => {
@@ -30,7 +33,8 @@ suite('MMU', () => {
     cartridgeData[0x1234] = 0x42;
 
     const cartridge = createCartridge({ data: cartridgeData });
-    const mmu = createMMU({ cartridge });
+    const serial = createSerial({ onByte: () => {}});
+    const mmu = createMMU({ cartridge, serial });
 
     mmu.write8(0x1234, 0xab);
 
@@ -55,18 +59,33 @@ suite('MMU', () => {
     cartridgeData[0x7fff] = 0xcd;
 
     const cartridge = createCartridge({ data: cartridgeData });
-    const mmu = createMMU({ cartridge });
+    const serial = createSerial({ onByte: () => {}});
+    const mmu = createMMU({ cartridge, serial });
 
     assert.equal(mmu.read8(0x0000), 0x42);
     assert.equal(mmu.read8(0x1234), 0xab);
     assert.equal(mmu.read8(0x7fff), 0xcd);
   });
 
-  test('reads and writes the serial data register', () => {
-    const mmu = createTestMMU();
+  test('routes serial register access to the serial device', () => {
+    let writtenValue = 0;
 
-    mmu.write8(0xff01, 0x42);
+    const serial = {
+      read8: () => 0x42,
+      write8: (_address: number, value: number) => {
+        writtenValue = value;
+      },
+    };
 
+    const cartridge = createCartridge({
+      data: new Uint8Array(0x8000),
+    });
+
+    const mmu = createMMU({ cartridge, serial });
+
+    mmu.write8(0xff01, 0xab);
+
+    assert.strictEqual(writtenValue, 0xab);
     assert.strictEqual(mmu.read8(0xff01), 0x42);
   });
 });

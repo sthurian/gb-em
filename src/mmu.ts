@@ -1,4 +1,5 @@
 import type { Cartridge } from './cartridge.js';
+import { Serial } from './serial.js';
 
 type MMU = {
   read8(address: number): number;
@@ -7,6 +8,7 @@ type MMU = {
 
 type MMUDependencies = {
   cartridge: Cartridge;
+  serial: Serial;
 };
 
 type Memory = Uint8Array;
@@ -23,7 +25,7 @@ const assertByte = (value: number): void => {
   }
 };
 
-const createMMU = ({ cartridge }: MMUDependencies): MMU => {
+const createMMU = ({ cartridge, serial }: MMUDependencies): MMU => {
   const memory: Memory = new Uint8Array(0x10000);
 
   return {
@@ -34,12 +36,22 @@ const createMMU = ({ cartridge }: MMUDependencies): MMU => {
         return cartridge.read8(address);
       }
 
+      if (address === 0xff01 || address === 0xff02) {
+        return serial.read8(address);
+      }
+
       return memory[address]!;
     },
 
     write8: (address, value) => {
       assertAddress(address);
       assertByte(value);
+
+      if (address === 0xff01 || address === 0xff02) {
+        serial.write8(address, value);
+        return;
+      }
+      
       memory[address] = value;
     },
   };
