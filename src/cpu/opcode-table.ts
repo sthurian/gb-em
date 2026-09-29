@@ -28,6 +28,7 @@ import { createDi } from './instructions/control/di.js';
 import { createLdSpD16 } from './instructions/load/ld-sp-d16.js';
 import { createLdA16A } from './instructions/load/ld-a16-a.js';
 import { createLdAD8 } from './instructions/load/ld-a-d8.js';
+import { createLdhA8A } from './instructions/load/ldh-a8-a.js';
 
 type Opcode = {
   mnemonic: string;
@@ -54,6 +55,7 @@ const createOpcodeTable = ({
   opcodes[0x31] = createLdSpD16({ mmu, registers });
   opcodes[0x36] = createLdHLD8({ mmu, registers });
   opcodes[0x3e] = createLdAD8({ mmu, registers });
+  opcodes[0xe0] = createLdhA8A({ mmu, registers });
   opcodes[0xea] = createLdA16A({ mmu, registers });
   opcodes[0x1e] = createLdED8({ mmu, registers });
 
