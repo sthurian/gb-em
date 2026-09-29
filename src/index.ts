@@ -10,6 +10,7 @@ import { createPPU } from './ppu.js';
 import { createTimer } from './timer.js';
 import { createSerial } from './serial.js';
 import { readFileSync } from 'node:fs';
+import { createRegisters } from './cpu/registers.js';
 
 const cartridge = createCartridge({
   data: readFileSync('./roms/cpu_instrs.gb'),
@@ -21,7 +22,7 @@ const serial = createSerial({
   },
 });
 const mmu = createMMU({ cartridge, serial });
-const registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0, ime: false };
+const registers = createRegisters();
 const opcodeTable = createOpcodeTable({mmu, registers});
 const cpu = createCPU({ mmu, opcodeTable, registers });
 const ppu = createPPU();

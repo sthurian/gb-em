@@ -10,6 +10,7 @@ const createDi = ({ registers }: DiDependencies) => {
     bytes: 1,
     execute: () => {
       registers.ime = false;
+      registers.pc = (registers.pc + 1) & 0xffff;
 
       return 4;
     },

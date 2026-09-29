@@ -23,7 +23,7 @@ const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
   const { cpu, ppu, apu, timer } = dependencies;
 
   const step = (): void => {
-  const cycles = cpu.step();
+    const cycles = cpu.step();
     ppu.step(cycles);
     apu.step(cycles);
     timer.step(cycles);
@@ -32,9 +32,20 @@ const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
   return {
     step,
     start: () => {
-      while (true) {
+      let hits = 0;
+
+      for (let i = 0; i < 1_000_000; i++) {
+        if (cpu.getState().registers.pc === 0x0430) {
+          hits++;
+        }
+
         step();
       }
+
+      console.log({
+        hits,
+        state: cpu.getState(),
+      });
     },
   };
 };
