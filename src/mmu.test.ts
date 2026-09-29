@@ -61,4 +61,12 @@ suite('MMU', () => {
     assert.equal(mmu.read8(0x1234), 0xab);
     assert.equal(mmu.read8(0x7fff), 0xcd);
   });
+
+  test('reads and writes the serial data register', () => {
+    const mmu = createTestMMU();
+
+    mmu.write8(0xff01, 0x42);
+
+    assert.strictEqual(mmu.read8(0xff01), 0x42);
+  });
 });
