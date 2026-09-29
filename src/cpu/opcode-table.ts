@@ -35,6 +35,7 @@ import { createLdAL } from './instructions/load/ld-a-l.js';
 import { createLdAH } from './instructions/load/ld-a-h.js';
 import { createJr } from './instructions/control/jr.js';
 import { createPushHL } from './instructions/control/push-hl.js';
+import { createPopHL } from './instructions/control/pop-hl.js';
 
 type Opcode = {
   mnemonic: string;
@@ -89,6 +90,7 @@ const createOpcodeTable = ({
   opcodes[0xc3] = createJp({ mmu, registers });
   opcodes[0xc9] = createRet({ mmu, registers });
   opcodes[0xcd] = createCall({ mmu, registers });
+  opcodes[0xe1] = createPopHL({ mmu, registers });
   opcodes[0xe5] = createPushHL({ mmu, registers });
   opcodes[0xf3] = createDi({ registers });
   return opcodes;
