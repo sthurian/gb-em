@@ -24,6 +24,7 @@ import { createLdHLD8 } from './instructions/load/ld-hl-d8.js';
 import { createLdED8 } from './instructions/load/ld-e-d8.js';
 import { createRet } from './instructions/control/ret.js';
 import { createJp } from './instructions/control/jp.js';
+import { createDi } from './instructions/control/di.js';
 
 type Opcode = {
   mnemonic: string;
@@ -69,6 +70,7 @@ const createOpcodeTable = ({
   opcodes[0x35] = createDecHL({ mmu, registers });
   opcodes[0xc3] = createJp({ mmu, registers });
   opcodes[0xc9] = createRet({ mmu, registers });
+  opcodes[0xf3] = createDi({ registers });
   return opcodes;
 };
 
