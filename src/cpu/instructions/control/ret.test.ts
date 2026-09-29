@@ -32,6 +32,7 @@ suite('RET', () => {
       l: 0,
       sp: 0x8000,
       pc: 0,
+      ime: false
     };
 
     mmu.write8(0x8000, 0x34);

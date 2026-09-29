@@ -23,6 +23,7 @@ type Registers = {
   l: number;
   sp: number;
   pc: number;
+  ime: boolean;
 };
 
 type CPUState = {

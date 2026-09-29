@@ -21,7 +21,7 @@ const serial = createSerial({
   },
 });
 const mmu = createMMU({ cartridge, serial });
-const registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0 };
+const registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0, ime: false };
 const opcodeTable = createOpcodeTable({mmu, registers});
 const cpu = createCPU({ mmu, opcodeTable, registers });
 const ppu = createPPU();
