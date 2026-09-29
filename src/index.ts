@@ -9,9 +9,10 @@ import { createMMU } from './mmu.js';
 import { createPPU } from './ppu.js';
 import { createTimer } from './timer.js';
 import { createSerial } from './serial.js';
+import { readFileSync } from 'node:fs';
 
 const cartridge = createCartridge({
-  data: new Uint8Array(0x8000),
+  data: readFileSync('./roms/cpu_instrs.gb'),
 });
 
 const serial = createSerial({
