@@ -8,12 +8,18 @@ import { createJoypad } from './joypad.js';
 import { createMMU } from './mmu.js';
 import { createPPU } from './ppu.js';
 import { createTimer } from './timer.js';
+import { createSerial } from './serial.js';
 
 const cartridge = createCartridge({
   data: new Uint8Array(0x8000),
 });
 
-const mmu = createMMU({ cartridge });
+const serial = createSerial({
+  onByte: (value) => {
+    process.stdout.write(String.fromCharCode(value));
+  },
+});
+const mmu = createMMU({ cartridge, serial });
 const registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0 };
 const opcodeTable = createOpcodeTable({mmu, registers});
 const cpu = createCPU({ mmu, opcodeTable, registers });
