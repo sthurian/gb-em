@@ -11,7 +11,7 @@ const FLAG_Z = 0x80;
 const FLAG_N = 0x40;
 const FLAG_H = 0x20;
 
-const createIncHL = ({ mmu, registers }: IncHLDependencies) => ({
+const createIncHLIndirect = ({ mmu, registers }: IncHLDependencies) => ({
   mnemonic: 'INC (HL)',
   bytes: 1,
 
@@ -38,4 +38,4 @@ const createIncHL = ({ mmu, registers }: IncHLDependencies) => ({
   },
 });
 
-export { createIncHL };
+export { createIncHLIndirect};

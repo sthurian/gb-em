@@ -1,7 +1,6 @@
 import { suite, test } from 'mocha';
 import assert from 'node:assert';
-import { createMMU } from '../../../mmu.js';
-import { createIncHL } from './inc-hl-indirect.js';
+import { createIncHLIndirect } from './inc-hl-indirect.js';
 import { mmuFactory } from '../../../test-factories/mmu.js';
 
 suite('INC (HL)', () => {
@@ -19,11 +18,12 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     mmu.write8(0x1234, 0x41);
 
-    const incHL = createIncHL({ mmu, registers });
+    const incHL = createIncHLIndirect({ mmu, registers });
 
     const cycles = incHL.execute();
 
@@ -31,7 +31,7 @@ suite('INC (HL)', () => {
     assert.strictEqual(mmu.read8(0x1234), 0x42);
     assert.strictEqual(registers.pc, 0x101);
   });
-    test('wraps the value from 0xff to 0x00 and sets the zero flag', () => {
+  test('wraps the value from 0xff to 0x00 and sets the zero flag', () => {
     const mmu = mmuFactory.build();
 
     const registers = {
@@ -45,11 +45,12 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     mmu.write8(0x1234, 0xff);
 
-    const incHL = createIncHL({ mmu, registers });
+    const incHL = createIncHLIndirect({ mmu, registers });
 
     incHL.execute();
 
@@ -71,11 +72,12 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     mmu.write8(0x1234, 0x0f);
 
-    const incHL = createIncHL({ mmu, registers });
+    const incHL = createIncHLIndirect({ mmu, registers });
 
     incHL.execute();
 
@@ -97,11 +99,12 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     mmu.write8(0x1234, 0x41);
 
-    const incHL = createIncHL({ mmu, registers });
+    const incHL = createIncHLIndirect({ mmu, registers });
 
     incHL.execute();
 
@@ -122,11 +125,12 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
+      ime: false
     };
 
     mmu.write8(0x1234, 0x41);
 
-    const incHL = createIncHL({ mmu, registers });
+    const incHL = createIncHLIndirect({ mmu, registers });
 
     incHL.execute();
 
@@ -147,11 +151,12 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
+      ime: false
     };
 
     mmu.write8(0x1234, 0x41);
 
-    const incHL = createIncHL({ mmu, registers });
+    const incHL = createIncHLIndirect({ mmu, registers });
 
     incHL.execute();
 

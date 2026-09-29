@@ -7,7 +7,7 @@ import { createIncE } from './instructions/arithmetic/inc-e.js';
 import { createIncH } from './instructions/arithmetic/inc-h.js';
 import { createIncL } from './instructions/arithmetic/inc-l.js';
 import { createIncA } from './instructions/arithmetic/inc-a.js';
-import { createIncHL } from './instructions/arithmetic/inc-hl-indirect.js';
+import { createIncHLIndirect } from './instructions/arithmetic/inc-hl-indirect.js';
 import { createNop } from './instructions/control/nop.js';
 import { createLdBD8 } from './instructions/load/ld-b-d8.js';
 import { createDecB } from './instructions/arithmetic/dec-b.js';
@@ -37,6 +37,7 @@ import { createJr } from './instructions/control/jr.js';
 import { createPushHL } from './instructions/control/push-hl.js';
 import { createPopHL } from './instructions/control/pop-hl.js';
 import { createPushAF } from './instructions/control/push-af.js';
+import { createIncHL } from './instructions/arithmetic/inc-hl.js';
 
 type Opcode = {
   mnemonic: string;
@@ -61,6 +62,7 @@ const createOpcodeTable = ({
   opcodes[0x0e] = createLdCD8({ mmu, registers });
   opcodes[0x16] = createLdDD8({ mmu, registers });
   opcodes[0x21] = createLdHlD16({ mmu, registers });
+  opcodes[0x23] = createIncHL({ registers });
   opcodes[0x31] = createLdSpD16({ mmu, registers });
   opcodes[0x36] = createLdHLD8({ mmu, registers });
   opcodes[0x3e] = createLdAD8({ mmu, registers });
@@ -76,7 +78,7 @@ const createOpcodeTable = ({
   opcodes[0x1c] = createIncE({ registers });
   opcodes[0x24] = createIncH({ registers });
   opcodes[0x2c] = createIncL({ registers });
-  opcodes[0x34] = createIncHL({ mmu, registers });
+  opcodes[0x34] = createIncHLIndirect({ mmu, registers });
   opcodes[0x3c] = createIncA({ registers });
 
   opcodes[0x05] = createDecB({ registers });
