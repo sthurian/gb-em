@@ -207,6 +207,14 @@ import { createAndH } from './instructions/arithmetic/and-h.js';
 import { createAndL } from './instructions/arithmetic/and-l.js';
 import { createAndHLIndirect } from './instructions/arithmetic/and-hl-indirect.js';
 import { createAndA } from './instructions/arithmetic/and-a.js';
+import { createRst00h } from './instructions/control/rst-00h.js';
+import { createRst08h } from './instructions/control/rst-08h.js';
+import { createRst10h } from './instructions/control/rst-10h.js';
+import { createRst18h } from './instructions/control/rst-18h.js';
+import { createRst20h } from './instructions/control/rst-20h.js';
+import { createRst28h } from './instructions/control/rst-28h.js';
+import { createRst30h } from './instructions/control/rst-30h.js';
+import { createRst38h } from './instructions/control/rst-38h.js';
 
 type Opcode = {
   mnemonic: string;
@@ -435,6 +443,14 @@ const createOpcodeTable = ({
   opcodes[0xf5] = createPushAF({ mmu, registers });
   opcodes[0xfa] = createLdAIndirectA16({ mmu, registers });
   opcodes[0xfe] = createCpD8({ mmu, registers });
+  opcodes[0xc7] = createRst00h({ mmu, registers });
+  opcodes[0xcf] = createRst08h({ mmu, registers });
+  opcodes[0xd7] = createRst10h({ mmu, registers });
+  opcodes[0xdf] = createRst18h({ mmu, registers });
+  opcodes[0xe7] = createRst20h({ mmu, registers });
+  opcodes[0xef] = createRst28h({ mmu, registers });
+  opcodes[0xf7] = createRst30h({ mmu, registers });
+  opcodes[0xff] = createRst38h({ mmu, registers });
   return opcodes;
 };
 
