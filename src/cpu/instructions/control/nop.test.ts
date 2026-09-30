@@ -15,6 +15,7 @@ suite('NOP', () => {
       l: 0,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     const nop = createNop({ registers });
@@ -37,6 +38,7 @@ suite('NOP', () => {
       l: 0,
       sp: 0,
       pc: 0xffff,
+      ime: false,
     };
 
     const nop = createNop({ registers });

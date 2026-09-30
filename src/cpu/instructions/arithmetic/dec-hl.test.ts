@@ -16,6 +16,7 @@ const createRegisters = (): Registers => ({
   l: 0x34,
   sp: 0,
   pc: 0x100,
+  ime: false,
 });
 
 describe('DEC (HL)', () => {

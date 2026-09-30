@@ -7,8 +7,7 @@ import { createRlH } from './rl-h.js';
 suite('RL H', () => {
   test('rotates left through carry', () => {
     const registers: Registers = {
-      a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      h: 0b10110100,
+      a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0b10110100, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createRlH({ registers });

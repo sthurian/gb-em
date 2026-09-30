@@ -7,8 +7,7 @@ import { createBit2E } from './bit-2-e.js';
 suite('BIT 2,E', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      e: 0x04,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0x04, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit2E({ registers });

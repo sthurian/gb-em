@@ -7,8 +7,7 @@ import { createRlcE } from './rlc-e.js';
 suite('RLC E', () => {
   test('rotates left and sets carry from bit 7', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      e: 0b10110100,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0b10110100, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createRlcE({ registers });

@@ -7,8 +7,7 @@ import { createBit7B } from './bit-7-b.js';
 suite('BIT 7,B', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      b: 0x80,
+      a: 0, f: 0, b: 0x80, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit7B({ registers });

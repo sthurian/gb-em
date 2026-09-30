@@ -7,8 +7,7 @@ import { createRes1H } from './res-1-h.js';
 suite('RES 1,H', () => {
   test('clears bit 1', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      h: 0xff,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0xff, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createRes1H({ registers });

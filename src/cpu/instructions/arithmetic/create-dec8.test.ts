@@ -15,6 +15,7 @@ describe('createDec8', () => {
     l: 0,
     sp: 0,
     pc: 0x100,
+    ime: false,
   });
 
   it('decrements the value', () => {

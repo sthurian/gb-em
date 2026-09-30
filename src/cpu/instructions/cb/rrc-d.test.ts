@@ -7,8 +7,7 @@ import { createRrcD } from './rrc-d.js';
 suite('RRC D', () => {
   test('rotates right and sets carry from bit 0', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      d: 0b10110101,
+      a: 0, f: 0, b: 0, c: 0, d: 0b10110101, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createRrcD({ registers });

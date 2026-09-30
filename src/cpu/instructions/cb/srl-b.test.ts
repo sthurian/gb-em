@@ -7,8 +7,7 @@ import { createSrlB } from './srl-b.js';
 suite('SRL B', () => {
   test('shifts right logical, bit 0 to carry, bit 7 cleared', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      b: 0b10110101,
+      a: 0, f: 0, b: 0b10110101, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createSrlB({ registers });

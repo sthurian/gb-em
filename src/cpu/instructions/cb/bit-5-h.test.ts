@@ -7,8 +7,7 @@ import { createBit5H } from './bit-5-h.js';
 suite('BIT 5,H', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      h: 0x20,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x20, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit5H({ registers });

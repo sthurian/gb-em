@@ -7,8 +7,7 @@ import { createSlaD } from './sla-d.js';
 suite('SLA D', () => {
   test('shifts left, bit 7 goes to carry, bit 0 cleared', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      d: 0b10110100,
+      a: 0, f: 0, b: 0, c: 0, d: 0b10110100, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createSlaD({ registers });

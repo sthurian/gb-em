@@ -16,6 +16,7 @@ describe('DEC H', () => {
       l: 0,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     const instruction = createDecH({ registers });

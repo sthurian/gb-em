@@ -7,8 +7,7 @@ import { createBit3H } from './bit-3-h.js';
 suite('BIT 3,H', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      h: 0x08,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x08, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit3H({ registers });

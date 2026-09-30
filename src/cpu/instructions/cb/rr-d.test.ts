@@ -7,8 +7,7 @@ import { createRrD } from './rr-d.js';
 suite('RR D', () => {
   test('rotates right through carry', () => {
     const registers: Registers = {
-      a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      d: 0b10110100,
+      a: 0, f: 0x10, b: 0, c: 0, d: 0b10110100, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createRrD({ registers });
@@ -31,8 +30,7 @@ suite('RR D', () => {
 
   test('rotates right with carry clear (bit 7 = 0)', () => {
     const registers: Registers = {
-      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      d: 0b10110100,
+      a: 0, f: 0x00, b: 0, c: 0, d: 0b10110100, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     createRrD({ registers }).execute();
@@ -42,8 +40,7 @@ suite('RR D', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      d: 0x00,
+      a: 0, f: 0x00, b: 0, c: 0, d: 0x00, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     createRrD({ registers }).execute();
@@ -52,8 +49,7 @@ suite('RR D', () => {
 
   test('sets carry flag when bit 0 is set', () => {
     const registers: Registers = {
-      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      d: 0x03,
+      a: 0, f: 0x00, b: 0, c: 0, d: 0x03, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     createRrD({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);

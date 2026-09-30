@@ -15,6 +15,7 @@ suite('INC L', () => {
       l: 0x41,
       sp: 0,
       pc: 0x100,
+      ime: false,
     };
 
     const incL = createIncL({ registers });

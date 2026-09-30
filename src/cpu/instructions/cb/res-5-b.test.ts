@@ -7,8 +7,7 @@ import { createRes5B } from './res-5-b.js';
 suite('RES 5,B', () => {
   test('clears bit 5', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
-      b: 0xff,
+      a: 0, f: 0, b: 0xff, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
     };
     const mmu = mmuFactory.build();
     const op = createRes5B({ registers });

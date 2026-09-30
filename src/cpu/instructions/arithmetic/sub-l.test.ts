@@ -53,7 +53,7 @@ suite('SUB L', () => {
   });
 
   test('sets carry when value > A', () => {
-    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, l: 0x10 };
+    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0x10, sp: 0, pc: 0x0100, ime: false, };
     createSubL({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });
