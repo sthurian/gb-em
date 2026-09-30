@@ -1,15 +1,16 @@
-import type { Registers } from '../../cpu.js';
-
 type HaltDependencies = {
-  registers: Registers;
+  setHalted: () => void;
+  registers: { pc: number };
 };
 
-const createHalt = (_deps: HaltDependencies) => {
+const createHalt = ({ setHalted, registers }: HaltDependencies) => {
   return {
     mnemonic: 'HALT',
     bytes: 1,
     execute: () => {
-      throw new Error('HALT not implemented');
+      setHalted();
+      registers.pc = (registers.pc + 1) & 0xffff;
+      return 4;
     },
   };
 };

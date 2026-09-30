@@ -1,9 +1,11 @@
 import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createCartridge } from './cartridge.js';
+import { createInterruptController } from './interrupt-controller.js';
 import { createMMU } from './mmu.js';
 import type { MMU } from './mmu.js';
 import { createSerial } from './serial.js';
+import { createTimer } from './timer.js';
 
 suite('MMU', () => {
   const createTestMMU = (): MMU => {
@@ -12,8 +14,10 @@ suite('MMU', () => {
     });
 
     const serial = createSerial({ onByte: () => {}});
+    const interruptController = createInterruptController();
+    const timer = createTimer({ interruptController });
 
-    return createMMU({ cartridge, serial });
+    return createMMU({ cartridge, interruptController, serial, timer });
   };
 
   test('returns zero for uninitialized memory', () => {
@@ -34,7 +38,9 @@ suite('MMU', () => {
 
     const cartridge = createCartridge({ data: cartridgeData });
     const serial = createSerial({ onByte: () => {}});
-    const mmu = createMMU({ cartridge, serial });
+    const interruptController = createInterruptController();
+    const timer = createTimer({ interruptController });
+    const mmu = createMMU({ cartridge, interruptController, serial, timer });
 
     mmu.write8(0x1234, 0xab);
 
@@ -60,7 +66,9 @@ suite('MMU', () => {
 
     const cartridge = createCartridge({ data: cartridgeData });
     const serial = createSerial({ onByte: () => {}});
-    const mmu = createMMU({ cartridge, serial });
+    const interruptController = createInterruptController();
+    const timer = createTimer({ interruptController });
+    const mmu = createMMU({ cartridge, interruptController, serial, timer });
 
     assert.equal(mmu.read8(0x0000), 0x42);
     assert.equal(mmu.read8(0x1234), 0xab);
@@ -81,7 +89,9 @@ suite('MMU', () => {
       data: new Uint8Array(0x8000),
     });
 
-    const mmu = createMMU({ cartridge, serial });
+    const interruptController = createInterruptController();
+    const timer = createTimer({ interruptController });
+    const mmu = createMMU({ cartridge, interruptController, serial, timer });
 
     mmu.write8(0xff01, 0xab);
 

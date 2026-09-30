@@ -266,11 +266,13 @@ type Opcode = {
 type OpcodeTableDependencies = {
   mmu: MMU;
   registers: Registers;
+  setHalted: () => void;
 };
 
 const createOpcodeTable = ({
   mmu,
   registers,
+  setHalted,
 }: OpcodeTableDependencies): Array<Opcode | undefined> => {
 
   const opcodes: Array<Opcode | undefined> = [];
@@ -512,7 +514,7 @@ const createOpcodeTable = ({
   opcodes[0x37] = createScf({ registers });
   opcodes[0x3a] = createLdAHlDec({ mmu, registers });
   opcodes[0x3f] = createCcf({ registers });
-  opcodes[0x76] = createHalt({ registers });
+  opcodes[0x76] = createHalt({ setHalted, registers });
   opcodes[0xce] = createAdcAD8({ mmu, registers });
   opcodes[0xde] = createSbcAD8({ mmu, registers });
   opcodes[0xe2] = createLdhCA({ mmu, registers });

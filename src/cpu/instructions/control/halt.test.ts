@@ -4,7 +4,7 @@ import type { Registers } from '../../cpu.js';
 import { createHalt } from './halt.js';
 
 suite('HALT', () => {
-  test('throws HALT not implemented', () => {
+  test('sets halted and advances PC', () => {
     const registers: Registers = {
       a: 0,
       f: 0,
@@ -19,8 +19,12 @@ suite('HALT', () => {
       ime: false,
     };
 
-    const halt = createHalt({ registers });
+    let halted = false;
+    const halt = createHalt({ setHalted: () => { halted = true; }, registers });
+    const cycles = halt.execute();
 
-    assert.throws(() => halt.execute(), /HALT not implemented/);
+    assert.strictEqual(halted, true);
+    assert.strictEqual(registers.pc, 0x0101);
+    assert.strictEqual(cycles, 4);
   });
 });

@@ -1,5 +1,7 @@
 import type { Cartridge } from './cartridge.js';
-import { Serial } from './serial.js';
+import type { InterruptController } from './interrupt-controller.js';
+import type { Serial } from './serial.js';
+import type { Timer } from './timer.js';
 
 type MMU = {
   read8(address: number): number;
@@ -8,7 +10,9 @@ type MMU = {
 
 type MMUDependencies = {
   cartridge: Cartridge;
+  interruptController: InterruptController;
   serial: Serial;
+  timer: Timer;
 };
 
 type Memory = Uint8Array;
@@ -25,7 +29,7 @@ const assertByte = (value: number): void => {
   }
 };
 
-const createMMU = ({ cartridge, serial }: MMUDependencies): MMU => {
+const createMMU = ({ cartridge, interruptController, serial, timer }: MMUDependencies): MMU => {
   const memory: Memory = new Uint8Array(0x10000);
 
   return {
@@ -40,6 +44,14 @@ const createMMU = ({ cartridge, serial }: MMUDependencies): MMU => {
         return serial.read8(address);
       }
 
+      if (address >= 0xff04 && address <= 0xff07) {
+        return timer.read8(address);
+      }
+
+      if (address === 0xff0f || address === 0xffff) {
+        return interruptController.read8(address);
+      }
+
       return memory[address]!;
     },
 
@@ -51,7 +63,17 @@ const createMMU = ({ cartridge, serial }: MMUDependencies): MMU => {
         serial.write8(address, value);
         return;
       }
-      
+
+      if (address >= 0xff04 && address <= 0xff07) {
+        timer.write8(address, value);
+        return;
+      }
+
+      if (address === 0xff0f || address === 0xffff) {
+        interruptController.write8(address, value);
+        return;
+      }
+
       memory[address] = value;
     },
   };
