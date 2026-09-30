@@ -219,6 +219,7 @@ import { createRst20h } from './instructions/control/rst-20h.js';
 import { createRst28h } from './instructions/control/rst-28h.js';
 import { createRst30h } from './instructions/control/rst-30h.js';
 import { createRst38h } from './instructions/control/rst-38h.js';
+import { createLdLD8 } from './instructions/load/ld-l-d8.js';
 import { createDaa } from './instructions/arithmetic/daa.js';
 import { createLdDeIndirectA } from './instructions/load/ld-de-indirect-a.js';
 import { createStop } from './instructions/control/stop.js';
@@ -479,6 +480,7 @@ const createOpcodeTable = ({
   opcodes[0x10] = createStop({ mmu, registers });
   opcodes[0x12] = createLdDeIndirectA({ mmu, registers });
   opcodes[0x27] = createDaa({ registers });
+  opcodes[0x2e] = createLdLD8({ mmu, registers });
   return opcodes;
 };
 
