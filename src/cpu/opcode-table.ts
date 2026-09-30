@@ -140,6 +140,14 @@ import { createXorH } from './instructions/arithmetic/xor-h.js';
 import { createXorL } from './instructions/arithmetic/xor-l.js';
 import { createXorHLIndirect } from './instructions/arithmetic/xor-hl-indirect.js';
 import { createXorA } from './instructions/arithmetic/xor-a.js';
+import { createAddAB } from './instructions/arithmetic/add-a-b.js';
+import { createAddAC } from './instructions/arithmetic/add-a-c.js';
+import { createAddAD } from './instructions/arithmetic/add-a-d.js';
+import { createAddAE } from './instructions/arithmetic/add-a-e.js';
+import { createAddAH } from './instructions/arithmetic/add-a-h.js';
+import { createAddAL } from './instructions/arithmetic/add-a-l.js';
+import { createAddAHLIndirect } from './instructions/arithmetic/add-a-hl-indirect.js';
+import { createAddAA } from './instructions/arithmetic/add-a-a.js';
 
 type Opcode = {
   mnemonic: string;
@@ -265,6 +273,14 @@ const createOpcodeTable = ({
   opcodes[0x7d] = createLdAL({ registers });
   opcodes[0x7e] = createLdAHLIndirect({ mmu, registers });
   opcodes[0x7f] = createLdAA({ registers });
+  opcodes[0x80] = createAddAB({ registers });
+  opcodes[0x81] = createAddAC({ registers });
+  opcodes[0x82] = createAddAD({ registers });
+  opcodes[0x83] = createAddAE({ registers });
+  opcodes[0x84] = createAddAH({ registers });
+  opcodes[0x85] = createAddAL({ registers });
+  opcodes[0x86] = createAddAHLIndirect({ mmu, registers });
+  opcodes[0x87] = createAddAA({ registers });
   opcodes[0xc6] = createAddAD8({ mmu, registers });
   opcodes[0xd6] = createSubD8({ mmu, registers });
   opcodes[0xa8] = createXorB({ registers });
