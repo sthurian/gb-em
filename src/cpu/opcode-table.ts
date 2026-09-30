@@ -56,6 +56,7 @@ import { createCallNz } from './instructions/control/call-nz-a16.js';
 import { createLdHlA } from './instructions/load/ld-hl-a.js';
 import { createLdDeD16 } from './instructions/load/ld-de-d16.js';
 import { createLdAIndirectDe } from './instructions/load/ld-a-indirect-de.js';
+import { createLdHlIncA } from './instructions/load/ld-hl-inc-a.js';
 import { createIncDE } from './instructions/arithmetic/inc-de.js';
 import { createIncSP } from './instructions/arithmetic/inc-sp.js';
 import { createXorB } from './instructions/arithmetic/xor-b.js';
@@ -97,6 +98,7 @@ const createOpcodeTable = ({
   opcodes[0x16] = createLdDD8({ mmu, registers });
   opcodes[0x20] = createJrNz({ mmu, registers });
   opcodes[0x21] = createLdHlD16({ mmu, registers });
+  opcodes[0x22] = createLdHlIncA({ mmu, registers });
   opcodes[0x23] = createIncHL({ registers });
   opcodes[0x28] = createJrZ({ mmu, registers });
   opcodes[0x31] = createLdSpD16({ mmu, registers });
