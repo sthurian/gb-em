@@ -94,6 +94,7 @@ import { createLdDL } from './instructions/load/ld-d-l.js';
 import { createLdDHLIndirect } from './instructions/load/ld-d-hl-indirect.js';
 import { createLdDA } from './instructions/load/ld-d-a.js';
 import { createLdHD8 } from './instructions/load/ld-h-d8.js';
+import { createCbPrefix } from './instructions/control/cb-prefix.js';
 import { createIncDE } from './instructions/arithmetic/inc-de.js';
 import { createIncSP } from './instructions/arithmetic/inc-sp.js';
 import { createXorB } from './instructions/arithmetic/xor-b.js';
@@ -212,6 +213,7 @@ const createOpcodeTable = ({
   opcodes[0xb5] = createOrL({ registers });
   opcodes[0xb6] = createOrHLIndirect({ mmu, registers });
   opcodes[0xb7] = createOrA({ registers });
+  opcodes[0xcb] = createCbPrefix({ mmu, registers });
   opcodes[0xc1] = createPopBc({ mmu, registers });
   opcodes[0xd1] = createPopDE({ mmu, registers });
   opcodes[0xd5] = createPushDE({ mmu, registers });
