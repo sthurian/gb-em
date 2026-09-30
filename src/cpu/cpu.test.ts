@@ -1,6 +1,5 @@
 import { suite, test } from 'mocha';
 import assert from 'node:assert';
-import { createMMU } from '../mmu.js';
 import { createCPU } from './cpu.js';
 import type { Opcode } from './opcode-table.js';
 import { mmuFactory } from '../test-factories/mmu.js';
@@ -16,6 +15,7 @@ const createRegisters = () => ({
   l: 0,
   sp: 0,
   pc: 0,
+  ime: false
 });
 
 suite('CPU', () => {
