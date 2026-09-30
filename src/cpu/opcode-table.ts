@@ -51,6 +51,7 @@ import { createCpD8 } from './instructions/arithmetic/cp-d8.js';
 import { createJrNz } from './instructions/control/jr-nz-r8.js';
 import { createPopBc } from './instructions/control/pop-bc.js';
 import { createLdAIndirectA16 } from './instructions/load/ld-a-indirect-a16.js';
+import { createOrD8 } from './instructions/arithmetic/or-d8.js';
 
 type Opcode = {
   mnemonic: string;
@@ -117,6 +118,7 @@ const createOpcodeTable = ({
   opcodes[0xcd] = createCall({ mmu, registers });
   opcodes[0xe1] = createPopHL({ mmu, registers });
   opcodes[0xe5] = createPushHL({ mmu, registers });
+  opcodes[0xe6] = createOrD8({ mmu, registers });
   opcodes[0xf0] = createLdhA8({ mmu, registers });
   opcodes[0xf1] = createPopAF({ mmu, registers });
   opcodes[0xf3] = createDi({ registers });
