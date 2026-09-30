@@ -16,6 +16,7 @@ suite('INC H', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     const incH = createIncH({ registers });

@@ -7,7 +7,7 @@ import { createBit1D } from './bit-1-d.js';
 suite('BIT 1,D', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0x02, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0x02, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit1D({ registers });
@@ -21,7 +21,7 @@ suite('BIT 1,D', () => {
 
   test('sets Z when bit is clear', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit1D({ registers });

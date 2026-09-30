@@ -16,6 +16,7 @@ suite('NOP', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     const nop = createNop({ registers });
@@ -39,6 +40,7 @@ suite('NOP', () => {
       sp: 0,
       pc: 0xffff,
       ime: false,
+      imeScheduled: false,
     };
 
     const nop = createNop({ registers });

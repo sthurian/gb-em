@@ -17,6 +17,7 @@ suite('DI', () => {
       sp: 0,
       pc: 0,
       ime: true,
+      imeScheduled: false,
     };
 
     const di = createDi({ registers });

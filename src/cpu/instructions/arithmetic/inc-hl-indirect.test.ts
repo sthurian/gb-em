@@ -19,6 +19,7 @@ suite('INC (HL)', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x1234, 0x41);
@@ -46,6 +47,7 @@ suite('INC (HL)', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x1234, 0xff);
@@ -73,6 +75,7 @@ suite('INC (HL)', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x1234, 0x0f);
@@ -100,6 +103,7 @@ suite('INC (HL)', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x1234, 0x41);
@@ -125,7 +129,8 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
-      ime: false
+      ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x1234, 0x41);
@@ -151,7 +156,8 @@ suite('INC (HL)', () => {
       l: 0x34,
       sp: 0,
       pc: 0x100,
-      ime: false
+      ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x1234, 0x41);

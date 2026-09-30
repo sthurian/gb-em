@@ -17,6 +17,7 @@ suite('LD B,L', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const ldBL = createLdBL({ registers });

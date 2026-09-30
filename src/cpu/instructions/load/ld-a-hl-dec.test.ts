@@ -18,6 +18,7 @@ suite('LD A,(HL-)', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();
@@ -47,6 +48,7 @@ suite('LD A,(HL-)', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();

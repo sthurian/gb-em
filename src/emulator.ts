@@ -14,6 +14,8 @@ import { createTimer } from './timer.js';
 
 type EmulatorHooks = {
   onSerialByte?(value: number, emulator: Emulator): void;
+  onCycleLimit?(totalCycles: number, emulator: Emulator): void;
+  cycleLimit?: number;
 };
 
 type Emulator = {
@@ -48,11 +50,19 @@ const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
       getTrace = () => cpu.getTrace();
       stopped = false;
 
+      let totalCycles = 0;
+      const cycleLimit = hooks.cycleLimit ?? Infinity;
+
       while (!stopped) {
         const cycles = cpu.step();
         ppu.step(cycles);
         apu.step(cycles);
         timer.step(cycles);
+        totalCycles += cycles;
+        if (totalCycles >= cycleLimit) {
+          hooks.onCycleLimit?.(totalCycles, emulator);
+          break;
+        }
       }
     },
 

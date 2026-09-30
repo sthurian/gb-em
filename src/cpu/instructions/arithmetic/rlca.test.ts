@@ -17,6 +17,7 @@ suite('RLCA', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const rlca = createRlca({ registers });
@@ -41,6 +42,7 @@ suite('RLCA', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const rlca = createRlca({ registers });

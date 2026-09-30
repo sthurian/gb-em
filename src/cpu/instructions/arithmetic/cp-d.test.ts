@@ -17,6 +17,7 @@ suite('CP D', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const cpD = createCpD({ registers });
@@ -42,6 +43,7 @@ suite('CP D', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const cpD = createCpD({ registers });
@@ -53,13 +55,13 @@ suite('CP D', () => {
   });
 
   test('sets carry when value > A', () => {
-    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0x10, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, };
+    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0x10, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false, };
     createCpD({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });
 
   test('sets half-carry when lower nibble borrows', () => {
-    const registers: Registers = { a: 0x10, f: 0, b: 0, c: 0, d: 0x01, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, };
+    const registers: Registers = { a: 0x10, f: 0, b: 0, c: 0, d: 0x01, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false, };
     createCpD({ registers }).execute();
     assert.strictEqual(registers.f & 0x20, 0x20);
   });

@@ -7,7 +7,7 @@ import { createRes7L } from './res-7-l.js';
 suite('RES 7,L', () => {
   test('clears bit 7', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0xff, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0xff, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createRes7L({ registers });

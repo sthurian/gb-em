@@ -41,7 +41,9 @@ suite('Timer', () => {
     timer.write8(0xff06, 0x00); // TMA = 0
     timer.write8(0xff07, 0x05); // enable, 64 cycles
     timer.step(64);
-    // IF bit 2 should be set
+    // interrupt pending — fires on next step (1-cycle delay)
+    assert.strictEqual(interruptController.read8(0xff0f) & 0x04, 0x00);
+    timer.step(4);
     assert.strictEqual(interruptController.read8(0xff0f) & 0x04, 0x04);
   });
 });

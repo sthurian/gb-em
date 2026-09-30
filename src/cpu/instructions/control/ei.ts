@@ -9,8 +9,7 @@ const createEi = ({ registers }: EiDependencies) => {
     mnemonic: 'EI',
     bytes: 1,
     execute: () => {
-      // TODO: EI delay (IME enabled after next instruction) not implemented
-      registers.ime = true;
+      registers.imeScheduled = true;
       registers.pc = (registers.pc + 1) & 0xffff;
 
       return 4;

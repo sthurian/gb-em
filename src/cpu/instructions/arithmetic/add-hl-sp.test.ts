@@ -17,6 +17,7 @@ suite('ADD HL,SP', () => {
       sp: 0x0020,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const addHLSP = createAddHLSP({ registers });
@@ -43,6 +44,7 @@ suite('ADD HL,SP', () => {
       sp: 0x0001,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const addHLSP = createAddHLSP({ registers });

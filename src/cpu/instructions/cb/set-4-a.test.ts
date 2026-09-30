@@ -7,7 +7,7 @@ import { createSet4A } from './set-4-a.js';
 suite('SET 4,A', () => {
   test('sets bit 4', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createSet4A({ registers });

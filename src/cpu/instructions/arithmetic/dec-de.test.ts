@@ -17,6 +17,7 @@ suite('DEC DE', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const decDE = createDecDE({ registers });
@@ -43,6 +44,7 @@ suite('DEC DE', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const decDE = createDecDE({ registers });

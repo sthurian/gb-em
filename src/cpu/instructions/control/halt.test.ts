@@ -17,6 +17,7 @@ suite('HALT', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     let halted = false;

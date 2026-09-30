@@ -6,7 +6,7 @@ import { createLdCH } from './ld-c-h.js';
 suite('LD C,H', () => {
   test('loads H into C', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x42, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x42, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const ldCH = createLdCH({ registers });
     const cycles = ldCH.execute();

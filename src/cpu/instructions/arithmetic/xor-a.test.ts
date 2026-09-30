@@ -17,6 +17,7 @@ suite('XOR A', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const xorA = createXorA({ registers });

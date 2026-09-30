@@ -17,6 +17,7 @@ suite('CALL NZ,a16', () => {
       sp: 0xfffe,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const memory = new Uint8Array(0x10000);
@@ -55,6 +56,7 @@ suite('CALL NZ,a16', () => {
       sp: 0xfffe,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const memory = new Uint8Array(0x10000);
@@ -89,6 +91,7 @@ suite('CALL NZ,a16', () => {
       sp: 0xfffe,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const memory = new Uint8Array(0x10000);

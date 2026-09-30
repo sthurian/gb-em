@@ -6,7 +6,7 @@ import { createLdHA } from './ld-h-a.js';
 suite('LD H,A', () => {
   test('loads A into H', () => {
     const registers: Registers = {
-      a: 0x42, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0x42, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const ldHA = createLdHA({ registers });
     const cycles = ldHA.execute();

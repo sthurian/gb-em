@@ -18,6 +18,7 @@ suite('Registers', () => {
       sp: 0xfffe,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     });
   });
 });

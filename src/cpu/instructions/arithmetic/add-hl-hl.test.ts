@@ -17,6 +17,7 @@ suite('ADD HL,HL', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const addHLHL = createAddHLHL({ registers });
@@ -43,6 +44,7 @@ suite('ADD HL,HL', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const addHLHL = createAddHLHL({ registers });
@@ -55,13 +57,13 @@ suite('ADD HL,HL', () => {
   });
 
   test('sets carry when result overflows 16 bits', () => {
-    const registers: Registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x80, l: 0x00, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x80, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     createAddHLHL({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });
 
   test('sets half-carry when bit 11 overflows', () => {
-    const registers: Registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x08, l: 0x00, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x08, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     createAddHLHL({ registers }).execute();
     assert.strictEqual(registers.f & 0x20, 0x20);
   });

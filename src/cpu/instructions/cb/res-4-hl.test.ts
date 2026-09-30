@@ -7,7 +7,7 @@ import { createRes4HL } from './res-4-hl.js';
 suite('RES 4,HL', () => {
   test('clears bit 4', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0xff;

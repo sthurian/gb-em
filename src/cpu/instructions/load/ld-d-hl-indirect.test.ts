@@ -7,7 +7,7 @@ import { createLdDHLIndirect } from './ld-d-hl-indirect.js';
 suite('LD D,(HL)', () => {
   test('loads value at (HL) into D', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0xc0, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0xc0, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     mmu.write8(0xc000, 0x42);

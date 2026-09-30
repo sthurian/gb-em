@@ -17,6 +17,7 @@ suite('INC HL', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const incHL = createIncHL({ registers });
@@ -43,6 +44,7 @@ suite('INC HL', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const incHL = createIncHL({ registers });

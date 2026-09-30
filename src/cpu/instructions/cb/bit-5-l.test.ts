@@ -7,7 +7,7 @@ import { createBit5L } from './bit-5-l.js';
 suite('BIT 5,L', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0x20, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0x20, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit5L({ registers });
@@ -21,7 +21,7 @@ suite('BIT 5,L', () => {
 
   test('sets Z when bit is clear', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createBit5L({ registers });

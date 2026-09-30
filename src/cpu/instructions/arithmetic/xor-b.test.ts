@@ -17,6 +17,7 @@ suite('XOR B', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const xorB = createXorB({ registers });
@@ -42,6 +43,7 @@ suite('XOR B', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const xorB = createXorB({ registers });

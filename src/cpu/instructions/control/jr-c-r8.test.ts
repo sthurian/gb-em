@@ -18,6 +18,7 @@ suite('JR C,r8', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const memory = new Uint8Array(0x10000);
@@ -47,6 +48,7 @@ suite('JR C,r8', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const memory = new Uint8Array(0x10000);
@@ -64,7 +66,7 @@ suite('JR C,r8', () => {
   });
 
   test('jumps with negative offset when C flag is set', () => {
-    const registers: Registers = { a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     const memory = new Uint8Array(0x10000);
     memory[0x0101] = 0xfe; // -2 signed
     const jrCR8 = createJrCR8({ mmu: mmuFactory.build({}, { transient: { memory } }), registers });

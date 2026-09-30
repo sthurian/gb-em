@@ -17,6 +17,7 @@ suite('AND H', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const andH = createAndH({ registers });
@@ -41,6 +42,7 @@ suite('AND H', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const andH = createAndH({ registers });

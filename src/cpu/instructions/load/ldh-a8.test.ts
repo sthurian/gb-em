@@ -17,6 +17,7 @@ suite('LDH A,(a8)', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const memory = new Uint8Array(0x10000);

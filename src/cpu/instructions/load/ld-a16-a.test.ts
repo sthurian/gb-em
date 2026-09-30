@@ -39,6 +39,7 @@ suite('LD (a16),A', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const ldA16A = createLdA16A({

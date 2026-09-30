@@ -15,7 +15,8 @@ const createRegisters = () => ({
   l: 0,
   sp: 0,
   pc: 0,
-  ime: false
+  ime: false,
+  imeScheduled: false,
 });
 
 suite('CPU', () => {

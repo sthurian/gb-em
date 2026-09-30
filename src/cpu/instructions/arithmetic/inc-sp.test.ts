@@ -17,6 +17,7 @@ suite('INC SP', () => {
       sp: 0x1234,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const incSP = createIncSP({ registers });
@@ -42,6 +43,7 @@ suite('INC SP', () => {
       sp: 0xffff,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const incSP = createIncSP({ registers });

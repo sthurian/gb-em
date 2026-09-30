@@ -17,6 +17,7 @@ suite('LD A,L', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const ldAL = createLdAL({

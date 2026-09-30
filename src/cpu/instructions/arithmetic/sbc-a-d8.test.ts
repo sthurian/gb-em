@@ -18,6 +18,7 @@ suite('SBC A,d8', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();
@@ -46,6 +47,7 @@ suite('SBC A,d8', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();
@@ -62,7 +64,7 @@ suite('SBC A,d8', () => {
   });
 
   test('sets zero flag when result is 0', () => {
-    const registers: Registers = { a: 0x05, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0x05, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     const mmu = mmuFactory.build();
     mmu.write8(0x0101, 0x05);
     createSbcAD8({ mmu, registers }).execute();
@@ -70,7 +72,7 @@ suite('SBC A,d8', () => {
   });
 
   test('sets carry flag when borrow occurs', () => {
-    const registers: Registers = { a: 0x01, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0x01, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     const mmu = mmuFactory.build();
     mmu.write8(0x0101, 0x10);
     createSbcAD8({ mmu, registers }).execute();

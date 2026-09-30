@@ -4,7 +4,7 @@ import type { Registers } from '../../cpu.js';
 import { createEi } from './ei.js';
 
 suite('EI', () => {
-  test('sets IME to true', () => {
+  test('schedules IME enable — does not set ime immediately', () => {
     const registers: Registers = {
       a: 0,
       f: 0,
@@ -17,13 +17,15 @@ suite('EI', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const ei = createEi({ registers });
 
     const cycles = ei.execute();
 
-    assert.strictEqual(registers.ime, true);
+    assert.strictEqual(registers.ime, false);
+    assert.strictEqual(registers.imeScheduled, true);
     assert.strictEqual(registers.pc, 0x0101);
     assert.strictEqual(cycles, 4);
   });
@@ -41,6 +43,7 @@ suite('EI', () => {
       sp: 0,
       pc: 0x0200,
       ime: false,
+      imeScheduled: false,
     };
 
     const ei = createEi({ registers });

@@ -38,7 +38,8 @@ suite('JP a16', () => {
       l: 0,
       sp: 0,
       pc: 0x0100,
-      ime: false
+      ime: false,
+      imeScheduled: false,
     };
 
     const jp = createJp({

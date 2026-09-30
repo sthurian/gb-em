@@ -20,6 +20,7 @@ suite('RST 08H', () => {
       sp: 0xc002,
       pc: 0x0150,
       ime: false,
+      imeScheduled: false,
     };
 
     const rst = createRst08h({ mmu, registers });

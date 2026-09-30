@@ -17,6 +17,7 @@ suite('LD SP,HL', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const ldSpHL = createLdSpHL({ registers });
@@ -41,6 +42,7 @@ suite('LD SP,HL', () => {
       sp: 0,
       pc: 0x0200,
       ime: false,
+      imeScheduled: false,
     };
 
     const ldSpHL = createLdSpHL({ registers });

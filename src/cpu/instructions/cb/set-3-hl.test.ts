@@ -7,7 +7,7 @@ import { createSet3HL } from './set-3-hl.js';
 suite('SET 3,HL', () => {
   test('sets bit 3', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0x00;

@@ -7,7 +7,7 @@ import { createSraC } from './sra-c.js';
 suite('SRA C', () => {
   test('shifts right, bit 7 preserved (arithmetic), bit 0 to carry', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0b10110101, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0b10110101, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createSraC({ registers });
@@ -20,7 +20,7 @@ suite('SRA C', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createSraC({ registers });

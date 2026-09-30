@@ -18,6 +18,7 @@ suite('LD (a16),SP', () => {
       sp: 0x1234,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();
@@ -46,6 +47,7 @@ suite('LD (a16),SP', () => {
       sp: 0xabcd,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();

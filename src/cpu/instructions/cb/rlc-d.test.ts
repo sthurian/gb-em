@@ -7,7 +7,7 @@ import { createRlcD } from './rlc-d.js';
 suite('RLC D', () => {
   test('rotates left and sets carry from bit 7', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0b10110100, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0b10110100, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createRlcD({ registers });
@@ -21,7 +21,7 @@ suite('RLC D', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createRlcD({ registers });

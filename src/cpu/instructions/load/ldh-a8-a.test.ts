@@ -38,6 +38,7 @@ suite('LDH (a8),A', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const ldhA8A = createLdhA8A({

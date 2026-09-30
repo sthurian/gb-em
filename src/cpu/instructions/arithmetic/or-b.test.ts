@@ -17,6 +17,7 @@ suite('OR B', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const orB = createOrB({ registers });
@@ -41,6 +42,7 @@ suite('OR B', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const orB = createOrB({ registers });

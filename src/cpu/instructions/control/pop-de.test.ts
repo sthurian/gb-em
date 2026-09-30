@@ -18,6 +18,7 @@ suite('POP DE', () => {
       sp: 0xfffc,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();

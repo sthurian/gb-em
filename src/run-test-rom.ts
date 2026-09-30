@@ -6,6 +6,17 @@ let serialOutput = '';
 let lastDumpedAt = 0;
 
 const emulator = createEmulator({
+  cycleLimit: 100_000_000,
+  onCycleLimit: (_cycles, em) => {
+    process.stderr.write(`\n[TIMEOUT — cycle limit reached]\n`);
+    for (const entry of em.getTrace()) {
+      const flags = `Z:${(entry.registers.f >> 7) & 1} N:${(entry.registers.f >> 6) & 1} H:${(entry.registers.f >> 5) & 1} C:${(entry.registers.f >> 4) & 1}`;
+      process.stderr.write(
+        `  PC:${entry.pc.toString(16).padStart(4, '0')}  OP:${entry.opcode.toString(16).padStart(2, '0')}  A:${entry.registers.a.toString(16).padStart(2, '0')}  BC:${entry.registers.b.toString(16).padStart(2, '0')}${entry.registers.c.toString(16).padStart(2, '0')}  DE:${entry.registers.d.toString(16).padStart(2, '0')}${entry.registers.e.toString(16).padStart(2, '00')}  HL:${entry.registers.h.toString(16).padStart(2, '0')}${entry.registers.l.toString(16).padStart(2, '0')}  SP:${entry.registers.sp.toString(16).padStart(4, '0')}  ${flags}\n`
+      );
+    }
+    process.exit(1);
+  },
   onSerialByte: (value, em) => {
     const char = String.fromCharCode(value);
     process.stdout.write(char);

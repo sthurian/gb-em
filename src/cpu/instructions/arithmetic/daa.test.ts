@@ -4,7 +4,7 @@ import type { Registers } from '../../cpu.js';
 import { createDaa } from './daa.js';
 
 const makeRegisters = (overrides: Partial<Registers> = {}): Registers => ({
-  a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+  a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
   ...overrides,
 });
 
@@ -66,14 +66,14 @@ suite('DAA', () => {
   });
 
   test('subtraction path without carry clears C', () => {
-    const registers: Registers = { a: 0x4f, f: 0x60, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0x4f, f: 0x60, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     createDaa({ registers }).execute();
     assert.strictEqual(registers.a, 0x49);
     assert.strictEqual(registers.f & 0x10, 0x00);
   });
 
   test('subtraction path with carry', () => {
-    const registers: Registers = { a: 0x85, f: 0x50, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0x85, f: 0x50, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     createDaa({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });

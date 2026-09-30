@@ -17,6 +17,7 @@ suite('ADD HL,DE', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const addHLDE = createAddHLDE({ registers });
@@ -43,6 +44,7 @@ suite('ADD HL,DE', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const addHLDE = createAddHLDE({ registers });

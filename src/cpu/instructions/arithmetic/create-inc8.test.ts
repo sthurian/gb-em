@@ -16,6 +16,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x41;
@@ -48,6 +49,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0xff;
@@ -78,6 +80,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0xffff,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x41;
@@ -107,6 +110,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0xff;
@@ -137,6 +141,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x41;
@@ -167,6 +172,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x0f;
@@ -197,6 +203,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x41;
@@ -227,6 +234,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x41;
@@ -257,6 +265,7 @@ suite('createInc8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     let value = 0x41;

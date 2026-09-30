@@ -6,7 +6,7 @@ import { createLdDD } from './ld-d-d.js';
 suite('LD D,D', () => {
   test('loads D into D', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0x42, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0x42, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const ldDD = createLdDD({ registers });
     const cycles = ldDD.execute();

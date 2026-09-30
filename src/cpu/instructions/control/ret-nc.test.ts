@@ -24,6 +24,7 @@ suite('RET NC', () => {
       sp: 0x8000,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const retNc = createRetNc({ mmu, registers });
@@ -50,6 +51,7 @@ suite('RET NC', () => {
       sp: 0x8000,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const retNc = createRetNc({ mmu, registers });

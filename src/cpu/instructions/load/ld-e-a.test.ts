@@ -6,7 +6,7 @@ import { createLdEA } from './ld-e-a.js';
 suite('LD E,A', () => {
   test('loads A into E', () => {
     const registers: Registers = {
-      a: 0x42, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0x42, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const ldEA = createLdEA({ registers });
     const cycles = ldEA.execute();

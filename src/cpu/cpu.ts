@@ -37,6 +37,7 @@ type Registers = {
   sp: number;
   pc: number;
   ime: boolean;
+  imeScheduled: boolean;
 };
 
 type CPUState = {
@@ -105,7 +106,12 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
       }
       trace[traceIndex % TRACE_SIZE] = { pc, opcode, registers: { ...registers } };
       traceIndex++;
-      return instruction.execute();
+      const cycles = instruction.execute();
+      if (registers.imeScheduled) {
+        registers.imeScheduled = false;
+        registers.ime = true;
+      }
+      return cycles;
     },
 
     getState: () => {

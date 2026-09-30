@@ -7,7 +7,7 @@ import { createLdHD8 } from './ld-h-d8.js';
 suite('LD H,d8', () => {
   test('loads immediate into H', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     mmu.write8(0x0101, 0x42);

@@ -7,7 +7,7 @@ import { createBit6HL } from './bit-6-hl.js';
 suite('BIT 6,HL', () => {
   test('clears Z when bit is set', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0x40;
@@ -23,7 +23,7 @@ suite('BIT 6,HL', () => {
 
   test('sets Z when bit is clear', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0x00;

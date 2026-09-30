@@ -7,7 +7,7 @@ import { createRes4D } from './res-4-d.js';
 suite('RES 4,D', () => {
   test('clears bit 4', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0xff, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0xff, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createRes4D({ registers });

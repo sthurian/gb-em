@@ -24,6 +24,7 @@ suite('RETI', () => {
       sp: 0x8000,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const reti = createReti({ mmu, registers });

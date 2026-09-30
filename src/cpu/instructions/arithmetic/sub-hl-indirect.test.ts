@@ -18,6 +18,7 @@ suite('SUB (HL)', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();
@@ -46,6 +47,7 @@ suite('SUB (HL)', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const mmu = mmuFactory.build();
@@ -62,7 +64,7 @@ suite('SUB (HL)', () => {
   test('sets carry when value > A', () => {
     const memory = new Uint8Array(0x10000); memory[0x0000] = 0x10;
     const mmu = mmuFactory.build({}, { transient: { memory } });
-    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     createSubHLIndirect({ mmu, registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });

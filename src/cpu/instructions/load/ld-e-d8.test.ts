@@ -19,6 +19,7 @@ suite('LD E,d8', () => {
       sp: 0,
       pc: 0x100,
       ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x101, 0xab);

@@ -17,6 +17,7 @@ suite('CP A', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const cpA = createCpA({ registers });
@@ -42,6 +43,7 @@ suite('CP A', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const cpA = createCpA({ registers });
@@ -53,7 +55,7 @@ suite('CP A', () => {
   });
 
   test('A cp A always sets Z and N', () => {
-    const registers: Registers = { a: 0x42, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const registers: Registers = { a: 0x42, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false };
     createCpA({ registers }).execute();
     assert.strictEqual(registers.f & 0x80, 0x80); // Z
     assert.strictEqual(registers.f & 0x40, 0x40); // N

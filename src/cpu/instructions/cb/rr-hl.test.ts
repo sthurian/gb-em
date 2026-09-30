@@ -7,7 +7,7 @@ import { createRrHL } from './rr-hl.js';
 suite('RR HL', () => {
   test('rotates right through carry', () => {
     const registers: Registers = {
-      a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0b10110100;
@@ -22,7 +22,7 @@ suite('RR HL', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0x00;
@@ -34,7 +34,7 @@ suite('RR HL', () => {
 
   test('rotates right with carry clear (bit 7 = 0)', () => {
     const registers: Registers = {
-      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000);
     memory[0x0000] = 0b10110100;
@@ -46,7 +46,7 @@ suite('RR HL', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000); memory[0x0000] = 0x00;
     const mmu = mmuFactory.build({}, { transient: { memory } });
@@ -56,7 +56,7 @@ suite('RR HL', () => {
 
   test('sets carry flag when bit 0 is set', () => {
     const registers: Registers = {
-      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0x00, l: 0x00, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const memory = new Uint8Array(0x10000); memory[0x0000] = 0x03;
     const mmu = mmuFactory.build({}, { transient: { memory } });

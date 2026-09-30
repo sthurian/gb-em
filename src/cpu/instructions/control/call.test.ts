@@ -39,6 +39,7 @@ suite('CALL a16', () => {
       sp: 0xc002,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const call = createCall({

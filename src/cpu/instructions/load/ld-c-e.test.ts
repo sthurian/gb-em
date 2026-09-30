@@ -6,7 +6,7 @@ import { createLdCE } from './ld-c-e.js';
 suite('LD C,E', () => {
   test('loads E into C', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0x42, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0x42, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const ldCE = createLdCE({ registers });
     const cycles = ldCE.execute();

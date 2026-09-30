@@ -17,6 +17,7 @@ suite('DEC BC', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const decBC = createDecBC({ registers });
@@ -43,6 +44,7 @@ suite('DEC BC', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const decBC = createDecBC({ registers });

@@ -17,6 +17,7 @@ suite('SUB D', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const subD = createSubD({ registers });
@@ -42,6 +43,7 @@ suite('SUB D', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const subD = createSubD({ registers });
@@ -53,7 +55,7 @@ suite('SUB D', () => {
   });
 
   test('sets carry when value > A', () => {
-    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0x10, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, };
+    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0x10, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false, };
     createSubD({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });

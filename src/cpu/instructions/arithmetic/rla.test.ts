@@ -17,6 +17,7 @@ suite('RLA', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const rla = createRla({ registers });
@@ -41,6 +42,7 @@ suite('RLA', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const rla = createRla({ registers });

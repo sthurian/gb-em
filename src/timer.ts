@@ -24,6 +24,7 @@ const createTimer = ({ interruptController }: TimerDependencies): Timer => {
   let tma = 0;
   let tac = 0;
   let timaCounter = 0;
+  let timaOverflowPending = false;
 
   return {
     read8: (address) => {
@@ -35,13 +36,20 @@ const createTimer = ({ interruptController }: TimerDependencies): Timer => {
 
     write8: (address, value) => {
       if (address === 0xff04) { div = 0; return; }
-      if (address === 0xff05) { tima = value & 0xff; return; }
+      if (address === 0xff05) { tima = value & 0xff; timaOverflowPending = false; return; }
       if (address === 0xff06) { tma = value & 0xff; return; }
       tac = value & 0x07;
     },
 
     step: (cycles) => {
       div = (div + cycles) & 0xffff;
+
+      // Fire pending overflow from previous step
+      if (timaOverflowPending) {
+        timaOverflowPending = false;
+        tima = tma;
+        interruptController.request('TIMER');
+      }
 
       const timerEnabled = (tac & 0x04) !== 0;
       if (!timerEnabled) return;
@@ -53,8 +61,7 @@ const createTimer = ({ interruptController }: TimerDependencies): Timer => {
         timaCounter -= threshold;
         tima = (tima + 1) & 0xff;
         if (tima === 0) {
-          tima = tma;
-          interruptController.request('TIMER');
+          timaOverflowPending = true;
         }
       }
     },

@@ -7,7 +7,7 @@ import { createRrA } from './rr-a.js';
 suite('RR A', () => {
   test('rotates right through carry', () => {
     const registers: Registers = {
-      a: 0b10110100, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0b10110100, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createRrA({ registers });
@@ -20,7 +20,7 @@ suite('RR A', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     const op = createRrA({ registers });
@@ -30,7 +30,7 @@ suite('RR A', () => {
 
   test('rotates right with carry clear (bit 7 = 0)', () => {
     const registers: Registers = {
-      a: 0b10110100, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0b10110100, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     createRrA({ registers }).execute();
@@ -40,7 +40,7 @@ suite('RR A', () => {
 
   test('sets zero flag when result is 0', () => {
     const registers: Registers = {
-      a: 0x00, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0x00, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     const mmu = mmuFactory.build();
     createRrA({ registers }).execute();
@@ -49,7 +49,7 @@ suite('RR A', () => {
 
   test('sets carry flag when bit 0 is set', () => {
     const registers: Registers = {
-      a: 0x03, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false,
+      a: 0x03, f: 0x00, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false,
     };
     createRrA({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);

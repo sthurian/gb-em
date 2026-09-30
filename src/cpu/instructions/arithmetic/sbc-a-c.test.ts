@@ -17,6 +17,7 @@ suite('SBC A,C', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const sbcAC = createSbcAC({ registers });
@@ -41,6 +42,7 @@ suite('SBC A,C', () => {
       sp: 0,
       pc: 0x0100,
       ime: false,
+      imeScheduled: false,
     };
 
     const sbcAC = createSbcAC({ registers });
@@ -53,19 +55,19 @@ suite('SBC A,C', () => {
   });
 
   test('sets carry when borrow', () => {
-    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0x10, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, };
+    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0x10, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false, };
     createSbcAC({ registers }).execute();
     assert.strictEqual(registers.f & 0x10, 0x10);
   });
 
   test('sets half-carry when lower nibble borrows', () => {
-    const registers: Registers = { a: 0x10, f: 0, b: 0, c: 0x01, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, };
+    const registers: Registers = { a: 0x10, f: 0, b: 0, c: 0x01, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false, };
     createSbcAC({ registers }).execute();
     assert.strictEqual(registers.f & 0x20, 0x20);
   });
 
   test('sets zero flag when result is 0', () => {
-    const registers: Registers = { a: 0x05, f: 0, b: 0, c: 0x05, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, };
+    const registers: Registers = { a: 0x05, f: 0, b: 0, c: 0x05, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, imeScheduled: false, };
     createSbcAC({ registers }).execute();
     assert.strictEqual(registers.f & 0x80, 0x80);
   });

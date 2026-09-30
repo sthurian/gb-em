@@ -19,7 +19,8 @@ suite('LD C,d8', () => {
       l: 0,
       sp: 0,
       pc: 0x100,
-      ime: false
+      ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x101, 0x42);
@@ -47,7 +48,8 @@ suite('LD C,d8', () => {
       l: 0,
       sp: 0,
       pc: 0xffff,
-      ime: false
+      ime: false,
+      imeScheduled: false,
     };
 
     mmu.write8(0x0000, 0x42);
