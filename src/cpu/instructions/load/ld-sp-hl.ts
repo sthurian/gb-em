@@ -1,0 +1,20 @@
+import type { Registers } from '../../cpu.js';
+
+type LdSpHLDependencies = {
+  registers: Registers;
+};
+
+const createLdSpHL = ({ registers }: LdSpHLDependencies) => {
+  return {
+    mnemonic: 'LD SP,HL',
+    bytes: 1,
+    execute: () => {
+      registers.sp = (registers.h << 8) | registers.l;
+      registers.pc = (registers.pc + 1) & 0xffff;
+
+      return 8;
+    },
+  };
+};
+
+export { createLdSpHL };

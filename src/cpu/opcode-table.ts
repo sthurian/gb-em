@@ -219,6 +219,7 @@ import { createRst20h } from './instructions/control/rst-20h.js';
 import { createRst28h } from './instructions/control/rst-28h.js';
 import { createRst30h } from './instructions/control/rst-30h.js';
 import { createRst38h } from './instructions/control/rst-38h.js';
+import { createLdSpHL } from './instructions/load/ld-sp-hl.js';
 import { createLdHLSpR8 } from './instructions/load/ld-hl-sp-r8.js';
 import { createAddSpR8 } from './instructions/arithmetic/add-sp-r8.js';
 import { createAndD8 } from './instructions/arithmetic/and-d8.js';
@@ -503,6 +504,7 @@ const createOpcodeTable = ({
   opcodes[0xe6] = createAndD8({ mmu, registers });
   opcodes[0xe8] = createAddSpR8({ mmu, registers });
   opcodes[0xf8] = createLdHLSpR8({ mmu, registers });
+  opcodes[0xf9] = createLdSpHL({ registers });
   return opcodes;
 };
 
