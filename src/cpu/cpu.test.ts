@@ -21,12 +21,11 @@ const createRegisters = () => ({
 suite('CPU', () => {
   test('rejects an unsupported opcode', () => {
     const mmu = mmuFactory.build();
-    const opcodeTable: Array<Opcode | undefined> = [];
 
     const cpu = createCPU({
       mmu,
       registers: createRegisters(),
-      opcodeTable,
+      buildOpcodeTable: () => [],
     });
 
     mmu.write8(0x0000, 0xff);
@@ -40,12 +39,11 @@ suite('CPU', () => {
   test('does not advance PC for an unsupported opcode', () => {
     const mmu = mmuFactory.build();
     const registers = createRegisters();
-    const opcodeTable: Array<Opcode | undefined> = [];
 
     const cpu = createCPU({
       mmu,
       registers,
-      opcodeTable,
+      buildOpcodeTable: () => [],
     });
 
     mmu.write8(0x0000, 0xff);
@@ -57,9 +55,9 @@ suite('CPU', () => {
   test('executes the instruction for the current opcode', () => {
     const mmu = mmuFactory.build();
     const registers = createRegisters();
-    const opcodeTable: Array<Opcode | undefined> = [];
+    const fakeTable: Array<Opcode | undefined> = [];
 
-    opcodeTable[0x42] = {
+    fakeTable[0x42] = {
       mnemonic: 'TEST',
       bytes: 1,
       execute: () => 7,
@@ -68,7 +66,7 @@ suite('CPU', () => {
     const cpu = createCPU({
       mmu,
       registers,
-      opcodeTable,
+      buildOpcodeTable: () => fakeTable,
     });
 
     mmu.write8(0x0000, 0x42);
@@ -85,7 +83,7 @@ suite('CPU', () => {
     const cpu = createCPU({
       mmu,
       registers,
-      opcodeTable: [],
+      buildOpcodeTable: () => [],
     });
 
     const state = cpu.getState();

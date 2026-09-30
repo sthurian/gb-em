@@ -1,5 +1,5 @@
 import { MMU } from '../mmu.js';
-import { createOpcodeTable, Opcode } from './opcode-table.js';
+import type { Opcode } from './opcode-table.js';
 
 type TraceEntry = {
   pc: number;
@@ -13,10 +13,16 @@ type CPU = {
   getTrace(): TraceEntry[];
 };
 
+type OpcodeTableFactory = (deps: {
+  mmu: MMU;
+  registers: Registers;
+  setHalted: () => void;
+}) => Array<Opcode | undefined>;
+
 type CPUDependencies = {
   mmu: MMU;
   registers: Registers;
-  opcodeTable?: Array<Opcode | undefined>;
+  buildOpcodeTable: OpcodeTableFactory;
 };
 
 type Registers = {
@@ -54,7 +60,7 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
   let traceIndex = 0;
   let halted = false;
 
-  const opcodeTable = dependencies.opcodeTable ?? createOpcodeTable({
+  const opcodeTable = dependencies.buildOpcodeTable({
     mmu,
     registers,
     setHalted: () => { halted = true; },
@@ -117,4 +123,4 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
 };
 
 export { createCPU };
-export type { CPU, CPUState, Registers };
+export type { CPU, CPUState, Registers, OpcodeTableFactory };

@@ -1,6 +1,7 @@
 import { createAPU } from './apu.js';
 import { createCartridge } from './cartridge.js';
 import { createCPU } from './cpu/cpu.js';
+import { createOpcodeTable } from './cpu/opcode-table.js';
 import { createEmulator } from './emulator.js';
 import { createInterruptController } from './interrupt-controller.js';
 import { createJoypad } from './joypad.js';
@@ -28,7 +29,7 @@ const interruptController = createInterruptController();
 const timer = createTimer({ interruptController });
 const mmu = createMMU({ cartridge, interruptController, serial, timer });
 const registers = createRegisters();
-const cpu = createCPU({ mmu, registers });
+const cpu = createCPU({ mmu, registers, buildOpcodeTable: createOpcodeTable });
 const ppu = createPPU();
 const apu = createAPU();
 const joypad = createJoypad();
