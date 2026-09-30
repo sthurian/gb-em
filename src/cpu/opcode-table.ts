@@ -45,6 +45,7 @@ import { createLdBcD16 } from './instructions/load/ld-bc-d16.js';
 import { createIncBC } from './instructions/arithmetic/inc-bc.js';
 import { createLdAB } from './instructions/load/ld-a-b.js';
 import { createOrC } from './instructions/arithmetic/or-c.js';
+import { createJrZ } from './instructions/control/jr-z-r8.js';
 
 type Opcode = {
   mnemonic: string;
@@ -72,6 +73,7 @@ const createOpcodeTable = ({
   opcodes[0x16] = createLdDD8({ mmu, registers });
   opcodes[0x21] = createLdHlD16({ mmu, registers });
   opcodes[0x23] = createIncHL({ registers });
+  opcodes[0x28] = createJrZ({ mmu, registers });
   opcodes[0x31] = createLdSpD16({ mmu, registers });
   opcodes[0x36] = createLdHLD8({ mmu, registers });
   opcodes[0x3e] = createLdAD8({ mmu, registers });
