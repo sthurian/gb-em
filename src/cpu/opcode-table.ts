@@ -219,6 +219,7 @@ import { createRst20h } from './instructions/control/rst-20h.js';
 import { createRst28h } from './instructions/control/rst-28h.js';
 import { createRst30h } from './instructions/control/rst-30h.js';
 import { createRst38h } from './instructions/control/rst-38h.js';
+import { createCcf } from './instructions/arithmetic/ccf.js';
 import { createLdAHlDec } from './instructions/load/ld-a-hl-dec.js';
 import { createScf } from './instructions/arithmetic/scf.js';
 import { createCpl } from './instructions/arithmetic/cpl.js';
@@ -487,6 +488,7 @@ const createOpcodeTable = ({
   opcodes[0x2f] = createCpl({ registers });
   opcodes[0x37] = createScf({ registers });
   opcodes[0x3a] = createLdAHlDec({ mmu, registers });
+  opcodes[0x3f] = createCcf({ registers });
   return opcodes;
 };
 
