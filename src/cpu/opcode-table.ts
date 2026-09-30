@@ -39,6 +39,7 @@ import { createPopHL } from './instructions/control/pop-hl.js';
 import { createPushAF } from './instructions/control/push-af.js';
 import { createIncHL } from './instructions/arithmetic/inc-hl.js';
 import { createLdAHlInc } from './instructions/load/ld-a-hl-inc.js';
+import { createPopAF } from './instructions/control/pop-af.js';
 
 type Opcode = {
   mnemonic: string;
@@ -97,6 +98,7 @@ const createOpcodeTable = ({
   opcodes[0xcd] = createCall({ mmu, registers });
   opcodes[0xe1] = createPopHL({ mmu, registers });
   opcodes[0xe5] = createPushHL({ mmu, registers });
+  opcodes[0xf1] = createPopAF({ mmu, registers });
   opcodes[0xf3] = createDi({ registers });
   opcodes[0xf5] = createPushAF({ mmu, registers });
   return opcodes;
