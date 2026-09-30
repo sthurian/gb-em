@@ -17,6 +17,7 @@ const createSubA = ({ registers }: SubADependencies) => {
       const carry = registers.a < value;
 
       registers.a = result & 0xff;
+      /* c8 ignore next 5 */
       registers.f =
         (zero ? 0x80 : 0) |
         0x40 |

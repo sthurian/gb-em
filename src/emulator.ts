@@ -41,7 +41,7 @@ const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
 
         step();
       }
-
+      /* c8 ignore next 4 */
       console.log({
         hits,
         state: cpu.getState(),

@@ -62,4 +62,13 @@ suite('JR C,r8', () => {
     assert.strictEqual(registers.pc, 0x0102);
     assert.strictEqual(cycles, 8);
   });
+
+  test('jumps with negative offset when C flag is set', () => {
+    const registers: Registers = { a: 0, f: 0x10, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false };
+    const memory = new Uint8Array(0x10000);
+    memory[0x0101] = 0xfe; // -2 signed
+    const jrCR8 = createJrCR8({ mmu: mmuFactory.build({}, { transient: { memory } }), registers });
+    jrCR8.execute();
+    assert.strictEqual(registers.pc, 0x0100); // 0x0100 + 2 + (-2) = 0x0100
+  });
 });

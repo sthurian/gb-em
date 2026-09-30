@@ -58,4 +58,20 @@ suite('ADD SP,r8', () => {
     assert.strictEqual(registers.pc, 0x0102);
     assert.strictEqual(cycles, 16);
   });
+
+  test('sets half-carry flag when nibble overflows', () => {
+    const registers: Registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0x000f, pc: 0x0100, ime: false };
+    const mmu = mmuFactory.build();
+    mmu.write8(0x0101, 0x01);
+    createAddSpR8({ mmu, registers }).execute();
+    assert.strictEqual(registers.f & 0x20, 0x20);
+  });
+
+  test('sets carry flag when byte overflows', () => {
+    const registers: Registers = { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0x00ff, pc: 0x0100, ime: false };
+    const mmu = mmuFactory.build();
+    mmu.write8(0x0101, 0x01);
+    createAddSpR8({ mmu, registers }).execute();
+    assert.strictEqual(registers.f & 0x10, 0x10);
+  });
 });

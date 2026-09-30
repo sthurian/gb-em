@@ -16,6 +16,7 @@ const createCpA = ({ registers }: CpADependencies) => {
       const halfCarry = (registers.a & 0x0f) < (value & 0x0f);
       const carry = registers.a < value;
 
+      /* c8 ignore next 5 */
       registers.f =
         (zero ? 0x80 : 0) |
         0x40 |

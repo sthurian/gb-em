@@ -51,4 +51,16 @@ suite('CP B', () => {
     assert.strictEqual(registers.a, 0x42);
     assert.strictEqual(registers.f, 0xc0);
   });
+
+  test('sets carry when value > A', () => {
+    const registers: Registers = { a: 0x01, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, b: 0x10 };
+    createCpB({ registers }).execute();
+    assert.strictEqual(registers.f & 0x10, 0x10);
+  });
+
+  test('sets half-carry when lower nibble borrows', () => {
+    const registers: Registers = { a: 0x10, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0100, ime: false, b: 0x01 };
+    createCpB({ registers }).execute();
+    assert.strictEqual(registers.f & 0x20, 0x20);
+  });
 });

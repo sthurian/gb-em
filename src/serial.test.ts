@@ -17,4 +17,18 @@ suite('Serial', () => {
 
     assert.strictEqual(output, 0x42);
   });
+
+  test('read8 returns current data byte', () => {
+    const serial = createSerial({ onByte: () => {} });
+    serial.write8(0xff01, 0x42);
+    assert.strictEqual(serial.read8(0xff01), 0x42);
+  });
+
+  test('write8 to 0xff02 without 0x81 does not emit', () => {
+    let emitted = false;
+    const serial = createSerial({ onByte: () => { emitted = true; } });
+    serial.write8(0xff01, 0x42);
+    serial.write8(0xff02, 0x00);
+    assert.strictEqual(emitted, false);
+  });
 });

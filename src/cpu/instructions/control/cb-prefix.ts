@@ -11,6 +11,7 @@ const createCbPrefix = ({ mmu, registers }: { mmu: MMU; registers: Registers }) 
     execute: () => {
       const subOpcode = mmu.read8((registers.pc + 1) & 0xffff);
       const instruction = cbOpcodeTable[subOpcode];
+      /* c8 ignore next 3 */
       if (!instruction) {
         throw new Error(`CB-prefixed opcode 0x${subOpcode.toString(16).padStart(2, '0')} not implemented`);
       }
