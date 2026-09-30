@@ -67,6 +67,8 @@ import { createOrH } from './instructions/arithmetic/or-h.js';
 import { createOrL } from './instructions/arithmetic/or-l.js';
 import { createOrHLIndirect } from './instructions/arithmetic/or-hl-indirect.js';
 import { createOrA } from './instructions/arithmetic/or-a.js';
+import { createPushDE } from './instructions/control/push-de.js';
+import { createPopDE } from './instructions/control/pop-de.js';
 import { createIncDE } from './instructions/arithmetic/inc-de.js';
 import { createIncSP } from './instructions/arithmetic/inc-sp.js';
 import { createXorB } from './instructions/arithmetic/xor-b.js';
@@ -161,6 +163,8 @@ const createOpcodeTable = ({
   opcodes[0xb6] = createOrHLIndirect({ mmu, registers });
   opcodes[0xb7] = createOrA({ registers });
   opcodes[0xc1] = createPopBc({ mmu, registers });
+  opcodes[0xd1] = createPopDE({ mmu, registers });
+  opcodes[0xd5] = createPushDE({ mmu, registers });
   opcodes[0xc3] = createJp({ mmu, registers });
   opcodes[0xc4] = createCallNz({ mmu, registers });
   opcodes[0xc5] = createPushBC({ mmu, registers });
