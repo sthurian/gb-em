@@ -16,9 +16,12 @@ const cartridge = createCartridge({
   data: readFileSync('./roms/cpu_instrs.gb'),
 });
 
+let serialOutput = '';
 const serial = createSerial({
   onByte: (value) => {
-    process.stdout.write(String.fromCharCode(value));
+    const char = String.fromCharCode(value);
+    process.stdout.write(char);
+    serialOutput += char;
   },
 });
 const mmu = createMMU({ cartridge, serial });
@@ -39,4 +42,4 @@ const emulator = createEmulator({
   interruptController
 });
 
-emulator.start();
+emulator.start(() => serialOutput.includes('Passed') || serialOutput.includes('Failed'));

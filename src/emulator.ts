@@ -7,7 +7,7 @@ import type { Timer } from './timer.js';
 
 type Emulator = {
   step(): void;
-  start(): void;
+  start(isDone?: () => boolean): void;
 };
 
 type EmulatorDependencies = {
@@ -31,21 +31,11 @@ const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
 
   return {
     step,
-    start: () => {
-      let hits = 0;
-
-      for (let i = 0; i < 1_000_000; i++) {
-        if (cpu.getState().registers.pc === 0x0430) {
-          hits++;
-        }
-
+    start: (isDone?: () => boolean) => {
+      while (true) {
+        if (isDone?.()) break;
         step();
       }
-      /* c8 ignore next 4 */
-      console.log({
-        hits,
-        state: cpu.getState(),
-      });
     },
   };
 };

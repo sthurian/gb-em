@@ -12,7 +12,8 @@ const createStop = ({ mmu, registers }: StopDependencies) => {
     bytes: 2,
     execute: () => {
       mmu.read8(registers.pc + 1); // discard next byte
-      throw new Error('STOP not implemented');
+      registers.pc = (registers.pc + 2) & 0xffff;
+      return 4;
     },
   };
 };

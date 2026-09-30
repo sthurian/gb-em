@@ -5,7 +5,7 @@ import { mmuFactory } from '../../../test-factories/mmu.js';
 import { createStop } from './stop.js';
 
 suite('STOP', () => {
-  test('throws STOP not implemented', () => {
+  test('advances PC by 2 and returns 4 cycles', () => {
     const registers: Registers = {
       a: 0,
       f: 0,
@@ -22,7 +22,9 @@ suite('STOP', () => {
 
     const mmu = mmuFactory.build();
     const stop = createStop({ mmu, registers });
+    const cycles = stop.execute();
 
-    assert.throws(() => stop.execute(), /STOP not implemented/);
+    assert.strictEqual(registers.pc, 0x0102);
+    assert.strictEqual(cycles, 4);
   });
 });
