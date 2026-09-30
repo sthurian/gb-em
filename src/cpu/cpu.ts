@@ -123,4 +123,4 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
 };
 
 export { createCPU };
-export type { CPU, CPUState, Registers, OpcodeTableFactory };
+export type { CPU, CPUState, Registers, OpcodeTableFactory, TraceEntry };

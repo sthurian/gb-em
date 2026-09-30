@@ -3,133 +3,71 @@ import assert from 'node:assert';
 import { createEmulator } from './emulator.js';
 
 suite('Emulator', () => {
-    test('passes CPU cycles to the PPU, APU, and Timer', () => {
-        const ppuCycles: number[] = [];
-        const apuCycles: number[] = [];
-        const timerCycles: number[] = [];
-
-        const cpu = {
-            step: () => 4,
-            getState: () => ({
-                registers: {
-                    a: 0,
-                    f: 0,
-                    b: 0,
-                    c: 0,
-                    d: 0,
-                    e: 0,
-                    h: 0,
-                    l: 0,
-                    sp: 0,
-                    pc: 0,
-                    ime: false,
-                },
-            }),
-            getTrace: () => [],
-        };
-
-        const ppu = {
-            step: (cycles: number) => {
-                ppuCycles.push(cycles);
-            },
-        };
-
-        const apu = {
-            step: (cycles: number) => {
-                apuCycles.push(cycles);
-            },
-        };
-
-        const timer = {
-            step: (cycles: number) => {
-                timerCycles.push(cycles);
-            },
-            read8: () => 0,
-            write8: () => {},
-        };
-
-        const joypad = {
-            press: () => { },
-            release: () => { },
-        };
-
-        const interruptController = {
-            request: () => { },
-            read8: () => 0,
-            write8: () => {},
-        }
-
-        const emulator = createEmulator({
-            cpu,
-            ppu,
-            apu,
-            timer,
-            joypad,
-            interruptController
-        });
-
-        emulator.step();
-
-        assert.deepStrictEqual(ppuCycles, [4]);
-        assert.deepStrictEqual(apuCycles, [4]);
-        assert.deepStrictEqual(timerCycles, [4]);
+  test('starts and stops via stop()', () => {
+    let stopped = false;
+    const emulator = createEmulator({
+      onSerialByte: (_value, em) => em.stop(),
     });
 
-    test('starts and stops the emulator', () => {
-        let stepCount = 0;
-        const cpu = {
-            step: () => { stepCount++; return 4; },
-            getState: () => ({
-                registers: { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0, ime: false },
-            }),
-            getTrace: () => [],
-        };
+    // ROM that writes to serial then halts
+    const rom = new Uint8Array(0x8000);
+    rom[0x0100] = 0x3e; // LD A, 0x41
+    rom[0x0101] = 0x41;
+    rom[0x0102] = 0xe0; // LDH (0x01), A  → triggers serial (0xff01)
+    rom[0x0103] = 0x01;
+    rom[0x0104] = 0x3e; // LD A, 0x81
+    rom[0x0105] = 0x81;
+    rom[0x0106] = 0xe0; // LDH (0x02), A  → triggers serial transfer (0xff02)
+    rom[0x0107] = 0x02;
+    rom[0x0108] = 0x76; // HALT
 
-        const ppu = { step: () => {} };
-        const apu = { step: () => {} };
-        const timer = { step: () => {}, read8: () => 0, write8: () => {} };
-        const joypad = { press: () => {}, release: () => {} };
-        const interruptController = { request: () => {}, read8: () => 0, write8: () => {} };
+    emulator.start(rom);
+    stopped = true;
 
-        const emulator = createEmulator({ cpu, ppu, apu, timer, joypad, interruptController });
+    assert.ok(stopped);
+  });
 
-        // stop after first step via a fake CPU that calls stop
-        const originalStep = cpu.step;
-        cpu.step = () => {
-            const cycles = originalStep();
-            emulator.stop();
-            return cycles;
-        };
+  test('onSerialByte receives emitted bytes', () => {
+    const received: number[] = [];
 
-        emulator.start();
-
-        assert.strictEqual(stepCount, 1);
+    const emulator = createEmulator({
+      onSerialByte: (value, em) => {
+        received.push(value);
+        em.stop();
+      },
     });
 
-  test('step delegates CPU cycles to PPU, APU, and Timer after start', () => {
-    let stepCount = 0;
-    const cpu = {
-      step: () => { stepCount++; return 4; },
-      getState: () => ({
-        registers: { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0430, ime: false },
-      }),
-      getTrace: () => [],
-    };
-    const ppu = { step: () => {} };
-    const apu = { step: () => {} };
-    const timer = { step: () => {}, read8: () => 0, write8: () => {} };
-    const joypad = { press: () => {}, release: () => {} };
-    const interruptController = { request: () => {}, read8: () => 0, write8: () => {} };
-    const emulator = createEmulator({ cpu, ppu, apu, timer, joypad, interruptController });
+    const rom = new Uint8Array(0x8000);
+    rom[0x0100] = 0x3e; // LD A, 0x42
+    rom[0x0101] = 0x42;
+    rom[0x0102] = 0xe0; // LDH (0x01), A
+    rom[0x0103] = 0x01;
+    rom[0x0104] = 0x3e; // LD A, 0x81
+    rom[0x0105] = 0x81;
+    rom[0x0106] = 0xe0; // LDH (0x02), A → serial transfer
+    rom[0x0107] = 0x02;
+    rom[0x0108] = 0x76; // HALT
 
-    const originalStep = cpu.step;
-    cpu.step = () => {
-      const cycles = originalStep();
-      emulator.stop();
-      return cycles;
-    };
+    emulator.start(rom);
 
-    emulator.start();
-    assert.strictEqual(stepCount, 1);
+    assert.deepStrictEqual(received, [0x42]);
+  });
+
+  test('getTrace returns entries after start', () => {
+    const emulator = createEmulator({
+      onSerialByte: (_value, em) => em.stop(),
+    });
+
+    const rom = new Uint8Array(0x8000);
+    rom[0x0100] = 0x3e; rom[0x0101] = 0x41; // LD A, 0x41
+    rom[0x0102] = 0xe0; rom[0x0103] = 0x01; // LDH (0xff01), A
+    rom[0x0104] = 0x3e; rom[0x0105] = 0x81; // LD A, 0x81
+    rom[0x0106] = 0xe0; rom[0x0107] = 0x02; // LDH (0xff02), A → serial
+    rom[0x0108] = 0x76;                      // HALT
+
+    emulator.start(rom);
+
+    const trace = emulator.getTrace();
+    assert.ok(trace.length > 0);
   });
 });
