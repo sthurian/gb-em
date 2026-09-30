@@ -219,6 +219,7 @@ import { createRst20h } from './instructions/control/rst-20h.js';
 import { createRst28h } from './instructions/control/rst-28h.js';
 import { createRst30h } from './instructions/control/rst-30h.js';
 import { createRst38h } from './instructions/control/rst-38h.js';
+import { createLdA16Sp } from './instructions/load/ld-a16-sp.js';
 import { createLdBcIndirectA } from './instructions/load/ld-bc-indirect-a.js';
 
 type Opcode = {
@@ -461,6 +462,7 @@ const createOpcodeTable = ({
   opcodes[0xf7] = createRst30h({ mmu, registers });
   opcodes[0xff] = createRst38h({ mmu, registers });
   opcodes[0x02] = createLdBcIndirectA({ mmu, registers });
+  opcodes[0x08] = createLdA16Sp({ mmu, registers });
   return opcodes;
 };
 
