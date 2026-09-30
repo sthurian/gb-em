@@ -52,6 +52,7 @@ import { createJrNz } from './instructions/control/jr-nz-r8.js';
 import { createPopBc } from './instructions/control/pop-bc.js';
 import { createLdAIndirectA16 } from './instructions/load/ld-a-indirect-a16.js';
 import { createOrD8 } from './instructions/arithmetic/or-d8.js';
+import { createCallNz } from './instructions/control/call-nz-a16.js';
 
 type Opcode = {
   mnemonic: string;
@@ -113,6 +114,7 @@ const createOpcodeTable = ({
   opcodes[0xb1] = createOrC({ registers });
   opcodes[0xc1] = createPopBc({ mmu, registers });
   opcodes[0xc3] = createJp({ mmu, registers });
+  opcodes[0xc4] = createCallNz({ mmu, registers });
   opcodes[0xc5] = createPushBC({ mmu, registers });
   opcodes[0xc9] = createRet({ mmu, registers });
   opcodes[0xcd] = createCall({ mmu, registers });
