@@ -59,6 +59,11 @@ const createMMU = ({ cartridge, interruptController, serial, timer }: MMUDepende
       assertAddress(address);
       assertByte(value);
 
+      if (address <= 0x7fff) {
+        cartridge.write8(address, value);
+        return;
+      }
+
       if (address === 0xff01 || address === 0xff02) {
         serial.write8(address, value);
         return;
