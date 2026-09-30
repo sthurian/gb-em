@@ -58,6 +58,14 @@ import { createLdDeD16 } from './instructions/load/ld-de-d16.js';
 import { createLdAIndirectDe } from './instructions/load/ld-a-indirect-de.js';
 import { createIncDE } from './instructions/arithmetic/inc-de.js';
 import { createIncSP } from './instructions/arithmetic/inc-sp.js';
+import { createXorB } from './instructions/arithmetic/xor-b.js';
+import { createXorC } from './instructions/arithmetic/xor-c.js';
+import { createXorD } from './instructions/arithmetic/xor-d.js';
+import { createXorE } from './instructions/arithmetic/xor-e.js';
+import { createXorH } from './instructions/arithmetic/xor-h.js';
+import { createXorL } from './instructions/arithmetic/xor-l.js';
+import { createXorHLIndirect } from './instructions/arithmetic/xor-hl-indirect.js';
+import { createXorA } from './instructions/arithmetic/xor-a.js';
 
 type Opcode = {
   mnemonic: string;
@@ -121,6 +129,14 @@ const createOpcodeTable = ({
   opcodes[0x78] = createLdAB({ registers });
   opcodes[0x7c] = createLdAH({ registers });
   opcodes[0x7d] = createLdAL({ registers });
+  opcodes[0xa8] = createXorB({ registers });
+  opcodes[0xa9] = createXorC({ registers });
+  opcodes[0xaa] = createXorD({ registers });
+  opcodes[0xab] = createXorE({ registers });
+  opcodes[0xac] = createXorH({ registers });
+  opcodes[0xad] = createXorL({ registers });
+  opcodes[0xae] = createXorHLIndirect({ mmu, registers });
+  opcodes[0xaf] = createXorA({ registers });
   opcodes[0xb1] = createOrC({ registers });
   opcodes[0xc1] = createPopBc({ mmu, registers });
   opcodes[0xc3] = createJp({ mmu, registers });
