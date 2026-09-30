@@ -219,6 +219,7 @@ import { createRst20h } from './instructions/control/rst-20h.js';
 import { createRst28h } from './instructions/control/rst-28h.js';
 import { createRst30h } from './instructions/control/rst-30h.js';
 import { createRst38h } from './instructions/control/rst-38h.js';
+import { createLdAIndirectBC } from './instructions/load/ld-a-indirect-bc.js';
 import { createAddHLBC } from './instructions/arithmetic/add-hl-bc.js';
 import { createAddHLDE } from './instructions/arithmetic/add-hl-de.js';
 import { createAddHLHL } from './instructions/arithmetic/add-hl-hl.js';
@@ -471,6 +472,7 @@ const createOpcodeTable = ({
   opcodes[0x19] = createAddHLDE({ registers });
   opcodes[0x29] = createAddHLHL({ registers });
   opcodes[0x39] = createAddHLSP({ registers });
+  opcodes[0x0a] = createLdAIndirectBC({ mmu, registers });
   return opcodes;
 };
 
