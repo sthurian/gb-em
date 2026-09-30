@@ -42,6 +42,7 @@ import { createLdAHlInc } from './instructions/load/ld-a-hl-inc.js';
 import { createPopAF } from './instructions/control/pop-af.js';
 import { createPushBC } from './instructions/control/push-bc.js';
 import { createLdBcD16 } from './instructions/load/ld-bc-d16.js';
+import { createIncBC } from './instructions/arithmetic/inc-bc.js';
 
 type Opcode = {
   mnemonic: string;
@@ -63,6 +64,7 @@ const createOpcodeTable = ({
 
   opcodes[0x00] = createNop({ registers });
   opcodes[0x01] = createLdBcD16({ mmu, registers });
+  opcodes[0x03] = createIncBC({ registers });
   opcodes[0x06] = createLdBD8({ mmu, registers });
   opcodes[0x0e] = createLdCD8({ mmu, registers });
   opcodes[0x16] = createLdDD8({ mmu, registers });
