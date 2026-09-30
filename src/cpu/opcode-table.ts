@@ -164,6 +164,14 @@ import { createAdcAH } from './instructions/arithmetic/adc-a-h.js';
 import { createAdcAL } from './instructions/arithmetic/adc-a-l.js';
 import { createAdcAHLIndirect } from './instructions/arithmetic/adc-a-hl-indirect.js';
 import { createAdcAA } from './instructions/arithmetic/adc-a-a.js';
+import { createSbcAB } from './instructions/arithmetic/sbc-a-b.js';
+import { createSbcAC } from './instructions/arithmetic/sbc-a-c.js';
+import { createSbcAD } from './instructions/arithmetic/sbc-a-d.js';
+import { createSbcAE } from './instructions/arithmetic/sbc-a-e.js';
+import { createSbcAH } from './instructions/arithmetic/sbc-a-h.js';
+import { createSbcAL } from './instructions/arithmetic/sbc-a-l.js';
+import { createSbcAHLIndirect } from './instructions/arithmetic/sbc-a-hl-indirect.js';
+import { createSbcAA } from './instructions/arithmetic/sbc-a-a.js';
 
 type Opcode = {
   mnemonic: string;
@@ -313,6 +321,14 @@ const createOpcodeTable = ({
   opcodes[0x95] = createSubL({ registers });
   opcodes[0x96] = createSubHLIndirect({ mmu, registers });
   opcodes[0x97] = createSubA({ registers });
+  opcodes[0x98] = createSbcAB({ registers });
+  opcodes[0x99] = createSbcAC({ registers });
+  opcodes[0x9a] = createSbcAD({ registers });
+  opcodes[0x9b] = createSbcAE({ registers });
+  opcodes[0x9c] = createSbcAH({ registers });
+  opcodes[0x9d] = createSbcAL({ registers });
+  opcodes[0x9e] = createSbcAHLIndirect({ mmu, registers });
+  opcodes[0x9f] = createSbcAA({ registers });
   opcodes[0xc6] = createAddAD8({ mmu, registers });
   opcodes[0xd6] = createSubD8({ mmu, registers });
   opcodes[0xa8] = createXorB({ registers });
