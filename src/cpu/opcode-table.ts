@@ -56,6 +56,8 @@ import { createCallNz } from './instructions/control/call-nz-a16.js';
 import { createLdHlA } from './instructions/load/ld-hl-a.js';
 import { createLdDeD16 } from './instructions/load/ld-de-d16.js';
 import { createLdAIndirectDe } from './instructions/load/ld-a-indirect-de.js';
+import { createIncDE } from './instructions/arithmetic/inc-de.js';
+import { createIncSP } from './instructions/arithmetic/inc-sp.js';
 
 type Opcode = {
   mnemonic: string;
@@ -78,6 +80,8 @@ const createOpcodeTable = ({
   opcodes[0x00] = createNop({ registers });
   opcodes[0x01] = createLdBcD16({ mmu, registers });
   opcodes[0x03] = createIncBC({ registers });
+  opcodes[0x13] = createIncDE({ registers });
+  opcodes[0x33] = createIncSP({ registers });
   opcodes[0x06] = createLdBD8({ mmu, registers });
   opcodes[0x0e] = createLdCD8({ mmu, registers });
   opcodes[0x11] = createLdDeD16({ mmu, registers });
