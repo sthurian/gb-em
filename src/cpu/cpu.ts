@@ -1,4 +1,4 @@
-import { MMU } from '../mmu.js';
+import type { MMU } from '../mmu.js';
 import type { Opcode } from './opcode-table.js';
 
 type TraceEntry = {

@@ -1,4 +1,4 @@
-import { MMU } from '../mmu.js';
+import type { MMU } from '../mmu.js';
 import type { Registers } from './cpu.js';
 import { createIncB } from './instructions/arithmetic/inc-b.js';
 import { createIncC } from './instructions/arithmetic/inc-c.js';
