@@ -57,6 +57,7 @@ import { createLdHlA } from './instructions/load/ld-hl-a.js';
 import { createLdDeD16 } from './instructions/load/ld-de-d16.js';
 import { createLdAIndirectDe } from './instructions/load/ld-a-indirect-de.js';
 import { createLdHlIncA } from './instructions/load/ld-hl-inc-a.js';
+import { createAddAD8 } from './instructions/arithmetic/add-a-d8.js';
 import { createIncDE } from './instructions/arithmetic/inc-de.js';
 import { createIncSP } from './instructions/arithmetic/inc-sp.js';
 import { createXorB } from './instructions/arithmetic/xor-b.js';
@@ -131,6 +132,7 @@ const createOpcodeTable = ({
   opcodes[0x78] = createLdAB({ registers });
   opcodes[0x7c] = createLdAH({ registers });
   opcodes[0x7d] = createLdAL({ registers });
+  opcodes[0xc6] = createAddAD8({ mmu, registers });
   opcodes[0xa8] = createXorB({ registers });
   opcodes[0xa9] = createXorC({ registers });
   opcodes[0xaa] = createXorD({ registers });
