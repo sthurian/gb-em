@@ -72,6 +72,7 @@ import { createJrCR8 } from './instructions/control/jr-c-r8.js';
 import { createPopBc } from './instructions/control/pop-bc.js';
 import { createLdAIndirectA16 } from './instructions/load/ld-a-indirect-a16.js';
 import { createOrD8 } from './instructions/arithmetic/or-d8.js';
+import { createXorD8 } from './instructions/arithmetic/xor-d8.js';
 import { createCallNz } from './instructions/control/call-nz-a16.js';
 import { createCallZA16 } from './instructions/control/call-z-a16.js';
 import { createCallNcA16 } from './instructions/control/call-nc-a16.js';
@@ -480,7 +481,8 @@ const createOpcodeTable = ({
   opcodes[0xcd] = createCall({ mmu, registers });
   opcodes[0xe1] = createPopHL({ mmu, registers });
   opcodes[0xe5] = createPushHL({ mmu, registers });
-  opcodes[0xe6] = createOrD8({ mmu, registers });
+  opcodes[0xf6] = createOrD8({ mmu, registers });
+  opcodes[0xee] = createXorD8({ mmu, registers });
   opcodes[0xf0] = createLdhA8({ mmu, registers });
   opcodes[0xf1] = createPopAF({ mmu, registers });
   opcodes[0xf3] = createDi({ registers });
