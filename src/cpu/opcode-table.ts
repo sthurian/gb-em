@@ -67,6 +67,8 @@ import { createCpL } from './instructions/arithmetic/cp-l.js';
 import { createCpHLIndirect } from './instructions/arithmetic/cp-hl-indirect.js';
 import { createCpA } from './instructions/arithmetic/cp-a.js';
 import { createJrNz } from './instructions/control/jr-nz-r8.js';
+import { createJrNcR8 } from './instructions/control/jr-nc-r8.js';
+import { createJrCR8 } from './instructions/control/jr-c-r8.js';
 import { createPopBc } from './instructions/control/pop-bc.js';
 import { createLdAIndirectA16 } from './instructions/load/ld-a-indirect-a16.js';
 import { createOrD8 } from './instructions/arithmetic/or-d8.js';
@@ -240,6 +242,8 @@ const createOpcodeTable = ({
   opcodes[0x22] = createLdHlIncA({ mmu, registers });
   opcodes[0x23] = createIncHL({ registers });
   opcodes[0x28] = createJrZ({ mmu, registers });
+  opcodes[0x30] = createJrNcR8({ mmu, registers });
+  opcodes[0x38] = createJrCR8({ mmu, registers });
   opcodes[0x31] = createLdSpD16({ mmu, registers });
   opcodes[0x32] = createLdHlDecA({ mmu, registers });
   opcodes[0x36] = createLdHLD8({ mmu, registers });
