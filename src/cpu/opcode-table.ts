@@ -148,6 +148,10 @@ import { createLdLA } from './instructions/load/ld-l-a.js';
 import { createCbPrefix } from './instructions/control/cb-prefix.js';
 import { createIncDE } from './instructions/arithmetic/inc-de.js';
 import { createIncSP } from './instructions/arithmetic/inc-sp.js';
+import { createDecBC } from './instructions/arithmetic/dec-bc.js';
+import { createDecDE } from './instructions/arithmetic/dec-de.js';
+import { createDecSP } from './instructions/arithmetic/dec-sp.js';
+import { createDecHLRP } from './instructions/arithmetic/dec-hl-rp.js';
 import { createXorB } from './instructions/arithmetic/xor-b.js';
 import { createXorC } from './instructions/arithmetic/xor-c.js';
 import { createXorD } from './instructions/arithmetic/xor-d.js';
@@ -244,12 +248,16 @@ const createOpcodeTable = ({
   opcodes[0x3c] = createIncA({ registers });
 
   opcodes[0x05] = createDecB({ registers });
+  opcodes[0x0b] = createDecBC({ registers });
   opcodes[0x0d] = createDecC({ registers });
   opcodes[0x15] = createDecD({ registers });
+  opcodes[0x1b] = createDecDE({ registers });
   opcodes[0x1d] = createDecE({ registers });
   opcodes[0x25] = createDecH({ registers });
+  opcodes[0x2b] = createDecHLRP({ registers });
   opcodes[0x2d] = createDecL({ registers });
   opcodes[0x35] = createDecHL({ mmu, registers });
+  opcodes[0x3b] = createDecSP({ registers });
   opcodes[0x70] = createLdHLB({ mmu, registers });
   opcodes[0x71] = createLdHLC({ mmu, registers });
   opcodes[0x72] = createLdHLD({ mmu, registers });
