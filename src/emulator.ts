@@ -7,7 +7,8 @@ import type { Timer } from './timer.js';
 
 type Emulator = {
   step(): void;
-  start(isDone?: () => boolean): void;
+  start(): void;
+  stop(): void;
 };
 
 type EmulatorDependencies = {
@@ -22,6 +23,8 @@ type EmulatorDependencies = {
 const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
   const { cpu, ppu, apu, timer } = dependencies;
 
+  let stopped = false;
+
   const step = (): void => {
     const cycles = cpu.step();
     ppu.step(cycles);
@@ -31,11 +34,14 @@ const createEmulator = (dependencies: EmulatorDependencies): Emulator => {
 
   return {
     step,
-    start: (isDone?: () => boolean) => {
-      while (true) {
-        if (isDone?.()) break;
+    start: () => {
+      stopped = false;
+      while (!stopped) {
         step();
       }
+    },
+    stop: () => {
+      stopped = true;
     },
   };
 };

@@ -42,6 +42,10 @@ const output: SerialOutput = {
       process.stderr.write('\n');
       process.exit(1);
     }
+
+    if (serialOutput.includes('Passed') || serialOutput.includes('Failed')) {
+      emulator.stop();
+    }
   },
 };
 
@@ -53,4 +57,4 @@ const apu = createAPU();
 const joypad = createJoypad();
 const emulator = createEmulator({ cpu, ppu, apu, timer, joypad, interruptController });
 
-emulator.start(() => serialOutput.includes('Passed') || serialOutput.includes('Failed'));
+emulator.start();

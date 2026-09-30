@@ -75,74 +75,41 @@ suite('Emulator', () => {
         assert.deepStrictEqual(timerCycles, [4]);
     });
 
-    test('starts stepping the emulator', () => {
+    test('starts and stops the emulator', () => {
+        let stepCount = 0;
         const cpu = {
-            step: () => {
-                throw new Error('stop');
-            },
+            step: () => { stepCount++; return 4; },
             getState: () => ({
-                registers: {
-                    a: 0,
-                    f: 0,
-                    b: 0,
-                    c: 0,
-                    d: 0,
-                    e: 0,
-                    h: 0,
-                    l: 0,
-                    sp: 0,
-                    pc: 0,
-                    ime: false,
-                },
+                registers: { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0, ime: false },
             }),
             getTrace: () => [],
         };
 
-        const ppu = {
-            step: () => { },
+        const ppu = { step: () => {} };
+        const apu = { step: () => {} };
+        const timer = { step: () => {}, read8: () => 0, write8: () => {} };
+        const joypad = { press: () => {}, release: () => {} };
+        const interruptController = { request: () => {}, read8: () => 0, write8: () => {} };
+
+        const emulator = createEmulator({ cpu, ppu, apu, timer, joypad, interruptController });
+
+        // stop after first step via a fake CPU that calls stop
+        const originalStep = cpu.step;
+        cpu.step = () => {
+            const cycles = originalStep();
+            emulator.stop();
+            return cycles;
         };
 
-        const apu = {
-            step: () => { },
-        };
+        emulator.start();
 
-        const timer = {
-            step: () => { },
-            read8: () => 0,
-            write8: () => {},
-        };
-
-        const joypad = {
-            press: () => { },
-            release: () => { },
-        };
-
-        const interruptController = {
-            request: () => { },
-            read8: () => 0,
-            write8: () => {},
-        };
-
-        const emulator = createEmulator({
-            cpu,
-            ppu,
-            apu,
-            timer,
-            joypad,
-            interruptController,
-        });
-
-        assert.throws(() => emulator.start(), /stop/);
+        assert.strictEqual(stepCount, 1);
     });
 
-  test('counts hits when PC equals 0x0430', () => {
-    let callCount = 0;
+  test('step delegates CPU cycles to PPU, APU, and Timer after start', () => {
+    let stepCount = 0;
     const cpu = {
-      step: () => {
-        callCount++;
-        if (callCount > 1) throw new Error('stop');
-        return 4;
-      },
+      step: () => { stepCount++; return 4; },
       getState: () => ({
         registers: { a: 0, f: 0, b: 0, c: 0, d: 0, e: 0, h: 0, l: 0, sp: 0, pc: 0x0430, ime: false },
       }),
@@ -154,6 +121,15 @@ suite('Emulator', () => {
     const joypad = { press: () => {}, release: () => {} };
     const interruptController = { request: () => {}, read8: () => 0, write8: () => {} };
     const emulator = createEmulator({ cpu, ppu, apu, timer, joypad, interruptController });
-    assert.throws(() => emulator.start(), /stop/);
+
+    const originalStep = cpu.step;
+    cpu.step = () => {
+      const cycles = originalStep();
+      emulator.stop();
+      return cycles;
+    };
+
+    emulator.start();
+    assert.strictEqual(stepCount, 1);
   });
 });
