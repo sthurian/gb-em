@@ -44,6 +44,7 @@ import { createPushBC } from './instructions/control/push-bc.js';
 import { createLdBcD16 } from './instructions/load/ld-bc-d16.js';
 import { createIncBC } from './instructions/arithmetic/inc-bc.js';
 import { createLdAB } from './instructions/load/ld-a-b.js';
+import { createOrC } from './instructions/arithmetic/or-c.js';
 
 type Opcode = {
   mnemonic: string;
@@ -100,6 +101,7 @@ const createOpcodeTable = ({
   opcodes[0x78] = createLdAB({ registers });
   opcodes[0x7c] = createLdAH({ registers });
   opcodes[0x7d] = createLdAL({ registers });
+  opcodes[0xb1] = createOrC({ registers });
   opcodes[0xc3] = createJp({ mmu, registers });
   opcodes[0xc5] = createPushBC({ mmu, registers });
   opcodes[0xc9] = createRet({ mmu, registers });
