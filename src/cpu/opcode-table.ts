@@ -172,6 +172,14 @@ import { createSbcAH } from './instructions/arithmetic/sbc-a-h.js';
 import { createSbcAL } from './instructions/arithmetic/sbc-a-l.js';
 import { createSbcAHLIndirect } from './instructions/arithmetic/sbc-a-hl-indirect.js';
 import { createSbcAA } from './instructions/arithmetic/sbc-a-a.js';
+import { createAndB } from './instructions/arithmetic/and-b.js';
+import { createAndC } from './instructions/arithmetic/and-c.js';
+import { createAndD } from './instructions/arithmetic/and-d.js';
+import { createAndE } from './instructions/arithmetic/and-e.js';
+import { createAndH } from './instructions/arithmetic/and-h.js';
+import { createAndL } from './instructions/arithmetic/and-l.js';
+import { createAndHLIndirect } from './instructions/arithmetic/and-hl-indirect.js';
+import { createAndA } from './instructions/arithmetic/and-a.js';
 
 type Opcode = {
   mnemonic: string;
@@ -331,6 +339,14 @@ const createOpcodeTable = ({
   opcodes[0x9f] = createSbcAA({ registers });
   opcodes[0xc6] = createAddAD8({ mmu, registers });
   opcodes[0xd6] = createSubD8({ mmu, registers });
+  opcodes[0xa0] = createAndB({ registers });
+  opcodes[0xa1] = createAndC({ registers });
+  opcodes[0xa2] = createAndD({ registers });
+  opcodes[0xa3] = createAndE({ registers });
+  opcodes[0xa4] = createAndH({ registers });
+  opcodes[0xa5] = createAndL({ registers });
+  opcodes[0xa6] = createAndHLIndirect({ mmu, registers });
+  opcodes[0xa7] = createAndA({ registers });
   opcodes[0xa8] = createXorB({ registers });
   opcodes[0xa9] = createXorC({ registers });
   opcodes[0xaa] = createXorD({ registers });
