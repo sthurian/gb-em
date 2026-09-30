@@ -245,17 +245,7 @@ import { createAddHLHL } from './instructions/arithmetic/add-hl-hl.js';
 import { createAddHLSP } from './instructions/arithmetic/add-hl-sp.js';
 import { createLdA16Sp } from './instructions/load/ld-a16-sp.js';
 import { createLdBcIndirectA } from './instructions/load/ld-bc-indirect-a.js';
-import { createIllegal0xD3 } from './instructions/control/illegal-d3.js';
-import { createIllegal0xDB } from './instructions/control/illegal-db.js';
-import { createIllegal0xDD } from './instructions/control/illegal-dd.js';
-import { createIllegal0xE3 } from './instructions/control/illegal-e3.js';
-import { createIllegal0xE4 } from './instructions/control/illegal-e4.js';
-import { createIllegal0xEB } from './instructions/control/illegal-eb.js';
-import { createIllegal0xEC } from './instructions/control/illegal-ec.js';
-import { createIllegal0xED } from './instructions/control/illegal-ed.js';
-import { createIllegal0xF4 } from './instructions/control/illegal-f4.js';
-import { createIllegal0xFC } from './instructions/control/illegal-fc.js';
-import { createIllegal0xFD } from './instructions/control/illegal-fd.js';
+import { createIllegalOpcode } from './instructions/control/illegal-opcode.js';
 
 type Opcode = {
   mnemonic: string;
@@ -524,17 +514,9 @@ const createOpcodeTable = ({
   opcodes[0xf9] = createLdSpHL({ registers });
   opcodes[0xf2] = createLdhAC({ mmu, registers });
   opcodes[0xfb] = createEi({ registers });
-  opcodes[0xd3] = createIllegal0xD3({});
-  opcodes[0xdb] = createIllegal0xDB({});
-  opcodes[0xdd] = createIllegal0xDD({});
-  opcodes[0xe3] = createIllegal0xE3({});
-  opcodes[0xe4] = createIllegal0xE4({});
-  opcodes[0xeb] = createIllegal0xEB({});
-  opcodes[0xec] = createIllegal0xEC({});
-  opcodes[0xed] = createIllegal0xED({});
-  opcodes[0xf4] = createIllegal0xF4({});
-  opcodes[0xfc] = createIllegal0xFC({});
-  opcodes[0xfd] = createIllegal0xFD({});
+  for (const opcode of [0xd3, 0xdb, 0xdd, 0xe3, 0xe4, 0xeb, 0xec, 0xed, 0xf4, 0xfc, 0xfd]) {
+    opcodes[opcode] = createIllegalOpcode(opcode);
+  }
   return opcodes;
 };
 
