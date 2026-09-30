@@ -148,6 +148,14 @@ import { createAddAH } from './instructions/arithmetic/add-a-h.js';
 import { createAddAL } from './instructions/arithmetic/add-a-l.js';
 import { createAddAHLIndirect } from './instructions/arithmetic/add-a-hl-indirect.js';
 import { createAddAA } from './instructions/arithmetic/add-a-a.js';
+import { createAdcAB } from './instructions/arithmetic/adc-a-b.js';
+import { createAdcAC } from './instructions/arithmetic/adc-a-c.js';
+import { createAdcAD } from './instructions/arithmetic/adc-a-d.js';
+import { createAdcAE } from './instructions/arithmetic/adc-a-e.js';
+import { createAdcAH } from './instructions/arithmetic/adc-a-h.js';
+import { createAdcAL } from './instructions/arithmetic/adc-a-l.js';
+import { createAdcAHLIndirect } from './instructions/arithmetic/adc-a-hl-indirect.js';
+import { createAdcAA } from './instructions/arithmetic/adc-a-a.js';
 
 type Opcode = {
   mnemonic: string;
@@ -281,6 +289,14 @@ const createOpcodeTable = ({
   opcodes[0x85] = createAddAL({ registers });
   opcodes[0x86] = createAddAHLIndirect({ mmu, registers });
   opcodes[0x87] = createAddAA({ registers });
+  opcodes[0x88] = createAdcAB({ registers });
+  opcodes[0x89] = createAdcAC({ registers });
+  opcodes[0x8a] = createAdcAD({ registers });
+  opcodes[0x8b] = createAdcAE({ registers });
+  opcodes[0x8c] = createAdcAH({ registers });
+  opcodes[0x8d] = createAdcAL({ registers });
+  opcodes[0x8e] = createAdcAHLIndirect({ mmu, registers });
+  opcodes[0x8f] = createAdcAA({ registers });
   opcodes[0xc6] = createAddAD8({ mmu, registers });
   opcodes[0xd6] = createSubD8({ mmu, registers });
   opcodes[0xa8] = createXorB({ registers });
