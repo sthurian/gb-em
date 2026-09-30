@@ -18,9 +18,7 @@ suite('LD SP,d16', () => {
       data: cartridgeData,
     });
 
-    const serial = createSerial({
-      onByte: () => {},
-    });
+    const serial = createSerial({ output: { onByte: () => {} } });
 
     const mmu = createMMU({
       cartridge,

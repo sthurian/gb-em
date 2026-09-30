@@ -13,7 +13,7 @@ suite('MMU', () => {
       data: new Uint8Array(0x8000),
     });
 
-    const serial = createSerial({ onByte: () => {}});
+    const serial = createSerial({ output: { onByte: () => {} } });
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
 
@@ -37,7 +37,7 @@ suite('MMU', () => {
     cartridgeData[0x1234] = 0x42;
 
     const cartridge = createCartridge({ data: cartridgeData });
-    const serial = createSerial({ onByte: () => {}});
+    const serial = createSerial({ output: { onByte: () => {} } });
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
     const mmu = createMMU({ cartridge, interruptController, serial, timer });
@@ -65,7 +65,7 @@ suite('MMU', () => {
     cartridgeData[0x7fff] = 0xcd;
 
     const cartridge = createCartridge({ data: cartridgeData });
-    const serial = createSerial({ onByte: () => {}});
+    const serial = createSerial({ output: { onByte: () => {} } });
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
     const mmu = createMMU({ cartridge, interruptController, serial, timer });

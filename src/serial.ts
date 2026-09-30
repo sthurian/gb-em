@@ -3,11 +3,15 @@ type Serial = {
   write8(address: number, value: number): void;
 };
 
-type SerialDependencies = {
-  onByte: (value: number) => void;
+type SerialOutput = {
+  onByte(value: number): void;
 };
 
-const createSerial = ({ onByte }: SerialDependencies): Serial => {
+type SerialDependencies = {
+  output: SerialOutput;
+};
+
+const createSerial = ({ output }: SerialDependencies): Serial => {
   let data = 0;
 
   return {
@@ -19,11 +23,11 @@ const createSerial = ({ onByte }: SerialDependencies): Serial => {
       }
 
       if (address === 0xff02 && value === 0x81) {
-        onByte(data);
+        output.onByte(data);
       }
     },
   };
 };
 
 export { createSerial };
-export type { Serial };
+export type { Serial, SerialOutput };

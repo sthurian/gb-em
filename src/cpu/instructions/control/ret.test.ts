@@ -14,9 +14,7 @@ suite('RET', () => {
       data: new Uint8Array(0x8000),
     });
 
-    const serial = createSerial({
-      onByte: () => {},
-    });
+    const serial = createSerial({ output: { onByte: () => {} } });
 
     const mmu = createMMU({
       cartridge,
