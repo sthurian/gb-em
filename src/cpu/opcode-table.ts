@@ -49,6 +49,7 @@ import { createJrZ } from './instructions/control/jr-z-r8.js';
 import { createLdhA8 } from './instructions/load/ldh-a8.js';
 import { createCpD8 } from './instructions/arithmetic/cp-d8.js';
 import { createJrNz } from './instructions/control/jr-nz-r8.js';
+import { createPopBc } from './instructions/control/pop-bc.js';
 
 type Opcode = {
   mnemonic: string;
@@ -108,6 +109,7 @@ const createOpcodeTable = ({
   opcodes[0x7c] = createLdAH({ registers });
   opcodes[0x7d] = createLdAL({ registers });
   opcodes[0xb1] = createOrC({ registers });
+  opcodes[0xc1] = createPopBc({ mmu, registers });
   opcodes[0xc3] = createJp({ mmu, registers });
   opcodes[0xc5] = createPushBC({ mmu, registers });
   opcodes[0xc9] = createRet({ mmu, registers });
