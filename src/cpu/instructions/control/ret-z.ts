@@ -19,6 +19,9 @@ const createRetZ = ({ mmu, registers }: RetZDependencies) => {
         return 8;
       }
 
+      tick(); // internal cycle before pop
+
+
       const low = mmu.read8(registers.sp); tick();
       const high = mmu.read8(registers.sp + 1); tick();
 

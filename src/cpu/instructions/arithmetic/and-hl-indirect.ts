@@ -12,7 +12,8 @@ const createAndHLIndirect = ({ mmu, registers }: AndHLIndirectDependencies) => {
     bytes: 1,
     execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
-      registers.a = registers.a & mmu.read8(address);
+      const val = mmu.read8(address); tick();
+    registers.a = registers.a & val;
       registers.f = (registers.a === 0 ? 0x80 : 0x00) | 0x20;
       registers.pc = (registers.pc + 1) & 0xffff;
 

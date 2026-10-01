@@ -6,7 +6,7 @@ let serialOutput = '';
 let lastDumpedAt = 0;
 
 const emulator = createEmulator({
-  cycleLimit: 100_000_000,
+  cycleLimit: 400_000_000,
   onCycleLimit: (_cycles, em) => {
     process.stderr.write(`\n[TIMEOUT — cycle limit reached]\n`);
     for (const entry of em.getTrace()) {

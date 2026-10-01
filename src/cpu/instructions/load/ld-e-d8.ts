@@ -13,7 +13,7 @@ const createLdED8 = ({
   mnemonic: 'LD E,d8',
   bytes: 2,
   execute: (tick = () => {}) => {
-    const value = mmu.read8((registers.pc + 1) & 0xffff);
+    const value = mmu.read8((registers.pc + 1) & 0xffff); tick();
 
     registers.e = value;
     registers.pc = (registers.pc + 2) & 0xffff;
