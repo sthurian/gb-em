@@ -16,12 +16,14 @@ suite('Timer', () => {
 
   test('DIV increments with cycles', () => {
     const timer = makeTimer();
+    timer.write8(0xff04, 0); // reset DIV to known state
     timer.step(256);
     assert.strictEqual(timer.read8(0xff04), 1);
   });
 
   test('DIV resets to 0 on write', () => {
     const timer = makeTimer();
+    timer.write8(0xff04, 0);
     timer.step(256);
     timer.write8(0xff04, 0x42);
     assert.strictEqual(timer.read8(0xff04), 0);

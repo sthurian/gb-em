@@ -21,7 +21,7 @@ type InterruptController = {
 
 const createInterruptController = (): InterruptController => {
   let ie = 0x00;
-  let ifl = 0x00;
+  let ifl = 0x01; // VBlank flag set after boot ROM completes
 
   return {
     read8: (address) => {

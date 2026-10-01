@@ -19,7 +19,7 @@ const TIMA_CYCLES: Record<number, number> = {
 };
 
 const createTimer = ({ interruptController }: TimerDependencies): Timer => {
-  let div = 0;       // internal 16-bit counter; DIV register = high byte
+  let div = 0xabcc;  // internal 16-bit counter; DIV register = high byte (0xAB after boot ROM)
   let tima = 0;
   let tma = 0;
   let tac = 0;
