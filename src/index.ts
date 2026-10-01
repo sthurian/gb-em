@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { createEmulator } from './emulator.js';
 
 const romPath = process.argv[2];
@@ -10,4 +11,5 @@ const emulator = createEmulator({
   onSerialByte: (value) => process.stdout.write(String.fromCharCode(value)),
 });
 
-emulator.start(romPath);
+emulator.load(new Uint8Array(readFileSync(romPath)));
+while (true) emulator.runFrame();

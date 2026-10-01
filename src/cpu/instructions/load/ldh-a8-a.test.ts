@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { createCartridge } from '../../../cartridge.js';
 import { createInterruptController } from '../../../interrupt-controller.js';
 import { createPPU } from '../../../ppu.js';
+import { createJoypad } from '../../../joypad.js';
 import { createTimer } from '../../../timer.js';
 import { createMMU } from '../../../mmu.js';
 import { createSerial } from '../../../serial.js';
@@ -27,6 +28,7 @@ suite('LDH (a8),A', () => {
       interruptController,
       timer: createTimer({ interruptController }),
       ppu: createPPU({ interruptController }),
+      joypad: createJoypad({ interruptController }),
     });
 
     const registers: Registers = {

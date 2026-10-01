@@ -21,7 +21,7 @@ suite('Emulator', () => {
     rom[0x0107] = 0x02;
     rom[0x0108] = 0x76; // HALT
 
-    emulator.start(rom);
+    emulator.load(rom); for (let i = 0; i < 1000; i++) emulator.runFrame();
     stopped = true;
 
     assert.ok(stopped);
@@ -48,7 +48,7 @@ suite('Emulator', () => {
     rom[0x0107] = 0x02;
     rom[0x0108] = 0x76; // HALT
 
-    emulator.start(rom);
+    emulator.load(rom); for (let i = 0; i < 1000; i++) emulator.runFrame();
 
     assert.deepStrictEqual(received, [0x42]);
   });
@@ -65,7 +65,7 @@ suite('Emulator', () => {
     rom[0x0106] = 0xe0; rom[0x0107] = 0x02; // LDH (0xff02), A → serial
     rom[0x0108] = 0x76;                      // HALT
 
-    emulator.start(rom);
+    emulator.load(rom); for (let i = 0; i < 1000; i++) emulator.runFrame();
 
     const trace = emulator.getTrace();
     assert.ok(trace.length > 0);

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { createEmulator } from './emulator.js';
 
 const romPath = process.argv[2] ?? './roms/cpu_instrs.gb';
@@ -67,4 +68,10 @@ const emulator = createEmulator({
   },
 });
 
-emulator.start(romPath);
+emulator.load(new Uint8Array(readFileSync(romPath)));
+let totalCycles = 0;
+const cycleLimit = 400_000_000;
+while (totalCycles < cycleLimit) {
+  emulator.runFrame();
+  totalCycles += 70224;
+}

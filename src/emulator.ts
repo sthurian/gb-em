@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { createAPU } from './apu.js';
 import { createCartridge } from './cartridge.js';
 import { createCPU } from './cpu/cpu.js';
@@ -15,75 +14,89 @@ import { createTimer } from './timer.js';
 type EmulatorHooks = {
   onSerialByte?(value: number, emulator: Emulator): void;
   onCycleLimit?(totalCycles: number, emulator: Emulator): void;
+  onFrame?(pixels: Uint8ClampedArray): void;
   cycleLimit?: number;
 };
 
 type Emulator = {
-  start(rom: string | Uint8Array): void;
+  load(rom: Uint8Array): void;
+  runFrame(): void;
   stop(): void;
+  pressButton(button: import('./joypad.js').Button): void;
+  releaseButton(button: import('./joypad.js').Button): void;
   getTrace(): TraceEntry[];
   read8(address: number): number;
 };
 
+const CYCLES_PER_FRAME = 70224;
+
 const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
-  let stopped = false;
+  let cpu: ReturnType<typeof createCPU> | null = null;
+  let lastTrace: TraceEntry[] = [];
+  let mmu: ReturnType<typeof createMMU> | null = null;
+  let joypad: ReturnType<typeof createJoypad> | null = null;
+  let ppu: ReturnType<typeof createPPU> | null = null;
+  let apu: ReturnType<typeof createAPU> | null = null;
+  let timer: ReturnType<typeof createTimer> | null = null;
+  let tick: () => void = () => {};
   let getTrace: () => TraceEntry[] = () => [];
 
   const emulator: Emulator = {
-    start: (rom) => {
-      const data = typeof rom === 'string' ? readFileSync(rom) : rom;
+    load: (rom) => {
+      const data = rom;
 
       const cartridge = createCartridge({ data });
       const interruptController = createInterruptController();
-      const timer = createTimer({ interruptController });
-      const ppu = createPPU({ interruptController });
+      timer = createTimer({ interruptController });
+      ppu = createPPU({ interruptController, onFrame: hooks.onFrame });
       const registers = createRegisters();
       const serial = createSerial({
         output: {
           onByte: (value) => hooks.onSerialByte?.(value, emulator),
         },
       });
-      const mmu = createMMU({ cartridge, interruptController, ppu, serial, timer });
-      const cpu = createCPU({ mmu, registers, buildOpcodeTable: createOpcodeTable });
-      const apu = createAPU();
-      const joypad = createJoypad();
+      joypad = createJoypad({ interruptController });
+      mmu = createMMU({ cartridge, interruptController, joypad, ppu, serial, timer });
+      cpu = createCPU({ mmu, registers, buildOpcodeTable: createOpcodeTable });
+      apu = createAPU();
 
-      getTrace = () => cpu.getTrace();
-      emulator.read8 = (address) => mmu.read8(address);
-      stopped = false;
+      getTrace = () => { lastTrace = cpu?.getTrace() ?? lastTrace; return lastTrace; };
+      emulator.read8 = (address) => mmu!.read8(address);
+      tick = () => { ppu!.step(4); apu!.step(4); timer!.step(4); };
+    },
 
-      let totalCycles = 0;
-      const cycleLimit = hooks.cycleLimit ?? Infinity;
-      const tick = () => { ppu.step(4); apu.step(4); timer.step(4); };
+    runFrame: () => {
+      if (!cpu) return;
 
-      let lastPc = -1;
+      const cycleLimit = hooks.cycleLimit ?? CYCLES_PER_FRAME;
+      let cycles = 0;
       let sameCount = 0;
 
-      while (!stopped) {
+      while (cpu && cycles < cycleLimit) {
+        const registers = cpu.getState().registers;
         const pc = registers.pc;
-        const cycles = cpu.step(tick);
-        totalCycles += cycles;
-        if (registers.pc === pc && !cpu.isHalted()) {
+        const stepped = cpu.step(tick);
+        cycles += stepped;
+
+        if (cpu && cpu.getState().registers.pc === pc && !cpu.isHalted()) {
           sameCount++;
           if (sameCount >= 100) {
-            hooks.onCycleLimit?.(totalCycles, emulator);
-            break;
+            hooks.onCycleLimit?.(cycles, emulator);
+            return;
           }
         } else {
           sameCount = 0;
-        }
-        lastPc = pc;
-        if (totalCycles >= cycleLimit) {
-          hooks.onCycleLimit?.(totalCycles, emulator);
-          break;
         }
       }
     },
 
     stop: () => {
-      stopped = true;
+      if (cpu) lastTrace = cpu.getTrace();
+      cpu = null;
     },
 
+    pressButton: (button) => joypad?.press(button),
+    releaseButton: (button) => joypad?.release(button),
     getTrace: () => getTrace(),
     read8: (_address) => 0xff,
   };
