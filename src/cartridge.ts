@@ -54,7 +54,7 @@ const createCartridge = ({ data }: CartridgeDependencies): Cartridge => {
   }
 
   function activeRamBank(): number {
-    if (isMbc1 && mbc1Mode === 0) return 0;
+    if (isMbc1) return mbc1Mode === 1 ? romBankHi : 0;
     return ramBank;
   }
 

@@ -93,6 +93,14 @@ const createPPU = ({ interruptController, onFrame }: PPUDependencies): PPU => {
   const renderBG = () => {
     if (!(lcdc & 0x01)) {
       bgColorIndex.fill(0);
+      const [r, g, b] = GB_COLORS[0]!;
+      for (let x = 0; x < 160; x++) {
+        const fbIdx = (ly * 160 + x) * 4;
+        framebuffer[fbIdx]     = r;
+        framebuffer[fbIdx + 1] = g;
+        framebuffer[fbIdx + 2] = b;
+        framebuffer[fbIdx + 3] = 255;
+      }
       return;
     }
 
