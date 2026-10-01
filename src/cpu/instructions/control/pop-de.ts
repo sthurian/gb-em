@@ -10,9 +10,9 @@ const createPopDE = ({ mmu, registers }: PopDEDependencies) => {
   return {
     mnemonic: 'POP DE',
     bytes: 1,
-    execute: () => {
-      const low = mmu.read8(registers.sp);
-      const high = mmu.read8(registers.sp + 1);
+    execute: (tick = () => {}) => {
+      const low = mmu.read8(registers.sp); tick();
+      const high = mmu.read8(registers.sp + 1); tick();
 
       registers.e = low;
       registers.d = high;

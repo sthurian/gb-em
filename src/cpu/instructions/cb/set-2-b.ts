@@ -7,7 +7,7 @@ type Set2BDependencies = {
 const createSet2B = ({ registers }: Set2BDependencies) => ({
   mnemonic: 'SET 2,B',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.b = (registers.b | (1 << 2)) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

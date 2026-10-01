@@ -10,9 +10,9 @@ const createCpHLIndirect = ({ mmu, registers }: CpHLIndirectDependencies) => {
   return {
     mnemonic: 'CP (HL)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
-      const value = mmu.read8(address);
+      const value = mmu.read8(address); tick();
       const result = registers.a - value;
 
       const zero = (result & 0xff) === 0;

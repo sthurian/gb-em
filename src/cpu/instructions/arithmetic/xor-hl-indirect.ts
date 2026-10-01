@@ -10,7 +10,7 @@ const createXorHLIndirect = ({ mmu, registers }: XorHLIndirectDependencies) => {
   return {
     mnemonic: 'XOR (HL)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
       registers.a = registers.a ^ mmu.read8(address);
       registers.f = registers.a === 0 ? 0x80 : 0x00;

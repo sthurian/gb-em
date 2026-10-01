@@ -10,10 +10,10 @@ const createLdHLC = ({ mmu, registers }: LdHlCDependencies) => {
   return {
     mnemonic: 'LD (HL),C',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
 
-      mmu.write8(address, registers.c);
+      mmu.write8(address, registers.c); tick();
 
       registers.pc = (registers.pc + 1) & 0xffff;
 

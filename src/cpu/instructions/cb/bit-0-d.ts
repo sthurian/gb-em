@@ -7,7 +7,7 @@ type Bit0DDependencies = {
 const createBit0D = ({ registers }: Bit0DDependencies) => ({
   mnemonic: 'BIT 0,D',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.d;
     registers.f = ((val & (1 << 0)) === 0 ? 0x80 : 0x00) | 0x20 | (registers.f & 0x10);
     registers.pc = (registers.pc + 1) & 0xffff;

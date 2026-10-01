@@ -13,10 +13,10 @@ const createLdAIndirectBC = ({
   return {
     mnemonic: 'LD A,(BC)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.b << 8) | registers.c;
 
-      registers.a = mmu.read8(address);
+      registers.a = mmu.read8(address); tick();
       registers.pc = (registers.pc + 1) & 0xffff;
 
       return 8;

@@ -7,7 +7,7 @@ type RlEDependencies = {
 const createRlE = ({ registers }: RlEDependencies) => ({
   mnemonic: 'RL E',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.e;
     const oldCarry = (registers.f >> 4) & 1;
     const result = ((val << 1) | oldCarry) & 0xff;

@@ -7,7 +7,7 @@ type SrlCDependencies = {
 const createSrlC = ({ registers }: SrlCDependencies) => ({
   mnemonic: 'SRL C',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.c;
     const result = (val >> 1) & 0xff;
     const carry = val & 1;

@@ -15,12 +15,12 @@ const createDecHL = ({ mmu, registers }: DecHLDependencies) => ({
   mnemonic: 'DEC (HL)',
   bytes: 1,
 
-  execute: () => {
+  execute: (tick = () => {}) => {
     const address = (registers.h << 8) | registers.l;
-    const value = mmu.read8(address);
+    const value = mmu.read8(address); tick();
     const result = decrement8(value);
 
-    mmu.write8(address, result.value);
+    mmu.write8(address, result.value); tick();
 
     registers.f = result.zero
       ? registers.f | FLAG_Z

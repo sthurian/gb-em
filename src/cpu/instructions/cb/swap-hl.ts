@@ -9,11 +9,11 @@ type SwapHLDependencies = {
 const createSwapHL = ({ mmu, registers }: SwapHLDependencies) => ({
   mnemonic: 'SWAP (HL)',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const addr = (registers.h << 8) | registers.l;
-    const val = mmu.read8(addr);
+    const val = mmu.read8(addr); tick();
     const result = ((val & 0x0f) << 4) | ((val & 0xf0) >> 4);
-    mmu.write8(addr, result);
+    mmu.write8(addr, result); tick();
     registers.f = result === 0 ? 0x80 : 0x00;
     registers.pc = (registers.pc + 1) & 0xffff;
 

@@ -7,7 +7,7 @@ type RrHDependencies = {
 const createRrH = ({ registers }: RrHDependencies) => ({
   mnemonic: 'RR H',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.h;
     const oldCarry = (registers.f >> 4) & 1;
     const result = ((val >> 1) | (oldCarry << 7)) & 0xff;

@@ -10,8 +10,8 @@ const createAndD8 = ({ mmu, registers }: AndD8Dependencies) => {
   return {
     mnemonic: 'AND d8',
     bytes: 2,
-    execute: () => {
-      const value = mmu.read8(registers.pc + 1);
+    execute: (tick = () => {}) => {
+      const value = mmu.read8(registers.pc + 1); tick();
 
       registers.a = registers.a & value;
       registers.f = (registers.a === 0 ? 0x80 : 0x00) | 0x20;

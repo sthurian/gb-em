@@ -52,12 +52,10 @@ const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
 
       let totalCycles = 0;
       const cycleLimit = hooks.cycleLimit ?? Infinity;
+      const tick = () => { ppu.step(4); apu.step(4); timer.step(4); };
 
       while (!stopped) {
-        const cycles = cpu.step();
-        ppu.step(cycles);
-        apu.step(cycles);
-        timer.step(cycles);
+        const cycles = cpu.step(tick);
         totalCycles += cycles;
         if (totalCycles >= cycleLimit) {
           hooks.onCycleLimit?.(totalCycles, emulator);

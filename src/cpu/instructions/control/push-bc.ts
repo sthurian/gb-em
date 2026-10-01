@@ -10,11 +10,12 @@ const createPushBC = ({ mmu, registers }: PushBCDependencies) => {
   return {
     mnemonic: 'PUSH BC',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
+      tick(); // internal cycle before push
       registers.sp = (registers.sp - 2) & 0xffff;
 
-      mmu.write8(registers.sp, registers.c);
-      mmu.write8(registers.sp + 1, registers.b);
+      mmu.write8(registers.sp, registers.c); tick();
+      mmu.write8(registers.sp + 1, registers.b); tick();
 
       registers.pc = (registers.pc + 1) & 0xffff;
 

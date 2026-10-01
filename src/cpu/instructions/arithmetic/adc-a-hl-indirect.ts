@@ -10,9 +10,9 @@ const createAdcAHLIndirect = ({ mmu, registers }: AdcAHLIndirectDependencies) =>
   return {
     mnemonic: 'ADC A,(HL)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
-      const value = mmu.read8(address);
+      const value = mmu.read8(address); tick();
       const carry = (registers.f >> 4) & 1;
       const result = registers.a + value + carry;
 

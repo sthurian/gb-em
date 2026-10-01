@@ -7,7 +7,7 @@ type Res3CDependencies = {
 const createRes3C = ({ registers }: Res3CDependencies) => ({
   mnemonic: 'RES 3,C',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.c = registers.c & ~(1 << 3) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

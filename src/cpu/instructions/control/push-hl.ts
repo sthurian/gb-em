@@ -10,11 +10,12 @@ const createPushHL = ({ mmu, registers }: PushHLDependencies) => {
   return {
     mnemonic: 'PUSH HL',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
+      tick(); // internal cycle before push
       registers.sp = (registers.sp - 2) & 0xffff;
 
-      mmu.write8(registers.sp, registers.l);
-      mmu.write8(registers.sp + 1, registers.h);
+      mmu.write8(registers.sp, registers.l); tick();
+      mmu.write8(registers.sp + 1, registers.h); tick();
 
       registers.pc = (registers.pc + 1) & 0xffff;
 

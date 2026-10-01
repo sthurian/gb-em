@@ -8,7 +8,7 @@ type TraceEntry = {
 };
 
 type CPU = {
-  step(): number;
+  step(tick?: () => void): number;
   getState(): CPUState;
   getTrace(): TraceEntry[];
 };
@@ -67,20 +67,26 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
     setHalted: () => { halted = true; },
   });
 
-  const serviceInterrupt = (bit: number, vector: number): number => {
+  const noop = () => {};
+
+  const serviceInterrupt = (bit: number, vector: number, tick: () => void): number => {
     halted = false;
     registers.ime = false;
+    tick(); tick(); // 2 internal cycles
     const ifl = mmu.read8(0xff0f);
     mmu.write8(0xff0f, ifl & ~bit);
     mmu.write8(registers.sp - 1, (registers.pc >> 8) & 0xff);
+    tick(); // push high
     mmu.write8(registers.sp - 2, registers.pc & 0xff);
+    tick(); // push low
     registers.sp = (registers.sp - 2) & 0xffff;
     registers.pc = vector;
+    tick(); // jump
     return 20;
   };
 
   return {
-    step: () => {
+    step: (tick: () => void = noop) => {
       const ie = mmu.read8(0xffff);
       const ifl = mmu.read8(0xff0f);
       const pending = ie & ifl & 0x1f;
@@ -89,24 +95,25 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
         if (registers.ime) {
           for (const [bit, vector] of INTERRUPT_VECTORS) {
             if (pending & bit) {
-              return serviceInterrupt(bit, vector);
+              return serviceInterrupt(bit, vector, tick);
             }
           }
         }
         halted = false;
       }
 
-      if (halted) return 4;
+      if (halted) { tick(); return 4; }
 
       const pc = registers.pc;
       const opcode = mmu.read8(pc);
+      tick(); // opcode fetch M-cycle
       const instruction = opcodeTable[opcode];
       if (!instruction) {
         throw new Error(`Unsupported opcode: 0x${opcode.toString(16).padStart(2, '0')}`);
       }
       trace[traceIndex % TRACE_SIZE] = { pc, opcode, registers: { ...registers } };
       traceIndex++;
-      const cycles = instruction.execute();
+      const cycles = instruction.execute(tick);
       if (registers.imeScheduled) {
         registers.imeScheduled = false;
         registers.ime = true;

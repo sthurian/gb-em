@@ -7,7 +7,7 @@ type RrBDependencies = {
 const createRrB = ({ registers }: RrBDependencies) => ({
   mnemonic: 'RR B',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.b;
     const oldCarry = (registers.f >> 4) & 1;
     const result = ((val >> 1) | (oldCarry << 7)) & 0xff;

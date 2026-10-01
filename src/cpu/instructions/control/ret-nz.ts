@@ -10,16 +10,17 @@ const createRetNz = ({ mmu, registers }: RetNzDependencies) => {
   return {
     mnemonic: 'RET NZ',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const zero = (registers.f & 0x80) !== 0;
+      tick(); // condition check cycle
 
       if (zero) {
         registers.pc = (registers.pc + 1) & 0xffff;
         return 8;
       }
 
-      const low = mmu.read8(registers.sp);
-      const high = mmu.read8(registers.sp + 1);
+      const low = mmu.read8(registers.sp); tick();
+      const high = mmu.read8(registers.sp + 1); tick();
 
       registers.sp = (registers.sp + 2) & 0xffff;
       registers.pc = (high << 8) | low;

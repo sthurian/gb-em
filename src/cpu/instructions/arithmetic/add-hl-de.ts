@@ -8,7 +8,7 @@ const createAddHLDE = ({ registers }: AddHLDEDependencies) => {
   return {
     mnemonic: 'ADD HL,DE',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const hl = (registers.h << 8) | registers.l;
       const rr = (registers.d << 8) | registers.e;
       const result = hl + rr;
@@ -22,6 +22,7 @@ const createAddHLDE = ({ registers }: AddHLDEDependencies) => {
 
       registers.f = (registers.f & 0x80) | (halfCarry ? 0x20 : 0) | (carry ? 0x10 : 0);
 
+      tick(); // internal M-cycle
       registers.pc = (registers.pc + 1) & 0xffff;
 
       return 8;

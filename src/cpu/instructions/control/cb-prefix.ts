@@ -8,15 +8,16 @@ const createCbPrefix = ({ mmu, registers }: { mmu: MMU; registers: Registers }) 
   return {
     mnemonic: 'CB prefix',
     bytes: 2,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const subOpcode = mmu.read8((registers.pc + 1) & 0xffff);
+      tick(); // CB subopcode fetch
       const instruction = cbOpcodeTable[subOpcode];
       /* c8 ignore next 3 */
       if (!instruction) {
         throw new Error(`CB-prefixed opcode 0x${subOpcode.toString(16).padStart(2, '0')} not implemented`);
       }
       registers.pc = (registers.pc + 1) & 0xffff;
-      return instruction.execute();
+      return instruction.execute(tick);
     },
   };
 };

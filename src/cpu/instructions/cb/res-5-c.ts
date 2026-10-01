@@ -7,7 +7,7 @@ type Res5CDependencies = {
 const createRes5C = ({ registers }: Res5CDependencies) => ({
   mnemonic: 'RES 5,C',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.c = registers.c & ~(1 << 5) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

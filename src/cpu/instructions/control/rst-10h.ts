@@ -10,12 +10,13 @@ const createRst10h = ({ mmu, registers }: RstDependencies) => {
   return {
     mnemonic: 'RST 10H',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const returnAddress = (registers.pc + 1) & 0xffff;
 
+      tick(); // internal cycle before push
       registers.sp = (registers.sp - 2) & 0xffff;
-      mmu.write8(registers.sp, returnAddress & 0xff);
-      mmu.write8(registers.sp + 1, returnAddress >> 8);
+      mmu.write8(registers.sp, returnAddress & 0xff); tick();
+      mmu.write8(registers.sp + 1, returnAddress >> 8); tick();
 
       registers.pc = 0x0010;
 

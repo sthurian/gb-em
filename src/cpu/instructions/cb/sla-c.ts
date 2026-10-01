@@ -7,7 +7,7 @@ type SlaCDependencies = {
 const createSlaC = ({ registers }: SlaCDependencies) => ({
   mnemonic: 'SLA C',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.c;
     const result = (val << 1) & 0xff;
     const carry = (val >> 7) & 1;

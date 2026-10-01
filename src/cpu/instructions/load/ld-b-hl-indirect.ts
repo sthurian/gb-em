@@ -10,9 +10,9 @@ const createLdBHLIndirect = ({ mmu, registers }: LdBHLIndirectDependencies) => {
   return {
     mnemonic: 'LD B,(HL)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
-      registers.b = mmu.read8(address);
+      registers.b = mmu.read8(address); tick();
       registers.pc = (registers.pc + 1) & 0xffff;
 
       return 8;

@@ -9,13 +9,13 @@ type RrHLDependencies = {
 const createRrHL = ({ mmu, registers }: RrHLDependencies) => ({
   mnemonic: 'RR (HL)',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const addr = (registers.h << 8) | registers.l;
-    const val = mmu.read8(addr);
+    const val = mmu.read8(addr); tick();
     const oldCarry = (registers.f >> 4) & 1;
     const result = ((val >> 1) | (oldCarry << 7)) & 0xff;
     const carry = val & 1;
-    mmu.write8(addr, result);
+    mmu.write8(addr, result); tick();
     registers.f = (result === 0 ? 0x80 : 0x00) | (carry ? 0x10 : 0x00);
     registers.pc = (registers.pc + 1) & 0xffff;
 

@@ -10,9 +10,9 @@ const createPopAF = ({ mmu, registers }: PopAFDependencies) => {
   return {
     mnemonic: 'POP AF',
     bytes: 1,
-    execute: () => {
-      const flags = mmu.read8(registers.sp);
-      const accumulator = mmu.read8((registers.sp + 1) & 0xffff);
+    execute: (tick = () => {}) => {
+      const flags = mmu.read8(registers.sp); tick();
+      const accumulator = mmu.read8((registers.sp + 1) & 0xffff); tick();
 
       registers.f = flags & 0xf0;
       registers.a = accumulator;

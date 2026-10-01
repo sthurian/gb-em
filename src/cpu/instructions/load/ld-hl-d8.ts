@@ -12,11 +12,11 @@ const createLdHLD8 = ({
 }: LdHLD8Dependencies) => ({
   mnemonic: 'LD (HL),d8',
   bytes: 2,
-  execute: () => {
-    const value = mmu.read8((registers.pc + 1) & 0xffff);
+  execute: (tick = () => {}) => {
+    const value = mmu.read8((registers.pc + 1) & 0xffff); tick();
     const address = (registers.h << 8) | registers.l;
 
-    mmu.write8(address, value);
+    mmu.write8(address, value); tick();
 
     registers.pc = (registers.pc + 2) & 0xffff;
 

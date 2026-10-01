@@ -10,8 +10,8 @@ const createLdhAC = ({ mmu, registers }: LdhACDependencies) => {
   return {
     mnemonic: 'LD A,(C)',
     bytes: 1,
-    execute: () => {
-      registers.a = mmu.read8(0xff00 + registers.c);
+    execute: (tick = () => {}) => {
+      registers.a = mmu.read8(0xff00 + registers.c); tick();
       registers.pc = (registers.pc + 1) & 0xffff;
 
       return 8;

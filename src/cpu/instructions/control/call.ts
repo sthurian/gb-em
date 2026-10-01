@@ -10,15 +10,16 @@ const createCall = ({ mmu, registers }: CallDependencies) => {
   return {
     mnemonic: 'CALL a16',
     bytes: 3,
-    execute: () => {
-      const low = mmu.read8(registers.pc + 1);
-      const high = mmu.read8(registers.pc + 2);
+    execute: (tick = () => {}) => {
+      const low = mmu.read8(registers.pc + 1); tick();
+      const high = mmu.read8(registers.pc + 2); tick();
       const target = (high << 8) | low;
       const returnAddress = (registers.pc + 3) & 0xffff;
 
+      tick(); // internal delay before push
       registers.sp = (registers.sp - 2) & 0xffff;
-      mmu.write8(registers.sp, returnAddress & 0xff);
-      mmu.write8(registers.sp + 1, returnAddress >> 8);
+      mmu.write8(registers.sp, returnAddress & 0xff); tick();
+      mmu.write8(registers.sp + 1, returnAddress >> 8); tick();
 
       registers.pc = target;
 

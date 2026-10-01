@@ -10,8 +10,8 @@ const createAddAD8 = ({ mmu, registers }: AddAD8Dependencies) => {
   return {
     mnemonic: 'ADD A,d8',
     bytes: 2,
-    execute: () => {
-      const value = mmu.read8(registers.pc + 1);
+    execute: (tick = () => {}) => {
+      const value = mmu.read8(registers.pc + 1); tick();
       const result = registers.a + value;
 
       const zero = (result & 0xff) === 0;

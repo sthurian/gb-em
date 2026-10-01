@@ -7,7 +7,7 @@ type RlcEDependencies = {
 const createRlcE = ({ registers }: RlcEDependencies) => ({
   mnemonic: 'RLC E',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.e;
     const result = ((val << 1) | (val >> 7)) & 0xff;
     const carry = (val >> 7) & 1;

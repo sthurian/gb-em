@@ -10,8 +10,8 @@ const createSubD8 = ({ mmu, registers }: SubD8Dependencies) => {
   return {
     mnemonic: 'SUB d8',
     bytes: 2,
-    execute: () => {
-      const value = mmu.read8(registers.pc + 1);
+    execute: (tick = () => {}) => {
+      const value = mmu.read8(registers.pc + 1); tick();
       const result = registers.a - value;
 
       const zero = (result & 0xff) === 0;

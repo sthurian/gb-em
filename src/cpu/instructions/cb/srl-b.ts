@@ -7,7 +7,7 @@ type SrlBDependencies = {
 const createSrlB = ({ registers }: SrlBDependencies) => ({
   mnemonic: 'SRL B',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.b;
     const result = (val >> 1) & 0xff;
     const carry = val & 1;

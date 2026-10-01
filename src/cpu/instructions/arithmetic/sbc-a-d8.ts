@@ -10,8 +10,8 @@ const createSbcAD8 = ({ mmu, registers }: SbcAD8Dependencies) => {
   return {
     mnemonic: 'SBC A,d8',
     bytes: 2,
-    execute: () => {
-      const value = mmu.read8(registers.pc + 1);
+    execute: (tick = () => {}) => {
+      const value = mmu.read8(registers.pc + 1); tick();
       const carry = (registers.f >> 4) & 1;
       const result = registers.a - value - carry;
 

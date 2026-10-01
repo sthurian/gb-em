@@ -10,8 +10,8 @@ const createLdHLSpR8 = ({ mmu, registers }: LdHLSpR8Dependencies) => {
   return {
     mnemonic: 'LD HL,SP+r8',
     bytes: 2,
-    execute: () => {
-      const r8 = mmu.read8(registers.pc + 1);
+    execute: (tick = () => {}) => {
+      const r8 = mmu.read8(registers.pc + 1); tick();
       const signedR8 = r8 >= 0x80 ? r8 - 256 : r8;
       const result = registers.sp + signedR8;
 
@@ -24,6 +24,7 @@ const createLdHLSpR8 = ({ mmu, registers }: LdHLSpR8Dependencies) => {
 
       registers.f = (halfCarry ? 0x20 : 0) | (carry ? 0x10 : 0);
 
+      tick(); // internal cycle
       registers.pc = (registers.pc + 2) & 0xffff;
 
       return 12;

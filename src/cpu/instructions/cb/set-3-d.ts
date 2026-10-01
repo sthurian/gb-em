@@ -7,7 +7,7 @@ type Set3DDependencies = {
 const createSet3D = ({ registers }: Set3DDependencies) => ({
   mnemonic: 'SET 3,D',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.d = (registers.d | (1 << 3)) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

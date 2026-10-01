@@ -13,12 +13,12 @@ const createLdAIndirectA16 = ({
   return {
     mnemonic: 'LD A,(a16)',
     bytes: 3,
-    execute: () => {
-      const low = mmu.read8(registers.pc + 1);
-      const high = mmu.read8(registers.pc + 2);
+    execute: (tick = () => {}) => {
+      const low = mmu.read8(registers.pc + 1); tick();
+      const high = mmu.read8(registers.pc + 2); tick();
       const address = (high << 8) | low;
 
-      registers.a = mmu.read8(address);
+      registers.a = mmu.read8(address); tick();
       registers.pc = (registers.pc + 3) & 0xffff;
 
       return 16;

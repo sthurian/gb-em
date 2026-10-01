@@ -10,8 +10,8 @@ const createOrD8 = ({ mmu, registers }: OrD8Dependencies) => {
   return {
     mnemonic: 'OR d8',
     bytes: 2,
-    execute: () => {
-      const value = mmu.read8(registers.pc + 1);
+    execute: (tick = () => {}) => {
+      const value = mmu.read8(registers.pc + 1); tick();
       const result = registers.a | value;
 
       registers.a = result;

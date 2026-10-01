@@ -9,12 +9,12 @@ type SrlHLDependencies = {
 const createSrlHL = ({ mmu, registers }: SrlHLDependencies) => ({
   mnemonic: 'SRL (HL)',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const addr = (registers.h << 8) | registers.l;
-    const val = mmu.read8(addr);
+    const val = mmu.read8(addr); tick();
     const result = (val >> 1) & 0xff;
     const carry = val & 1;
-    mmu.write8(addr, result);
+    mmu.write8(addr, result); tick();
     registers.f = (result === 0 ? 0x80 : 0x00) | (carry ? 0x10 : 0x00);
     registers.pc = (registers.pc + 1) & 0xffff;
 

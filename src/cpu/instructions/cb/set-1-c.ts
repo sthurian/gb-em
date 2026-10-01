@@ -7,7 +7,7 @@ type Set1CDependencies = {
 const createSet1C = ({ registers }: Set1CDependencies) => ({
   mnemonic: 'SET 1,C',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.c = (registers.c | (1 << 1)) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

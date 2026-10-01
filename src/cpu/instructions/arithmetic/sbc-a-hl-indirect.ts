@@ -10,9 +10,9 @@ const createSbcAHLIndirect = ({ mmu, registers }: SbcAHLIndirectDependencies) =>
   return {
     mnemonic: 'SBC A,(HL)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
-      const src = mmu.read8(address);
+      const src = mmu.read8(address); tick();
       const carry = (registers.f >> 4) & 1;
       const result = registers.a - src - carry;
 

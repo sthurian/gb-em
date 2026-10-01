@@ -7,7 +7,7 @@ type Res4HDependencies = {
 const createRes4H = ({ registers }: Res4HDependencies) => ({
   mnemonic: 'RES 4,H',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.h = registers.h & ~(1 << 4) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

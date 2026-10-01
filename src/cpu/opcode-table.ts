@@ -250,7 +250,7 @@ import { createIllegalOpcode } from './instructions/control/illegal-opcode.js';
 type Opcode = {
   mnemonic: string;
   bytes: number;
-  execute: () => number;
+  execute: (tick?: () => void) => number;
 };
 
 type OpcodeTableDependencies = {

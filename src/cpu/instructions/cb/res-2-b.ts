@@ -7,7 +7,7 @@ type Res2BDependencies = {
 const createRes2B = ({ registers }: Res2BDependencies) => ({
   mnemonic: 'RES 2,B',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     registers.b = registers.b & ~(1 << 2) & 0xff;
     registers.pc = (registers.pc + 1) & 0xffff;
 

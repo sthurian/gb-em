@@ -10,8 +10,8 @@ const createLdDD8 = ({ mmu, registers }: LdDD8Dependencies) => ({
   mnemonic: 'LD D,d8',
   bytes: 2,
 
-  execute: () => {
-    registers.d = mmu.read8((registers.pc + 1) & 0xffff);
+  execute: (tick = () => {}) => {
+    registers.d = mmu.read8((registers.pc + 1) & 0xffff); tick();
 
     registers.pc = (registers.pc + 2) & 0xffff;
 

@@ -10,11 +10,12 @@ const createPushAF = ({ mmu, registers }: PushAFDependencies) => {
   return {
     mnemonic: 'PUSH AF',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
+      tick(); // internal cycle before push
       registers.sp = (registers.sp - 2) & 0xffff;
 
-      mmu.write8(registers.sp, registers.f & 0xf0);
-      mmu.write8(registers.sp + 1, registers.a);
+      mmu.write8(registers.sp, registers.f & 0xf0); tick();
+      mmu.write8(registers.sp + 1, registers.a); tick();
 
       registers.pc = (registers.pc + 1) & 0xffff;
 

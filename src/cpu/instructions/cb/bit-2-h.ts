@@ -7,7 +7,7 @@ type Bit2HDependencies = {
 const createBit2H = ({ registers }: Bit2HDependencies) => ({
   mnemonic: 'BIT 2,H',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.h;
     registers.f = ((val & (1 << 2)) === 0 ? 0x80 : 0x00) | 0x20 | (registers.f & 0x10);
     registers.pc = (registers.pc + 1) & 0xffff;

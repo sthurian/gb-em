@@ -9,10 +9,10 @@ type Res7HLDependencies = {
 const createRes7HL = ({ mmu, registers }: Res7HLDependencies) => ({
   mnemonic: 'RES 7,(HL)',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const addr = (registers.h << 8) | registers.l;
-    const val = mmu.read8(addr);
-    mmu.write8(addr, val & ~(1 << 7) & 0xff);
+    const val = mmu.read8(addr); tick();
+    mmu.write8(addr, val & ~(1 << 7) & 0xff); tick();
     registers.pc = (registers.pc + 1) & 0xffff;
 
     return 16;

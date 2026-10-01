@@ -7,7 +7,7 @@ type SlaADependencies = {
 const createSlaA = ({ registers }: SlaADependencies) => ({
   mnemonic: 'SLA A',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.a;
     const result = (val << 1) & 0xff;
     const carry = (val >> 7) & 1;

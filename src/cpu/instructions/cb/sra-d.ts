@@ -7,7 +7,7 @@ type SraDDependencies = {
 const createSraD = ({ registers }: SraDDependencies) => ({
   mnemonic: 'SRA D',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.d;
     const result = ((val >> 1) | (val & 0x80)) & 0xff;
     const carry = val & 1;

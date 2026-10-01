@@ -10,11 +10,12 @@ const createPushDE = ({ mmu, registers }: PushDEDependencies) => {
   return {
     mnemonic: 'PUSH DE',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
+      tick(); // internal cycle before push
       registers.sp = (registers.sp - 2) & 0xffff;
 
-      mmu.write8(registers.sp, registers.e);
-      mmu.write8(registers.sp + 1, registers.d);
+      mmu.write8(registers.sp, registers.e); tick();
+      mmu.write8(registers.sp + 1, registers.d); tick();
 
       registers.pc = (registers.pc + 1) & 0xffff;
 

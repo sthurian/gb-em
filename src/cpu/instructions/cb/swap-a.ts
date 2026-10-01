@@ -7,7 +7,7 @@ type SwapADependencies = {
 const createSwapA = ({ registers }: SwapADependencies) => ({
   mnemonic: 'SWAP A',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.a;
     const result = ((val & 0x0f) << 4) | ((val & 0xf0) >> 4);
     registers.a = result;

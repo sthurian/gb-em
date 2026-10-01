@@ -7,7 +7,7 @@ type Bit5HDependencies = {
 const createBit5H = ({ registers }: Bit5HDependencies) => ({
   mnemonic: 'BIT 5,H',
   bytes: 1,
-  execute: () => {
+  execute: (tick = () => {}) => {
     const val = registers.h;
     registers.f = ((val & (1 << 5)) === 0 ? 0x80 : 0x00) | 0x20 | (registers.f & 0x10);
     registers.pc = (registers.pc + 1) & 0xffff;

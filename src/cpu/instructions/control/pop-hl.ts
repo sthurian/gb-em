@@ -10,9 +10,9 @@ const createPopHL = ({ mmu, registers }: PopHLDependencies) => {
   return {
     mnemonic: 'POP HL',
     bytes: 1,
-    execute: () => {
-      const low = mmu.read8(registers.sp);
-      const high = mmu.read8((registers.sp + 1) & 0xffff);
+    execute: (tick = () => {}) => {
+      const low = mmu.read8(registers.sp); tick();
+      const high = mmu.read8((registers.sp + 1) & 0xffff); tick();
 
       registers.l = low;
       registers.h = high;

@@ -10,10 +10,10 @@ const createLdAHlInc = ({ mmu, registers }: LdAHlIncDependencies) => {
   return {
     mnemonic: 'LD A,(HL+)',
     bytes: 1,
-    execute: () => {
+    execute: (tick = () => {}) => {
       const address = (registers.h << 8) | registers.l;
 
-      registers.a = mmu.read8(address);
+      registers.a = mmu.read8(address); tick();
 
       const hl = (address + 1) & 0xffff;
       registers.h = hl >> 8;
