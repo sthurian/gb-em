@@ -24,7 +24,9 @@ const emulator = createEmulator({
         process.stdout.write(`Failed (${result} subtest(s) failed)\n`);
       }
     } else {
-      process.stderr.write(`\n[TIMEOUT — ${cycles} cycles, last PC: 0x${lastPc?.toString(16)}]\n`);
+      const ie = em.read8(0xffff);
+      const ifl = em.read8(0xff0f);
+      process.stderr.write(`\n[TIMEOUT — ${cycles} cycles, last PC: 0x${lastPc?.toString(16)}  IE:0x${ie.toString(16).padStart(2,'0')}  IF:0x${ifl.toString(16).padStart(2,'0')}]\n`);
     }
     const deduped: typeof trace = [];
     for (const entry of trace) {

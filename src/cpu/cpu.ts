@@ -11,6 +11,7 @@ type CPU = {
   step(tick?: () => void): number;
   getState(): CPUState;
   getTrace(): TraceEntry[];
+  isHalted(): boolean;
 };
 
 type OpcodeTableFactory = (deps: {
@@ -60,6 +61,7 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
   const trace: TraceEntry[] = [];
   let traceIndex = 0;
   let halted = false;
+  let haltBug = false;
 
   const opcodeTable = dependencies.buildOpcodeTable({
     mmu,
@@ -114,9 +116,21 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
       const pc = registers.pc;
       const opcode = mmu.read8(pc);
       tick(); // opcode fetch M-cycle
+
+      // HALT bug: IME=0 with pending interrupt at HALT time — don't halt, but PC doesn't advance
+      if (opcode === 0x76 && !registers.ime && pending !== 0) {
+        haltBug = true;
+        registers.pc = (registers.pc + 1) & 0xffff;
+        return 4;
+      }
+
       const instruction = opcodeTable[opcode];
       if (!instruction) {
         throw new Error(`Unsupported opcode: 0x${opcode.toString(16).padStart(2, '0')}`);
+      }
+      if (haltBug) {
+        haltBug = false;
+        registers.pc = (registers.pc - 1) & 0xffff;
       }
       trace[traceIndex % TRACE_SIZE] = { pc, opcode, registers: { ...registers } };
       traceIndex++;
@@ -139,6 +153,8 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
       const start = traceIndex % TRACE_SIZE;
       return [...trace.slice(start), ...trace.slice(0, start)];
     },
+
+    isHalted: () => halted,
   };
 };
 

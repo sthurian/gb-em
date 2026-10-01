@@ -63,7 +63,7 @@ const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
         const pc = registers.pc;
         const cycles = cpu.step(tick);
         totalCycles += cycles;
-        if (registers.pc === pc) {
+        if (registers.pc === pc && !cpu.isHalted()) {
           sameCount++;
           if (sameCount >= 100) {
             hooks.onCycleLimit?.(totalCycles, emulator);
