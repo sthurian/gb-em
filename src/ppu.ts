@@ -1,10 +1,129 @@
+import type { InterruptController } from './interrupt-controller.js';
+
 type PPU = {
+  read8(address: number): number;
+  write8(address: number, value: number): void;
   step(cycles: number): void;
 };
 
-const createPPU = (): PPU => {
+type PPUDependencies = {
+  interruptController: InterruptController;
+};
+
+// Dots per line = 456, lines 0-143 visible, 144-153 VBlank
+// Mode 2 (OAM scan):  dots   0– 79  (80 dots)
+// Mode 3 (drawing):   dots  80–251  (172 dots)
+// Mode 0 (HBlank):    dots 252–455  (204 dots)
+// Mode 1 (VBlank):    lines 144–153
+
+const createPPU = ({ interruptController }: PPUDependencies): PPU => {
+  let lcdc = 0x91; // LCD on by default
+  let stat = 0x00;
+  let scy = 0;
+  let scx = 0;
+  let ly = 0;
+  let lyc = 0;
+  let bgp = 0xfc;
+  let obp0 = 0xff;
+  let obp1 = 0xff;
+  let wy = 0;
+  let wx = 0;
+  let dots = 0;
+
+  const lcdEnabled = () => (lcdc & 0x80) !== 0;
+
+  const updateMode = () => {
+    const vblank = ly >= 144;
+    let mode: number;
+    if (vblank) {
+      mode = 1;
+    } else if (dots < 80) {
+      mode = 2;
+    } else if (dots < 252) {
+      mode = 3;
+    } else {
+      mode = 0;
+    }
+    const lycMatch = ly === lyc ? 0x04 : 0x00;
+    stat = (stat & 0xf8) | lycMatch | mode;
+  };
+
+  const checkStatInterrupt = (prevStat: number) => {
+    const mode = stat & 0x03;
+    const lycMatch = (stat & 0x04) !== 0;
+    const triggered =
+      (mode === 0 && (stat & 0x08) !== 0) ||
+      (mode === 1 && (stat & 0x10) !== 0) ||
+      (mode === 2 && (stat & 0x20) !== 0) ||
+      (lycMatch && (stat & 0x40) !== 0);
+    const prevTriggered =
+      ((prevStat & 0x03) === 0 && (prevStat & 0x08) !== 0) ||
+      ((prevStat & 0x03) === 1 && (prevStat & 0x10) !== 0) ||
+      ((prevStat & 0x03) === 2 && (prevStat & 0x20) !== 0) ||
+      (((prevStat & 0x04) !== 0) && (prevStat & 0x40) !== 0);
+    if (triggered && !prevTriggered) {
+      interruptController.request('LCD_STAT');
+    }
+  };
+
   return {
-    step: () => {},
+    read8: (address) => {
+      switch (address) {
+        case 0xff40: return lcdc;
+        case 0xff41: return stat | 0x80;
+        case 0xff42: return scy;
+        case 0xff43: return scx;
+        case 0xff44: return ly;
+        case 0xff45: return lyc;
+        case 0xff47: return bgp;
+        case 0xff48: return obp0;
+        case 0xff49: return obp1;
+        case 0xff4a: return wy;
+        case 0xff4b: return wx;
+        default: return 0xff;
+      }
+    },
+
+    write8: (address, value) => {
+      switch (address) {
+        case 0xff40:
+          if ((lcdc & 0x80) && !(value & 0x80)) {
+            // LCD turning off: reset ly and dots
+            ly = 0; dots = 0;
+          }
+          lcdc = value;
+          break;
+        case 0xff41: stat = (stat & 0x07) | (value & 0x78); break;
+        case 0xff42: scy = value; break;
+        case 0xff43: scx = value; break;
+        case 0xff44: break; // LY read-only
+        case 0xff45: lyc = value; updateMode(); break;
+        case 0xff47: bgp = value; break;
+        case 0xff48: obp0 = value; break;
+        case 0xff49: obp1 = value; break;
+        case 0xff4a: wy = value; break;
+        case 0xff4b: wx = value; break;
+      }
+    },
+
+    step: (cycles) => {
+      if (!lcdEnabled()) return;
+
+      const prevStat = stat;
+      dots += cycles;
+
+      if (dots >= 456) {
+        dots -= 456;
+        ly = (ly + 1) % 154;
+
+        if (ly === 144) {
+          interruptController.request('VBLANK');
+        }
+      }
+
+      updateMode();
+      checkStatInterrupt(prevStat);
+    },
   };
 };
 

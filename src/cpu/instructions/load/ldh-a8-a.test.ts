@@ -2,6 +2,7 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createCartridge } from '../../../cartridge.js';
 import { createInterruptController } from '../../../interrupt-controller.js';
+import { createPPU } from '../../../ppu.js';
 import { createTimer } from '../../../timer.js';
 import { createMMU } from '../../../mmu.js';
 import { createSerial } from '../../../serial.js';
@@ -19,11 +20,13 @@ suite('LDH (a8),A', () => {
 
     const serial = createSerial({ output: { onByte: () => {} } });
 
+    const interruptController = createInterruptController();
     const mmu = createMMU({
       cartridge,
       serial,
-      interruptController: createInterruptController(),
-      timer: createTimer({ interruptController: createInterruptController() }),
+      interruptController,
+      timer: createTimer({ interruptController }),
+      ppu: createPPU({ interruptController }),
     });
 
     const registers: Registers = {

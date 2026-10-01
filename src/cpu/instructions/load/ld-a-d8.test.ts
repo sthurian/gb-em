@@ -2,6 +2,7 @@ import { suite, test } from 'mocha';
 import assert from 'node:assert';
 import { createCartridge } from '../../../cartridge.js';
 import { createInterruptController } from '../../../interrupt-controller.js';
+import { createPPU } from '../../../ppu.js';
 import { createTimer } from '../../../timer.js';
 import { createMMU } from '../../../mmu.js';
 import { createSerial } from '../../../serial.js';
@@ -24,6 +25,7 @@ suite('LD A,d8', () => {
       serial,
       interruptController: createInterruptController(),
       timer: createTimer({ interruptController: createInterruptController() }),
+      ppu: createPPU({ interruptController: createInterruptController() }),
     });
 
     const registers: Registers = {

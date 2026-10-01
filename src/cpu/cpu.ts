@@ -69,19 +69,30 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
 
   const noop = () => {};
 
-  const serviceInterrupt = (bit: number, vector: number, tick: () => void): number => {
+  const serviceInterrupt = (tick: () => void): number => {
     halted = false;
     registers.ime = false;
-    tick(); tick(); // 2 internal cycles
-    const ifl = mmu.read8(0xff0f);
-    mmu.write8(0xff0f, ifl & ~bit);
-    mmu.write8(registers.sp - 1, (registers.pc >> 8) & 0xff);
-    tick(); // push high
-    mmu.write8(registers.sp - 2, registers.pc & 0xff);
-    tick(); // push low
-    registers.sp = (registers.sp - 2) & 0xffff;
+    tick(); tick(); // M1, M2 internal cycles
+    // M3: push PC high byte (SP decrements before write)
+    registers.sp = (registers.sp - 1) & 0xffff;
+    mmu.write8(registers.sp, (registers.pc >> 8) & 0xff);
+    tick();
+    // M4: push PC low byte
+    registers.sp = (registers.sp - 1) & 0xffff;
+    mmu.write8(registers.sp, registers.pc & 0xff);
+    tick();
+    // M5: latch vector from IE & IF at this moment (timer/STAT may have fired during pushes)
+    const ie5 = mmu.read8(0xffff);
+    const ifl5 = mmu.read8(0xff0f);
+    const pending5 = ie5 & ifl5 & 0x1f;
+    let vector = 0x0000; // spurious interrupt if no longer pending
+    let bit = 0;
+    for (const [b, v] of INTERRUPT_VECTORS) {
+      if (pending5 & b) { bit = b; vector = v; break; }
+    }
+    if (bit !== 0) mmu.write8(0xff0f, ifl5 & ~bit);
     registers.pc = vector;
-    tick(); // jump
+    tick();
     return 20;
   };
 
@@ -93,11 +104,7 @@ const createCPU = (dependencies: CPUDependencies): CPU => {
 
       if (pending !== 0) {
         if (registers.ime) {
-          for (const [bit, vector] of INTERRUPT_VECTORS) {
-            if (pending & bit) {
-              return serviceInterrupt(bit, vector, tick);
-            }
-          }
+          return serviceInterrupt(tick);
         }
         halted = false;
       }

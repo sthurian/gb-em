@@ -36,8 +36,18 @@ const createTimer = ({ interruptController }: TimerDependencies): Timer => {
 
     write8: (address, value) => {
       if (address === 0xff04) { div = 0; return; }
-      if (address === 0xff05) { tima = value & 0xff; timaOverflowPending = false; return; }
-      if (address === 0xff06) { tma = value & 0xff; return; }
+      if (address === 0xff05) {
+        // Write during overflow window cancels reload and interrupt
+        tima = value & 0xff;
+        timaOverflowPending = false;
+        return;
+      }
+      if (address === 0xff06) {
+        tma = value & 0xff;
+        // Write to TMA during overflow window also updates the pending reload value
+        if (timaOverflowPending) tima = tma;
+        return;
+      }
       tac = value & 0x07;
     },
 

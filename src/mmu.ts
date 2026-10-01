@@ -1,5 +1,6 @@
 import type { Cartridge } from './cartridge.js';
 import type { InterruptController } from './interrupt-controller.js';
+import type { PPU } from './ppu.js';
 import type { Serial } from './serial.js';
 import type { Timer } from './timer.js';
 
@@ -11,6 +12,7 @@ type MMU = {
 type MMUDependencies = {
   cartridge: Cartridge;
   interruptController: InterruptController;
+  ppu: PPU;
   serial: Serial;
   timer: Timer;
 };
@@ -29,7 +31,7 @@ const assertByte = (value: number): void => {
   }
 };
 
-const createMMU = ({ cartridge, interruptController, serial, timer }: MMUDependencies): MMU => {
+const createMMU = ({ cartridge, interruptController, ppu, serial, timer }: MMUDependencies): MMU => {
   const memory: Memory = new Uint8Array(0x10000);
 
   return {
@@ -50,6 +52,10 @@ const createMMU = ({ cartridge, interruptController, serial, timer }: MMUDepende
 
       if (address === 0xff0f || address === 0xffff) {
         return interruptController.read8(address);
+      }
+
+      if (address >= 0xff40 && address <= 0xff4b) {
+        return ppu.read8(address);
       }
 
       return memory[address]!;
@@ -76,6 +82,11 @@ const createMMU = ({ cartridge, interruptController, serial, timer }: MMUDepende
 
       if (address === 0xff0f || address === 0xffff) {
         interruptController.write8(address, value);
+        return;
+      }
+
+      if (address >= 0xff40 && address <= 0xff4b) {
+        ppu.write8(address, value);
         return;
       }
 

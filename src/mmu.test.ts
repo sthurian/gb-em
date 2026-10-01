@@ -4,6 +4,7 @@ import { createCartridge } from './cartridge.js';
 import { createInterruptController } from './interrupt-controller.js';
 import { createMMU } from './mmu.js';
 import type { MMU } from './mmu.js';
+import { createPPU } from './ppu.js';
 import { createSerial } from './serial.js';
 import { createTimer } from './timer.js';
 
@@ -16,8 +17,9 @@ suite('MMU', () => {
     const serial = createSerial({ output: { onByte: () => {} } });
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
+    const ppu = createPPU({ interruptController });
 
-    return createMMU({ cartridge, interruptController, serial, timer });
+    return createMMU({ cartridge, interruptController, ppu, serial, timer });
   };
 
   test('returns zero for uninitialized memory', () => {
@@ -40,7 +42,8 @@ suite('MMU', () => {
     const serial = createSerial({ output: { onByte: () => {} } });
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
-    const mmu = createMMU({ cartridge, interruptController, serial, timer });
+    const ppu = createPPU({ interruptController });
+    const mmu = createMMU({ cartridge, interruptController, ppu, serial, timer });
 
     mmu.write8(0x1234, 0xab);
 
@@ -68,7 +71,8 @@ suite('MMU', () => {
     const serial = createSerial({ output: { onByte: () => {} } });
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
-    const mmu = createMMU({ cartridge, interruptController, serial, timer });
+    const ppu = createPPU({ interruptController });
+    const mmu = createMMU({ cartridge, interruptController, ppu, serial, timer });
 
     assert.equal(mmu.read8(0x0000), 0x42);
     assert.equal(mmu.read8(0x1234), 0xab);
@@ -91,7 +95,8 @@ suite('MMU', () => {
 
     const interruptController = createInterruptController();
     const timer = createTimer({ interruptController });
-    const mmu = createMMU({ cartridge, interruptController, serial, timer });
+    const ppu = createPPU({ interruptController });
+    const mmu = createMMU({ cartridge, interruptController, ppu, serial, timer });
 
     mmu.write8(0xff01, 0xab);
 

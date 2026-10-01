@@ -22,6 +22,7 @@ type Emulator = {
   start(rom: string | Uint8Array): void;
   stop(): void;
   getTrace(): TraceEntry[];
+  read8(address: number): number;
 };
 
 const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
@@ -35,28 +36,43 @@ const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
       const cartridge = createCartridge({ data });
       const interruptController = createInterruptController();
       const timer = createTimer({ interruptController });
+      const ppu = createPPU({ interruptController });
       const registers = createRegisters();
       const serial = createSerial({
         output: {
           onByte: (value) => hooks.onSerialByte?.(value, emulator),
         },
       });
-      const mmu = createMMU({ cartridge, interruptController, serial, timer });
+      const mmu = createMMU({ cartridge, interruptController, ppu, serial, timer });
       const cpu = createCPU({ mmu, registers, buildOpcodeTable: createOpcodeTable });
-      const ppu = createPPU();
       const apu = createAPU();
       const joypad = createJoypad();
 
       getTrace = () => cpu.getTrace();
+      emulator.read8 = (address) => mmu.read8(address);
       stopped = false;
 
       let totalCycles = 0;
       const cycleLimit = hooks.cycleLimit ?? Infinity;
       const tick = () => { ppu.step(4); apu.step(4); timer.step(4); };
 
+      let lastPc = -1;
+      let sameCount = 0;
+
       while (!stopped) {
+        const pc = registers.pc;
         const cycles = cpu.step(tick);
         totalCycles += cycles;
+        if (registers.pc === pc) {
+          sameCount++;
+          if (sameCount >= 100) {
+            hooks.onCycleLimit?.(totalCycles, emulator);
+            break;
+          }
+        } else {
+          sameCount = 0;
+        }
+        lastPc = pc;
         if (totalCycles >= cycleLimit) {
           hooks.onCycleLimit?.(totalCycles, emulator);
           break;
@@ -69,6 +85,7 @@ const createEmulator = (hooks: EmulatorHooks = {}): Emulator => {
     },
 
     getTrace: () => getTrace(),
+    read8: (_address) => 0xff,
   };
 
   return emulator;
