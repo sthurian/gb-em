@@ -1,3 +1,4 @@
+import type { APU } from './apu.js';
 import type { Cartridge } from './cartridge.js';
 import type { InterruptController } from './interrupt-controller.js';
 import type { Joypad } from './joypad.js';
@@ -11,6 +12,7 @@ type MMU = {
 };
 
 type MMUDependencies = {
+  apu: APU;
   cartridge: Cartridge;
   interruptController: InterruptController;
   joypad: Joypad;
@@ -33,7 +35,7 @@ const assertByte = (value: number): void => {
   }
 };
 
-const createMMU = ({ cartridge, interruptController, joypad, ppu, serial, timer }: MMUDependencies): MMU => {
+const createMMU = ({ apu, cartridge, interruptController, joypad, ppu, serial, timer }: MMUDependencies): MMU => {
   const memory: Memory = new Uint8Array(0x10000);
 
   return {
@@ -48,6 +50,7 @@ const createMMU = ({ cartridge, interruptController, joypad, ppu, serial, timer 
       if (address === 0xff01 || address === 0xff02) return serial.read8(address);
       if (address >= 0xff04 && address <= 0xff07) return timer.read8(address);
       if (address === 0xff0f || address === 0xffff) return interruptController.read8(address);
+      if ((address >= 0xff10 && address <= 0xff3f)) return apu.read8(address);
       if (address >= 0xff40 && address <= 0xff4b) return ppu.read8(address);
 
       return memory[address]!;
@@ -65,6 +68,7 @@ const createMMU = ({ cartridge, interruptController, joypad, ppu, serial, timer 
       if (address === 0xff01 || address === 0xff02) { serial.write8(address, value); return; }
       if (address >= 0xff04 && address <= 0xff07) { timer.write8(address, value); return; }
       if (address === 0xff0f || address === 0xffff) { interruptController.write8(address, value); return; }
+      if ((address >= 0xff10 && address <= 0xff3f)) { apu.write8(address, value); return; }
       if (address === 0xff46) {
         // OAM DMA transfer: copy 160 bytes from (value * 0x100) to OAM
         ppu.dmaTransfer(value * 0x100, (addr) => {

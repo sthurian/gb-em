@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { createCartridge } from '../../../cartridge.js';
 import { createInterruptController } from '../../../interrupt-controller.js';
 import { createPPU } from '../../../ppu.js';
+import { createAPU } from '../../../apu.js';
 import { createJoypad } from '../../../joypad.js';
 import { createTimer } from '../../../timer.js';
 import { createMMU } from '../../../mmu.js';
@@ -22,7 +23,7 @@ suite('JP a16', () => {
 
     const serial = createSerial({ output: { onByte: () => {} } });
 
-    const mmu = createMMU({
+    const mmu = createMMU({ apu: createAPU(),
       cartridge,
       serial,
       interruptController: createInterruptController(),
